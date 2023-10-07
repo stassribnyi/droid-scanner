@@ -1,35 +1,54 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+
+import { Scanner } from './Scanner';
+
+function getDroidById(id: number) {
+  switch (id) {
+    case 125:
+      return 'c3po.png';
+    case 225:
+      return 'r2d2.jpg';
+    case 325:
+      return 'r3s6.webp';
+    default:
+      return '';
+  }
+}
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [isOpen, setIsOpen] = useState(false);
+  const [droidUrl, setDroidUrl] = useState('');
+
+  function showDroid(id: number) {
+    if (id) {
+      setDroidUrl(getDroidById(id));
+    }
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
+      <div className='card'>
+        <button
+          onClick={() => {
+            setIsOpen((open) => !open);
+            setDroidUrl('');
+          }}
+        >
+          Scan me!
         </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
+        {droidUrl && <img src={`/droid-scanner/${droidUrl}`} alt='' width='100%' height='100%' />}
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      {isOpen && (
+        <Scanner
+          onResult={(id) => {
+            showDroid(id);
+            setIsOpen(false);
+          }}
+        />
+      )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;
