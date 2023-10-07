@@ -21,4 +21,4 @@ jobs:
         with:
           folder: dist # The folder the action should deploy.
           branch: gh-pages
-        working-directory: ./frontend
+
