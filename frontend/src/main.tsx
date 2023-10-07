@@ -3,38 +3,10 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createMemoryRouter } from 'react-router';
 
 import { Welcome, Dashboard } from './screens';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
-import './index.css';
+import { Layout } from './components';
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    background: {
-      default: '#000312',
-    },
-    primary: {
-      main: '#ff6855',
-    },
-  },
-  shape: {
-    borderRadius: 18,
-  },
-  components: {
-    MuiButton: {
-      styleOverrides: {
-        contained: {
-          color: 'white',
-        },
-      },
-    },
-  },
-  typography: {
-    fontSize: 16,
-  },
-});
-
-const memoryHistory = createMemoryRouter([
+const memoryRouter = createMemoryRouter([
   {
     path: '/',
     element: <Dashboard />,
@@ -47,9 +19,8 @@ const memoryHistory = createMemoryRouter([
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline />
-      <RouterProvider router={memoryHistory} />,
-    </ThemeProvider>
+    <Layout>
+      <RouterProvider router={memoryRouter} />
+    </Layout>
   </React.StrictMode>
 );
