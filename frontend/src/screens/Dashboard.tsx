@@ -1,9 +1,13 @@
-import { Typography } from '@mui/material';
+import { Button, Typography } from '@mui/material';
+import { useNavigate } from "react-router";
 
 export const Dashboard = () => {
+  const navigate = useNavigate()
+
   return (
     <>
-      <Typography>Dashboard page</Typography>
+      <Typography align='center'>Dashboard page</Typography>
+      <Button onClick={() => navigate("/welcome")}>Go to welcome page</Button>
     </>
   );
 };

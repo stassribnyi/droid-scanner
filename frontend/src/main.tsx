@@ -1,7 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Welcome } from './screens';
+import { RouterProvider, createMemoryRouter } from 'react-router';
 
+import { Welcome, Dashboard } from './screens';
 import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
 
 import './index.css';
@@ -33,11 +34,22 @@ const darkTheme = createTheme({
   },
 });
 
+const memoryHistory = createMemoryRouter([
+  {
+    path: '/',
+    element: <Dashboard />,
+  },
+  {
+    path: '/welcome',
+    element: <Welcome />,
+  },
+]);
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Welcome />
+      <RouterProvider router={memoryHistory} />,
     </ThemeProvider>
   </React.StrictMode>
 );
