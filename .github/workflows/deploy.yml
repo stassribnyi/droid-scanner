@@ -17,6 +17,7 @@ jobs:
         working-directory: ./frontend
 
       - name: Deploy 🚀
+        working-directory: ./frontend
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist # The folder the action should deploy.
