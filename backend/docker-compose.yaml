@@ -1,0 +1,25 @@
+version: '3'
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: droid-scanner-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    image: droid-scanner-backend:latest
+    container_name: droid-scanner-backend
+    ports:
+      - "9200:9200"
+    depends_on:
+      - mongodb
+    environment:
+      SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/droidsdb
+
+volumes:
+  mongodb_data:
