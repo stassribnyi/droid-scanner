@@ -12,6 +12,7 @@ import {
 import { useNavigate } from 'react-router';
 import { BaseScreen } from '../components';
 import { FC, useState } from 'react';
+import { QuestionMarkRounded } from '@mui/icons-material';
 
 const InfoGrid: FC<{
   items: Array<React.ReactElement>;
@@ -56,15 +57,25 @@ const DROID_IMAGES = [
   '/droid-scanner/battle-droid.jpg',
 ];
 
+function getDroidInfo() {
+  const imageUrl =
+    DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
+
+  return {
+    imageUrl,
+    name: imageUrl.replace(/\.(jpg)/, '').split('/')[2],
+    isFound: Math.floor(Math.random() * 100) >= 50,
+  };
+}
+
 const DroidCard: FC<{
   idx: number;
+  name: string;
+  imageUrl: string;
+  isFound: boolean;
   onClick: (id: number) => void;
-}> = ({ idx, onClick }) => {
+}> = ({ idx, name, imageUrl, isFound, onClick }) => {
   const theme = useTheme();
-
-  function getDroidImage() {
-    return DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
-  }
 
   return (
     <Paper
@@ -83,20 +94,24 @@ const DroidCard: FC<{
       onClick={() => onClick(idx)}
     >
       <Stack alignItems='center' spacing={1}>
-        <img
-          alt='r2d2'
-          src={getDroidImage()}
-          style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
-        />
+        {isFound ? (
+          <img
+            alt={name}
+            src={imageUrl}
+            style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
+          />
+        ) : (
+          <QuestionMarkRounded sx={{ width: 100, height: 100 }} />
+        )}
         <Stack
           direction='row'
           justifyContent='space-between'
           sx={{ width: '100%' }}
         >
           <Typography variant='caption' color='#ff6855'>
-            R2D2
+            {isFound ? name : 'Not Found'}
           </Typography>
-          <Typography variant='caption'>{idx} / 20</Typography>
+          <Typography variant='caption'>{idx}</Typography>
         </Stack>
       </Stack>
     </Paper>
@@ -136,12 +151,19 @@ export const MyCollection = () => {
         itemsPerColumn={3}
         items={Array(20)
           .fill(1)
-          .map((item, idx) => (
-            <DroidCard
-              idx={idx + item}
-              onClick={(id) => navigate(`/hint/${id}`)}
-            />
-          ))}
+          .map((item, idx) => {
+            const droid = getDroidInfo();
+
+            return (
+              <DroidCard
+                idx={idx + item}
+                name={droid.name}
+                imageUrl={droid.imageUrl}
+                isFound={droid.isFound}
+                onClick={(id) => navigate(`/hint/${id}`)}
+              />
+            );
+          })}
       />
     </BaseScreen>
   );
