@@ -10,12 +10,12 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     image: droid-scanner-backend:latest
     container_name: droid-scanner-backend
     ports:
-      - "9200:9200"
+      - "8080:8080"
     depends_on:
       - mongodb
     environment:
