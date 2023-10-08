@@ -108,10 +108,17 @@ export const Dashboard = () => {
             </Typography>
             <Grid container spacing={2}>
               <Grid xs={4}>
-                <Paper sx={{ p: 1 }}>
+                <Paper
+                  sx={{
+                    p: 1,
+                    backgroundImage:
+                      'linear-gradient(to bottom, #9CD0B2, #7d9d8bde)',
+                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #A7D9BD',
+                  }}
+                >
                   <Stack alignItems='center' gap={1}>
                     <Typography
-                      color='text.secondary'
+                      // color='text.secondary'
                       sx={{ fontWeight: 'bold' }}
                     >
                       Rank
@@ -121,10 +128,17 @@ export const Dashboard = () => {
                 </Paper>
               </Grid>
               <Grid xs={4}>
-                <Paper sx={{ p: 1 }}>
+                <Paper
+                  sx={{
+                    p: 1,
+                    backgroundImage:
+                      'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
+                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
+                  }}
+                >
                   <Stack alignItems='center' gap={1}>
                     <Typography
-                      color='text.secondary'
+                      // color='text.secondary'
                       sx={{ fontWeight: 'bold' }}
                     >
                       Collected
@@ -134,10 +148,17 @@ export const Dashboard = () => {
                 </Paper>
               </Grid>
               <Grid xs={4}>
-                <Paper sx={{ p: 1 }}>
+                <Paper
+                  sx={{
+                    p: 1,
+                    backgroundImage:
+                      'linear-gradient(to bottom, #803DE1, #5b298e)',
+                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #874cef',
+                  }}
+                >
                   <Stack alignItems='center' gap={1}>
                     <Typography
-                      color='text.secondary'
+                      // color='text.secondary'
                       sx={{ fontWeight: 'bold' }}
                     >
                       Left

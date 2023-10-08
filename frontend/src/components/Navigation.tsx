@@ -1,25 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 
-import {
-  BottomNavigation,
-  BottomNavigationAction,
-  Box,
-  IconButton,
-  useTheme,
-} from '@mui/material';
-import {
-  QrCodeScannerRounded,
-  EmojiEventsRounded,
-  TipsAndUpdatesRounded,
-} from '@mui/icons-material';
+import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
+import { EmojiEventsRounded, TipsAndUpdatesRounded } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
+
+import { ScannerButton } from '../components';
 
 // TODO: refactor this for God's sake!
 export const Navigation: FC = () => {
   const [current, setCurrent] = useState(0);
   const navigate = useNavigate();
   const { pathname } = useLocation();
-  const theme = useTheme();
 
   useEffect(() => {
     console.log(pathname);
@@ -61,6 +52,7 @@ export const Navigation: FC = () => {
           maxWidth: 200,
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
+          color: 'white'
         }}
       />
       <BottomNavigationAction
@@ -86,39 +78,10 @@ export const Navigation: FC = () => {
                 height: '62px',
               }}
             >
-              <IconButton
-                sx={{
-                  backdropFilter: 'blur(8px)',
-
-                  color: 'white',
-                  transition: theme.transitions.create(
-                    ['background-color', 'transform'],
-                    {
-                      duration: theme.transitions.duration.standard,
-                    }
-                  ),
-                  backgroundImage:
-                    'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
-                  boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
-
-                  '&:hover': {
-                    backgroundImage:
-                      'linear-gradient(to bottom, #de4835, #ae2816)',
-                    transform: ' scale(1.1)',
-                  },
-                }}
-              >
-                <QrCodeScannerRounded
-                  sx={{
-                    width: '100%',
-                    height: '100%',
-                  }}
-                />
-              </IconButton>
+              <ScannerButton />
             </Box>
           </Box>
         }
-        onClick={() => navigate('/scan')}
         sx={{
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
@@ -139,6 +102,7 @@ export const Navigation: FC = () => {
           backdropFilter: 'blur(8px)',
           borderTopLeftRadius: '30px',
           maxWidth: 200,
+          color: 'white'
         }}
       />
     </BottomNavigation>

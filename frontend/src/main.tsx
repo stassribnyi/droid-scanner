@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createMemoryRouter } from 'react-router';
 
-import { Welcome, Dashboard, Scanner, MyCollection, Hint } from './screens';
+import { Welcome, Dashboard, MyCollection, Hint } from './screens';
 
 import { Layout } from './components';
 
@@ -14,10 +14,6 @@ const memoryRouter = createMemoryRouter([
   {
     path: '/welcome',
     element: <Welcome />,
-  },
-  {
-    path: '/scan',
-    element: <Scanner />,
   },
   {
     path: '/my-collection',
