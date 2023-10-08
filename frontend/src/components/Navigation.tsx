@@ -41,10 +41,10 @@ export const Navigation: FC = () => {
         icon={<TipsAndUpdatesRounded />}
         onClick={() => navigate('/')}
         sx={{
-          backgroundColor: '#0e223e',
           borderTopRightRadius: '30px',
-          backdropFilter: 'blur(8px)',
           maxWidth: 200,
+          background: 'rgba(35, 45, 60, 0.9)',
+          backdropFilter: 'blur(8px)',
         }}
       />
       <BottomNavigationAction
@@ -65,29 +65,31 @@ export const Navigation: FC = () => {
                 top: 'calc(-100% - 8px)',
                 left: '50%',
                 transform: 'translateX(-50%)',
+                borderRadius: '50%',
                 width: '62px',
                 height: '62px',
+                backdropFilter: 'blur(8px)',
+
+                color: 'white',
+                transition: theme.transitions.create(
+                  ['background-color', 'transform'],
+                  {
+                    duration: theme.transitions.duration.standard,
+                  }
+                ),
+                backgroundImage:
+                  '-moz-linear-gradient(top, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
+                boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
+
+                '&:hover': {
+                  backgroundImage:
+                    '-moz-linear-gradient(top, #de4835, #ae2816)',
+                  transform: ' scale(1.1)',
+                },
               }}
             >
               <IconButton
-                sx={{
-                  color: 'white',
-                  transition: theme.transitions.create(
-                    ['background-color', 'transform'],
-                    {
-                      duration: theme.transitions.duration.standard,
-                    }
-                  ),
-                  backgroundImage:
-                    '-moz-linear-gradient(top, #de4835, #7d1d10)',
-                  boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
-
-                  '&:hover': {
-                    backgroundImage:
-                      '-moz-linear-gradient(top, #de4835, #ae2816)',
-                    transform: ' scale(1.1)',
-                  },
-                }}
+               
               >
                 <QrCodeScannerRounded
                   sx={{
@@ -101,7 +103,8 @@ export const Navigation: FC = () => {
         }
         onClick={() => navigate('/scan')}
         sx={{
-          backgroundColor: '#0e223e',
+          background: 'rgba(35, 45, 60, 0.9)',
+          backdropFilter: 'blur(8px)',
           flex: 0,
           minWidth: '74px',
           padding: 0,
@@ -115,7 +118,7 @@ export const Navigation: FC = () => {
         icon={<EmojiEventsRounded />}
         onClick={() => navigate('/welcome')}
         sx={{
-          backgroundColor: '#0e223e',
+          background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
           borderTopLeftRadius: '30px',
           maxWidth: 200,
