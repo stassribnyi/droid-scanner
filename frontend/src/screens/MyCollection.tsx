@@ -7,6 +7,7 @@ import {
   Select,
   Stack,
   Typography,
+  useTheme,
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { BaseScreen } from '../components';
@@ -57,15 +58,29 @@ const DROID_IMAGES = [
 
 const DroidCard: FC<{
   idx: number;
-}> = ({ idx }) => {
+  onClick: (id: number) => void;
+}> = ({ idx, onClick }) => {
+  const theme = useTheme();
+
   function getDroidImage() {
     return DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
   }
+
   return (
     <Paper
       sx={{
         padding: '8px',
+        cursor: 'pointer',
+
+        transition: theme.transitions.create(['transform'], {
+          duration: theme.transitions.duration.standard,
+        }),
+
+        '&:hover': {
+          transform: 'rotate3d(1, 1, 1, 5deg) scale(1.1)',
+        },
       }}
+      onClick={() => onClick(idx)}
     >
       <Stack alignItems='center' spacing={1}>
         <img
@@ -122,7 +137,10 @@ export const MyCollection = () => {
         items={Array(20)
           .fill(1)
           .map((item, idx) => (
-            <DroidCard idx={idx + item} />
+            <DroidCard
+              idx={idx + item}
+              onClick={(id) => navigate(`/hint/${id}`)}
+            />
           ))}
       />
     </BaseScreen>

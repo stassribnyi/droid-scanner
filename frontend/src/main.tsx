@@ -24,7 +24,7 @@ const memoryRouter = createMemoryRouter([
     element: <MyCollection />,
   },
   {
-    path: '/hint',
+    path: '/hint/:id?',
     element: <Hint />,
   },
 ]);
