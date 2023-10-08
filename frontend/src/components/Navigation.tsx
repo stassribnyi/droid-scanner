@@ -113,7 +113,7 @@ export const Navigation: FC = () => {
       <BottomNavigationAction
         label='Progress'
         icon={<EmojiEventsRounded />}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/welcome')}
         sx={{
           backgroundColor: '#0e223e',
           backdropFilter: 'blur(8px)',
