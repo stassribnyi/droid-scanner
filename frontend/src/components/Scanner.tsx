@@ -18,6 +18,17 @@ function tryParseDroidId(data: string) {
 
 // const HINT = 'Please point your camera at the QR code you want to scan. Make sure the QR code is fully visible and in focus. The app will automatically detect and process the QR code for you.'
 
+const ViewFinder = () => <div style={{
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  zIndex: 1,
+  border: '2px solid rgba(235,155,255,0.5)',
+  width: '50%',
+  height: '50%',
+  transform: 'translate(-50%, -50%)'
+}}></div>
+
 export const Scanner: React.FC<{
   onResult: (id: number) => void;
 }> = ({ onResult }) => {
@@ -43,9 +54,11 @@ export const Scanner: React.FC<{
         //   transform: 'translateY(-50%)',
         //   maxHeight: '100vh',
         // }}
+        scanDelay={250}
         constraints={{
           facingMode: 'environment',
         }}
+        ViewFinder={ViewFinder}
         onResult={(result, error) => {
           if (result) {
             setData(result?.getText());
