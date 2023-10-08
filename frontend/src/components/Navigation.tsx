@@ -83,12 +83,12 @@ export const Navigation: FC = () => {
                   }
                 ),
                 backgroundImage: 
-                  '-moz-linear-gradient(top, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
+                  'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
                 boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
 
                 '&:hover': {
                   backgroundImage:
-                    '-moz-linear-gradient(top, #de4835, #ae2816)',
+                    'linear-gradient(to bottom, #de4835, #ae2816)',
                   transform: ' scale(1.1)',
                 },
                }}
