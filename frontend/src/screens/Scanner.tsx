@@ -2,12 +2,10 @@ import { forwardRef, useEffect, useState } from 'react';
 
 import { Scanner as QrReader } from '../components/Scanner';
 import {
-  AppBar,
   Button,
   Dialog,
   IconButton,
   Slide,
-  Toolbar,
 } from '@mui/material';
 import { Navigation, ScreenContent } from '../components';
 import { TransitionProps } from '@mui/material/transitions';
@@ -82,19 +80,22 @@ export const Scanner = () => {
           open={isOpen}
           onClose={closeScanner}
           TransitionComponent={Transition}
+          
         >
-          <AppBar sx={{ position: 'relative' }}>
-            <Toolbar>
-              <IconButton
+            <IconButton
                 edge='start'
                 color='inherit'
                 onClick={closeScanner}
                 aria-label='close'
+                sx={{
+                  position: 'absolute',
+                  top: '0.5rem',
+                  left: '1rem',
+                  zIndex: 1
+                }}
               >
                 <Close />
               </IconButton>
-            </Toolbar>
-          </AppBar>
           <QrReader
             onResult={(id) => {
               showDroid(id);
