@@ -12,7 +12,7 @@ import {
 import { useNavigate } from 'react-router';
 import { BaseScreen } from '../components';
 import { FC, useState } from 'react';
-import { QuestionMarkRounded } from '@mui/icons-material';
+import { QuestionMark } from '@mui/icons-material';
 
 const InfoGrid: FC<{
   items: Array<React.ReactElement>;
@@ -101,7 +101,7 @@ const DroidCard: FC<{
             style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
           />
         ) : (
-          <QuestionMarkRounded sx={{ width: 100, height: 100 }} />
+          <QuestionMark sx={{ width: 100, height: 100 }} />
         )}
         <Stack
           direction='row'
