@@ -1,3 +1,5 @@
 export { Welcome } from './Welcome'
 export { Dashboard } from './Dashboard'
 export { Scanner } from './Scanner'
+export { MyCollection } from './MyCollection'
+export { Hint } from './Hint'

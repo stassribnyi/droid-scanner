@@ -39,7 +39,7 @@ export const Navigation: FC = () => {
       <BottomNavigationAction
         label='Current hint'
         icon={<TipsAndUpdatesRounded />}
-        onClick={() => navigate('/')}
+        onClick={() => navigate('/hint')}
         sx={{
           borderTopRightRadius: '30px',
           maxWidth: 200,
@@ -68,6 +68,11 @@ export const Navigation: FC = () => {
                 borderRadius: '50%',
                 width: '62px',
                 height: '62px',
+               
+              }}
+            >
+              <IconButton
+               sx={{
                 backdropFilter: 'blur(8px)',
 
                 color: 'white',
@@ -77,7 +82,7 @@ export const Navigation: FC = () => {
                     duration: theme.transitions.duration.standard,
                   }
                 ),
-                backgroundImage:
+                backgroundImage: 
                   '-moz-linear-gradient(top, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
                 boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
 
@@ -86,10 +91,7 @@ export const Navigation: FC = () => {
                     '-moz-linear-gradient(top, #de4835, #ae2816)',
                   transform: ' scale(1.1)',
                 },
-              }}
-            >
-              <IconButton
-               
+               }}
               >
                 <QrCodeScannerRounded
                   sx={{
@@ -116,7 +118,7 @@ export const Navigation: FC = () => {
       <BottomNavigationAction
         label='Progress'
         icon={<EmojiEventsRounded />}
-        onClick={() => navigate('/welcome')}
+        onClick={() => navigate('/my-collection')}
         sx={{
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
