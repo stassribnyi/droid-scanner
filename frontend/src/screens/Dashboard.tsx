@@ -79,13 +79,19 @@ const DroidCard: FC<{
         border: '1px solid #2b3f4b94',
         padding: '8px 4px 4px',
         borderRadius: '2px',
-        background: '#000',
+        background: '#232c3b',
         boxShadow: '1px 1px 4px #79a1ff2b',
+        width: '100%',
+        margin: 0.5
       }}
     >
-      <img alt='r2d2' src={getDroidImage()} style={{ width: 84, height: 84 }} />
-      <Stack direction='row' spacing={2}>
-        <Typography variant='caption' color='orange'>
+      <img
+        alt='r2d2'
+        src={getDroidImage()}
+        style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
+      />
+      <Stack direction='row' justifyContent='space-between' sx={{ width: '100%'}}>
+        <Typography variant='caption' color='#ff6855'>
           R2D2
         </Typography>
         <Typography variant='caption'>{idx} / 20</Typography>
