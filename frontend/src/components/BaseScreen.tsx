@@ -18,20 +18,9 @@ export const BaseScreen: FC<
         sx={{
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
-          width: 444,
-          left: '50%',
-          transform: 'translateX(-50%)',
         }}
       >
-        <Toolbar
-          sx={{
-            background: 'rgba(35, 45, 60, 0.9)',
-            backdropFilter: 'blur(8px)',
-            width: 444,
-            left: '50%',
-            transform: 'translateX(-50%)',
-          }}
-        >
+        <Toolbar>
           <IconButton
             size='large'
             edge='start'
@@ -47,10 +36,14 @@ export const BaseScreen: FC<
           </Typography>
         </Toolbar>
       </AppBar>
-      <Box sx={{
-        paddingTop: 10,
-        paddingBottom: 4
-      }}>{children}</Box>
+      <Box
+        sx={{
+          paddingTop: 10,
+          paddingBottom: 4,
+        }}
+      >
+        {children}
+      </Box>
     </ScreenContent>
     <Navigation />
   </>

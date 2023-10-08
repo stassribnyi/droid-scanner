@@ -3,6 +3,7 @@ import {
   Unstable_Grid2 as Grid,
   InputLabel,
   MenuItem,
+  Paper,
   Select,
   Stack,
   Typography,
@@ -13,7 +14,7 @@ import { FC, useState } from 'react';
 
 const InfoGrid: FC<{
   items: Array<React.ReactElement>;
-  itemsPerColumn: order;
+  itemsPerColumn: number;
 }> = ({ items, itemsPerColumn }) => {
   const rows = [];
 
@@ -32,25 +33,15 @@ const InfoGrid: FC<{
       }
 
       cells.push(
-        <Grid
-          xs={Math.floor(12 / itemsPerColumn)}
-          container
-          justifyContent='center'
-        >
-          {items[itemIdx]}
-        </Grid>
+        <Grid xs={Math.floor(12 / itemsPerColumn)}>{items[itemIdx]}</Grid>
       );
     }
 
-    rows.push(
-      <Grid direction='row' container spacing={2}>
-        {cells}
-      </Grid>
-    );
+    rows.push(<Grid container>{cells}</Grid>);
   }
 
   return (
-    <Grid container direction='column' spacing={4}>
+    <Grid container direction='column' spacing={2}>
       {rows}
     </Grid>
   );
@@ -71,35 +62,29 @@ const DroidCard: FC<{
     return DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
   }
   return (
-    <Stack
-      alignItems='center'
-      spacing={1}
+    <Paper
       sx={{
-        border: '1px solid #2b3f4b94',
-        padding: '8px 4px 4px',
-        borderRadius: '2px',
-        background: '#232c3b',
-        boxShadow: '1px 1px 4px #79a1ff2b',
-        width: '100%',
-        margin: 0.5,
+        padding: '8px',
       }}
     >
-      <img
-        alt='r2d2'
-        src={getDroidImage()}
-        style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
-      />
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        sx={{ width: '100%' }}
-      >
-        <Typography variant='caption' color='#ff6855'>
-          R2D2
-        </Typography>
-        <Typography variant='caption'>{idx} / 20</Typography>
+      <Stack alignItems='center' spacing={1}>
+        <img
+          alt='r2d2'
+          src={getDroidImage()}
+          style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
+        />
+        <Stack
+          direction='row'
+          justifyContent='space-between'
+          sx={{ width: '100%' }}
+        >
+          <Typography variant='caption' color='#ff6855'>
+            R2D2
+          </Typography>
+          <Typography variant='caption'>{idx} / 20</Typography>
+        </Stack>
       </Stack>
-    </Stack>
+    </Paper>
   );
 };
 
@@ -109,9 +94,14 @@ export const MyCollection = () => {
 
   return (
     <BaseScreen title='My Collection' onBack={() => navigate('/')}>
-      <Stack direction='row' justifyContent='space-between' sx={{ mb: 3 }} alignItems='center'>
+      <Stack
+        direction='row'
+        justifyContent='space-between'
+        sx={{ mb: 3 }}
+        alignItems='center'
+      >
         <Typography>Want to sort your collection?</Typography>
-        <FormControl size='small'>
+        <FormControl size='small' sx={{ minWidth: '130px' }}>
           <InputLabel id='order-by-select-label'>Order By</InputLabel>
           <Select
             labelId='order-by-select-label'
