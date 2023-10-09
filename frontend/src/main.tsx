@@ -10,11 +10,11 @@ import { LoaderProvider, NotifyProvider } from './providers';
 const memoryRouter = createMemoryRouter([
   {
     path: '/',
-    element: <Dashboard />,
+    element: <Welcome />,
   },
   {
-    path: '/welcome',
-    element: <Welcome />,
+    path: '/dashboard',
+    element: <Dashboard />,
   },
   {
     path: '/my-collection',

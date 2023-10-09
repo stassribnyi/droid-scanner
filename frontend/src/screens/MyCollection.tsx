@@ -121,7 +121,7 @@ const DroidCard: FC<{
 export const MyCollection = () => {
   const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
-  
+
   return (
     <BaseScreen title='My Collection' onBack={() => navigate('/')}>
       <Stack
@@ -156,6 +156,7 @@ export const MyCollection = () => {
 
             return (
               <DroidCard
+                key={idx}
                 idx={idx + item}
                 name={droid.name}
                 imageUrl={droid.imageUrl}

@@ -61,9 +61,6 @@ export const Hint = () => {
                 environment. Scan the QR code on the droid’s head to confront
                 him and get your revenge.
               </Typography>
-              <Button onClick={() => navigate('/welcome')}>
-                Go to welcome
-              </Button>
             </Collapse>
           </Paper>
         </CardContent>

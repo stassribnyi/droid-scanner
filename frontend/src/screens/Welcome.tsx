@@ -11,10 +11,10 @@ import {
 
 import useAxios from 'axios-hooks';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useAsyncAction, useDeviceUUID } from '../hooks';
+import { useAsyncAction, useDeviceUUID, useSimpleAuth } from '../hooks';
 import { ScreenContent } from '../components';
 
 import type { User } from '../types';
@@ -23,6 +23,13 @@ export const Welcome = () => {
   const [nickname, setNickname] = useState('');
   const deviceId = useDeviceUUID();
   const navigate = useNavigate();
+  const [hasAccess, grantAccess] = useSimpleAuth();
+
+  useEffect(() => {
+    if (hasAccess) {
+      navigate('/dashboard');
+    }
+  }, [hasAccess, navigate]);
 
   const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
     manual: true,
@@ -45,8 +52,7 @@ export const Welcome = () => {
 
   const [registering, register] = useAsyncAction(async () => {
     await registerUser();
-
-    navigate('/');
+    grantAccess();
   });
 
   return (

@@ -1,27 +1,12 @@
 import { useEffect, useState } from 'react';
+import { isStringNullOrEmpty } from '../utils';
 
 const DEVICE_UUID = 'DeviceUUID' as const;
-
-const isEmpty = (value: string | null | undefined): value is null => {
-  if (value === null || value === undefined) {
-    return true;
-  }
-
-  if (typeof value !== 'string') {
-    return true;
-  }
-
-  if (value.trim().length === 0) {
-    return true;
-  }
-
-  return false;
-};
 
 const getDeviceUUID = () => {
   const uuid = localStorage.getItem(DEVICE_UUID);
 
-  if (!isEmpty(uuid)) {
+  if (!isStringNullOrEmpty(uuid)) {
     return uuid;
   }
 
@@ -35,7 +20,7 @@ export const useDeviceUUID = () => {
   const [deviceUUID, setDeviceUUID] = useState('');
 
   useEffect(() => {
-    if (!isEmpty(deviceUUID)) {
+    if (!isStringNullOrEmpty(deviceUUID)) {
       return;
     }
 
