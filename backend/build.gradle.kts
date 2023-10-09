@@ -29,6 +29,9 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.mongodb:mongodb-driver-reactivestreams")
+	val mongockVersion = "5.3.4"
+	implementation("io.mongock:mongock-springboot-v3:$mongockVersion")
+	implementation("io.mongock:mongodb-reactive-driver:$mongockVersion")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
 

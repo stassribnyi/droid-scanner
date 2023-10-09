@@ -10,5 +10,6 @@ data class User(
     var name: String,
     var deviceId: String,
     var rank: String? = "1",
-    var collectedDroids: List<String>? = listOf(),
+    var collectedDroids: Int = 0,
+    var totalDroids: Int
 )

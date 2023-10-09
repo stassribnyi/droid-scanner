@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.mapping.Document
 @Document
 data class Droid(
     @Id val id: String = generateObjectId(),
-    val name: String,
-    val description: String
+    var name: String,
+    var description: String,
+    var number: Int,
+    var isActivated: Boolean,
 )
