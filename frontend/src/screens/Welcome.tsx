@@ -7,66 +7,47 @@ import {
   TextField,
   Typography,
   Unstable_Grid2 as Grid,
-  Backdrop,
-  CircularProgress,
 } from '@mui/material';
+
+import useAxios from 'axios-hooks';
+
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+
+import { useAsyncAction, useDeviceUUID } from '../hooks';
 import { ScreenContent } from '../components';
 
-import axios from 'axios';
-import { useDeviceUUID, useLoader, useNotify } from '../hooks';
-import { isAxiosError } from 'axios';
-import { formatError } from '../utils';
-
-type User = Readonly<{
-  id: string;
-  name: string;
-  deviceId: string;
-  rank: string;
-  collectedDroids: Array<object>;
-}>;
+import type { User } from '../types';
 
 export const Welcome = () => {
   const [nickname, setNickname] = useState('');
-  const [loading, setLoading] = useLoader();
-  const navigate = useNavigate();
-  const { notify } = useNotify();
   const deviceId = useDeviceUUID();
-  async function asyncAction(action: () => Promise<void>) {
-    try {
-      setLoading(true);
-      await action();
-    } catch (error) {
-      notify({ message: formatError(error), severity: 'error' });
-    } finally {
-      setLoading(false);
-    }
-  }
+  const navigate = useNavigate();
 
-  function generateName() {
-    asyncAction(async () => {
-      const { data } = await axios.get<string>(`/api/users/generate-nickname`);
-      setNickname(data);
-    });
-  }
+  const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
+    manual: true,
+  });
 
-  function register() {
-    asyncAction(async () => {
-      const params = new URLSearchParams({
-        userNickname: nickname,
-        deviceId: deviceId,
-      });
+  const [, registerUser] = useAxios<User>(
+    {
+      method: 'POST',
+      url: '/api/users/register',
+      params: { userNickname: nickname, deviceId: deviceId },
+    },
+    { manual: true }
+  );
 
-      const { data: user } = await axios.post<User>(
-        `/api/users/register?${params}`
-      );
+  const [generating, generateName] = useAsyncAction(async () => {
+    const { data } = await getGeneratedNickName();
 
-      console.log(user);
+    setNickname(data);
+  });
 
-      navigate('/');
-    });
-  }
+  const [registering, register] = useAsyncAction(async () => {
+    await registerUser();
+
+    navigate('/');
+  });
 
   return (
     <ScreenContent>
@@ -132,7 +113,7 @@ export const Welcome = () => {
                   onChange={({ target }) => setNickname(target.value)}
                 />
                 <Button
-                  disabled={loading}
+                  disabled={generating}
                   variant='text'
                   color='primary'
                   onClick={() => generateName()}
@@ -144,7 +125,13 @@ export const Welcome = () => {
           </Card>
         </Grid>
         <Grid xs={12}>
-          <Button fullWidth variant='contained' size='large' onClick={register}>
+          <Button
+            disabled={registering}
+            fullWidth
+            variant='contained'
+            size='large'
+            onClick={register}
+          >
             Join Now!
           </Button>
         </Grid>
