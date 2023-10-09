@@ -11,4 +11,5 @@ data class Droid(
     var description: String,
     var order: Int,
     var activated: Boolean = false,
+    var hint: String?,
 )
