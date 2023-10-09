@@ -13,8 +13,6 @@ export const Navigation: FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    console.log(pathname);
-
     if (pathname.includes('/my-collection')) {
       setCurrent(2);
       return;
