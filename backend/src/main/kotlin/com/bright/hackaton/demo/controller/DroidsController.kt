@@ -23,7 +23,7 @@ class DroidController(private val droidService: DroidsService) {
     }
 
     @RequestMapping(
-        method = [RequestMethod.POST],
+        method = [RequestMethod.GET],
         value = ["/api/droids"],
         produces = ["application/json"],
     )
