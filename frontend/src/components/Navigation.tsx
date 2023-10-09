@@ -50,36 +50,10 @@ export const Navigation: FC = () => {
           maxWidth: 200,
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
-          color: 'white'
+          color: 'white',
         }}
       />
-      <BottomNavigationAction
-        icon={
-          <Box
-            sx={{
-              position: 'relative',
-              backgroundColor: '#000312',
-              width: '100%',
-              height: '100%',
-              borderBottomLeftRadius: '100px',
-              borderBottomRightRadius: '100px',
-            }}
-          >
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 'calc(-100% - 8px)',
-                left: '50%',
-                transform: 'translateX(-50%)',
-                borderRadius: '50%',
-                width: '62px',
-                height: '62px',
-              }}
-            >
-              <ScannerButton />
-            </Box>
-          </Box>
-        }
+      <Box
         sx={{
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',
@@ -88,9 +62,33 @@ export const Navigation: FC = () => {
           padding: 0,
           height: '32px',
           marginTop: 'auto',
-          // paddingBottom: '4px',
         }}
-      />
+      >
+        <Box
+          sx={{
+            position: 'relative',
+            backgroundColor: '#000312',
+            width: '100%',
+            height: '100%',
+            borderBottomLeftRadius: '100px',
+            borderBottomRightRadius: '100px',
+          }}
+        >
+          <Box
+            sx={{
+              position: 'absolute',
+              top: 'calc(-100% - 8px)',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              borderRadius: '50%',
+              width: '62px',
+              height: '62px',
+            }}
+          >
+            <ScannerButton />
+          </Box>
+        </Box>
+      </Box>
       <BottomNavigationAction
         label='Progress'
         icon={<EmojiEventsRounded />}
@@ -100,7 +98,7 @@ export const Navigation: FC = () => {
           backdropFilter: 'blur(8px)',
           borderTopLeftRadius: '30px',
           maxWidth: 200,
-          color: 'white'
+          color: 'white',
         }}
       />
     </BottomNavigation>
