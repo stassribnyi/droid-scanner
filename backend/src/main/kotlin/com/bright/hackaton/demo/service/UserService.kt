@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(private val userRepository: UserRepository) {
 
-    suspend fun createUser(): User {
-        return userRepository.save(User())
+    suspend fun createUser(deviceId: String, userNickname: String): User {
+        return userRepository.save(User(deviceId = deviceId, name = userNickname))
     }
 }

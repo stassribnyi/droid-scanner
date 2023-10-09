@@ -10,23 +10,18 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/droids")
-class DroidController(private val droidService: DroidsService, private val userService: UserService) {
+class DroidController(private val droidService: DroidsService) {
 
-    @PostMapping
+    @PostMapping("/create")
     suspend fun createDroid(@RequestBody droid: Droid): ResponseEntity<Droid> {
         val createdDroid = droidService.createDroid(droid)
         return ResponseEntity.ok(createdDroid)
     }
 
-    @GetMapping
+    @GetMapping("/get")
     fun getAllDroids(): ResponseEntity<Flow<Droid>> {
         val droids = droidService.getAllDroids()
         return ResponseEntity.ok(droids)
     }
 
-    @PostMapping
-    suspend fun createUser(): ResponseEntity<User> {
-        val createdUser = userService.createUser()
-        return ResponseEntity.ok(createdUser)
-    }
 }

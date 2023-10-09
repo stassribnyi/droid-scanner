@@ -4,7 +4,7 @@ WORKDIR /app
 COPY backend .
 RUN gradle build
 
-# Use the official Azul 20 image as a parent image
+# Use the official Azul 17 image as a parent image
 FROM azul/zulu-openjdk:17
 
 # Set the working directory inside the container

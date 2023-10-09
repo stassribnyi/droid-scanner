@@ -60,8 +60,7 @@ fun pickRandomNickNameAndModifyExisting(): String {
     val randomIndex = random.nextInt(names.size)
     val randomName = names[randomIndex]
 
-    // Append "random number" to the random name
-    val modifiedName = "$randomName 1"
+    val modifiedName = "$randomName"+"${random.nextInt(0,5000)}"
 
     return modifiedName
 }
