@@ -9,16 +9,24 @@ import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/droids")
 class DroidController(private val droidService: DroidsService) {
 
-    @PostMapping("/create")
+    @RequestMapping(
+        method = [RequestMethod.POST],
+        value = ["/api/droids"],
+        produces = ["application/json"],
+        consumes = ["application/json"]
+    )
     suspend fun createDroid(@RequestBody droid: Droid): ResponseEntity<Droid> {
         val createdDroid = droidService.createDroid(droid)
         return ResponseEntity.ok(createdDroid)
     }
 
-    @GetMapping("/get")
+    @RequestMapping(
+        method = [RequestMethod.POST],
+        value = ["/api/droids"],
+        produces = ["application/json"],
+    )
     fun getAllDroids(): ResponseEntity<Flow<Droid>> {
         val droids = droidService.getAllDroids()
         return ResponseEntity.ok(droids)

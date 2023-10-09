@@ -1,24 +1,37 @@
 package com.bright.hackaton.demo.controller
 
-import com.bright.hackaton.demo.model.Droid
 import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.service.UserService
 import com.bright.hackaton.demo.util.pickRandomNickNameAndModifyExisting
-import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/api/users")
 class UsersController(private val userService: UserService) {
-    @PostMapping("/register")
-    suspend fun createUser(@RequestBody deviceId: String, userNickname: String): ResponseEntity<User> {
+    @RequestMapping(
+        method = [RequestMethod.POST],
+        value = ["/api/users/register"],
+        produces = ["application/json"]
+    )
+    suspend fun registerUser(deviceId: String, userNickname: String): ResponseEntity<User> {
         val createdUser = userService.createUser(deviceId, userNickname)
         return ResponseEntity.ok(createdUser)
     }
 
-    @GetMapping("/generate-nickname")
-    fun getAllDroids(): ResponseEntity<String> {
+    @RequestMapping(
+        method = [RequestMethod.GET],
+        value = ["/api/users/generate-nickname"]
+    )
+    fun getNickname(): ResponseEntity<String> {
         return ResponseEntity.ok(pickRandomNickNameAndModifyExisting())
+    }
+
+    @RequestMapping(
+        method = [RequestMethod.GET],
+        value = ["/api/users/{deviceId}"],
+        produces = ["application/json"]
+    )
+    suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<User> {
+        return ResponseEntity.ok(userService.getUserInfo(deviceId))
     }
 }
