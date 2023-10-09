@@ -1,0 +1,22 @@
+FROM node:alpine as build
+
+WORKDIR /app
+
+COPY frontend /app
+
+# add the node_modules folder to $PATH
+ENV PATH /app/node_modules/.bin:$PATH
+
+#install and cache dependencies (prebuild)
+#build the project for production
+RUN yarn build
+
+FROM nginx:alpine
+
+# copy the build folder from react to the root of nginx (www)
+COPY --from=build /app/dist /usr/share/nginx/html
+
+# expose port 80 to the outer world
+EXPOSE 80
+# start nginx 
+CMD ["nginx", "-g", "daemon off;"]
