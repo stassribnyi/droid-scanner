@@ -19,6 +19,7 @@ export const useAsyncAction = (action: () => Promise<void>): [boolean, () => Pro
         } finally {
             setLoading(false);
         }
+        // TODO: mmmmm, this is so good, reference that is updated all the time
     }, [action, notify, setLoading])
 
     return [loading, asyncAction]

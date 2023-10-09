@@ -4,5 +4,6 @@ export type User = Readonly<{
     name: string;
     deviceId: string;
     rank: string;
-    collectedDroids: Array<object>;
+    collectedDroids: number;
+    totalDroids: number;
 }>;

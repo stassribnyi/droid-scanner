@@ -14,62 +14,56 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { useEffect } from 'react';
+import useAxios from 'axios-hooks';
+
 import { Navigation, ScreenContent } from '../components';
+import { useAsyncAction, useDeviceUUID } from '../hooks';
+import { Rating, User } from '../types';
 
-function stringToColor(string: string) {
-  let hash = 0;
-  let i;
+import { collectedToRank, stringToAvatar } from '../utils';
 
-  /* eslint-disable no-bitwise */
-  for (i = 0; i < string.length; i += 1) {
-    hash = string.charCodeAt(i) + ((hash << 5) - hash);
-  }
+const createLeaderboardData = (rating: Rating, totalDroids: number) => ({
+  name: rating.nickname,
+  collected: rating.collectedDroids,
+  rank: collectedToRank(rating.collectedDroids, totalDroids),
+});
 
-  let color = '#';
-
-  for (i = 0; i < 3; i += 1) {
-    const value = (hash >> (i * 8)) & 0xff;
-    color += `00${value.toString(16)}`.slice(-2);
-  }
-  /* eslint-enable no-bitwise */
-
-  return color;
-}
-
-function stringAvatar(name: string) {
-  const [first, second] = name.split(' ');
-
-  return {
-    sx: {
-      bgcolor: stringToColor(name),
-      width: 36,
-      height: 36,
-    },
-    children: `${first[0].toUpperCase()}${second?.[0].toUpperCase() || ''}`,
-  };
-}
-
-function createData(
-  name: string,
-  calories: number,
-  fat: number,
-  carbs: number,
-  protein: number
-) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-// TODO: extract appbar
 export const Dashboard = () => {
-  // const navigate = useNavigate();
+  const deviceId = useDeviceUUID();
+  const [{ data: leadersData }, getLeaders] = useAxios<Array<Rating>>(
+    '/api/users/leaderboard',
+    {
+      manual: true,
+    }
+  );
+  const [{ data }, getUser] = useAxios<User>(`/api/users/${deviceId}`, {
+    manual: true,
+  });
+
+  const [, getAll] = useAsyncAction(async () => {
+    await getUser();
+    await getLeaders();
+  });
+
+  useEffect(() => {
+    if (!deviceId) {
+      return;
+    }
+
+    getAll();
+  }, [deviceId]);
+
+  const user = data || {
+    deviceId: deviceId,
+    name: 'loading...',
+    collectedDroids: 0,
+    totalDroids: 0,
+  };
+
+  const leaders = (leadersData ?? []).map((rating) =>
+    createLeaderboardData(rating, user.totalDroids)
+  );
 
   return (
     <>
@@ -103,7 +97,7 @@ export const Dashboard = () => {
                 color='#ff6855'
                 sx={{ fontWeight: 'bold' }}
               >
-                R2-D2
+                {user?.name}
               </Typography>
             </Typography>
             <Grid container spacing={2}>
@@ -117,13 +111,10 @@ export const Dashboard = () => {
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
-                    <Typography
-                      // color='text.secondary'
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      Rank
+                    <Typography sx={{ fontWeight: 'bold' }}>Rank</Typography>
+                    <Typography>
+                      {collectedToRank(user.collectedDroids, user.totalDroids)}
                     </Typography>
-                    <Typography>7</Typography>
                   </Stack>
                 </Paper>
               </Grid>
@@ -137,13 +128,10 @@ export const Dashboard = () => {
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
-                    <Typography
-                      // color='text.secondary'
-                      sx={{ fontWeight: 'bold' }}
-                    >
+                    <Typography sx={{ fontWeight: 'bold' }}>
                       Collected
                     </Typography>
-                    <Typography>8</Typography>
+                    <Typography>{user?.collectedDroids}</Typography>
                   </Stack>
                 </Paper>
               </Grid>
@@ -157,13 +145,10 @@ export const Dashboard = () => {
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
-                    <Typography
-                      // color='text.secondary'
-                      sx={{ fontWeight: 'bold' }}
-                    >
-                      Left
+                    <Typography sx={{ fontWeight: 'bold' }}>Left</Typography>
+                    <Typography>
+                      {user.totalDroids - user.collectedDroids}
                     </Typography>
-                    <Typography>12</Typography>
                   </Stack>
                 </Paper>
               </Grid>
@@ -183,19 +168,19 @@ export const Dashboard = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {rows.map((row) => (
+              {leaders.map((row) => (
                 <TableRow
                   key={row.name}
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>
                     <Stack direction='row' alignItems='center' gap={2}>
-                      <Avatar {...stringAvatar(row.name)} />
+                      <Avatar {...stringToAvatar(row.name)} />
                       <Typography variant='caption'>{row.name}</Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell align='center'>{row.fat}</TableCell>
-                  <TableCell align='center'>{row.carbs}</TableCell>
+                  <TableCell align='center'>{row.rank}</TableCell>
+                  <TableCell align='center'>{row.collected}</TableCell>
                 </TableRow>
               ))}
             </TableBody>
