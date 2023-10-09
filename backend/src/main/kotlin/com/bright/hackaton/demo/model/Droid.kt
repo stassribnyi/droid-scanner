@@ -9,6 +9,6 @@ data class Droid(
     @Id val id: String = generateObjectId(),
     var name: String,
     var description: String,
-    var number: Int,
-    var isActivated: Boolean,
+    var order: Int,
+    var activated: Boolean = false,
 )

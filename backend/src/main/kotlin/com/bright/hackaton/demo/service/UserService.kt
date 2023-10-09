@@ -1,7 +1,6 @@
 package com.bright.hackaton.demo.service
 
-import com.bright.hackaton.demo.model.Droid
-import com.bright.hackaton.demo.model.LeaderBoard
+import com.bright.hackaton.demo.model.Leaderboard
 import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
@@ -18,12 +17,20 @@ class UserService(private val userRepository: UserRepository, private val droids
     }
 
     suspend fun getUserInfo(deviceId: String): User {
+        //ToDo:
         return userRepository.findByDeviceId(deviceId).first()
     }
 
-    suspend fun getLeaderBoard(): List<User> {
+    suspend fun getLeaderboard(): List<Leaderboard> {
         val users = getAllUsers().toList()
-        return users
+        val leadersList = generateLeaderboard(users)
+        return leadersList
+    }
+
+    private fun generateLeaderboard(users: List<User>): List<Leaderboard> {
+        return users.map { user ->
+            Leaderboard(user.name, user.collectedDroids)
+        }.sortedByDescending { it.collectedDroids }
     }
 
 
