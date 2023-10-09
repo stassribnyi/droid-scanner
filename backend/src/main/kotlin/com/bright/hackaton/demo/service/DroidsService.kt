@@ -14,4 +14,13 @@ class DroidsService(private val droidsRepository: DroidsRepository) {
     fun getAllDroids(): Flow<Droid> {
         return droidsRepository.findAll()
     }
+
+
+    suspend fun findByOrderAndActivate(droidOrderNumber: Int) {
+        droidsRepository.findByOrderAndActivate(droidOrderNumber)
+    }
+
+    fun getByOrder(droidOrderNumber: Int): Flow<Droid> {
+        return droidsRepository.getByOrder(droidOrderNumber)
+    }
 }

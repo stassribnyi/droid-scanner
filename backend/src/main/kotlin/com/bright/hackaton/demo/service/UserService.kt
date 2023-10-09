@@ -17,7 +17,7 @@ class UserService(private val userRepository: UserRepository, private val droids
     }
 
     suspend fun getUserInfo(deviceId: String): User {
-        //ToDo:
+        //ToDo: update users total value if any droids were added
         return userRepository.findByDeviceId(deviceId).first()
     }
 
@@ -26,6 +26,12 @@ class UserService(private val userRepository: UserRepository, private val droids
         val leadersList = generateLeaderboard(users)
         return leadersList
     }
+
+    suspend fun updateUser(deviceId: String, updater: User.() -> Unit): User {
+        val userToUpdate = userRepository.findByDeviceId(deviceId).first()
+        return userRepository.save(userToUpdate.apply(updater))
+        }
+
 
     private fun generateLeaderboard(users: List<User>): List<Leaderboard> {
         return users.map { user ->

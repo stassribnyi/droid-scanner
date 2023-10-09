@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface UserRepository: CoroutineCrudRepository<User, String> {
 
-    @Query(value = "{ 'deviceId' : ?0}")
     fun findByDeviceId(deviceId: String): Flow<User>
 
 }

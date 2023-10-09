@@ -6,10 +6,11 @@ import org.springframework.data.mongodb.core.mapping.Document
 
 @Document
 data class User(
-    @Id val id: String = generateObjectId(),
-    var name: String,
-    var deviceId: String,
-    var rank: String? = "1",
-    var collectedDroids: Int = 0,
-    var totalDroids: Int
+        @Id val id: String = generateObjectId(),
+        var name: String,
+        var deviceId: String,
+        var rank: String? = "1",
+        var collectedDroids: Int = 0,
+        var totalDroids: Int,
+        var activatedDroidsNumbers: Set<Int> = setOf(),
 )

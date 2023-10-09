@@ -1,15 +1,13 @@
 package com.bright.hackaton.demo.controller
 
+import com.bright.hackaton.demo.facade.DroidsFacade
 import com.bright.hackaton.demo.model.Droid
-import com.bright.hackaton.demo.model.User
-import com.bright.hackaton.demo.service.DroidsService
-import com.bright.hackaton.demo.service.UserService
 import kotlinx.coroutines.flow.Flow
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class DroidController(private val droidService: DroidsService) {
+class DroidController(private val droidsFacade: DroidsFacade) {
 
     @RequestMapping(
         method = [RequestMethod.POST],
@@ -18,8 +16,7 @@ class DroidController(private val droidService: DroidsService) {
         consumes = ["application/json"]
     )
     suspend fun createDroid(@RequestBody droid: Droid): ResponseEntity<Droid> {
-        val createdDroid = droidService.createDroid(droid)
-        return ResponseEntity.ok(createdDroid)
+        return ResponseEntity.ok(droidsFacade.createDroid(droid))
     }
 
     @RequestMapping(
@@ -28,8 +25,16 @@ class DroidController(private val droidService: DroidsService) {
         produces = ["application/json"],
     )
     fun getAllDroids(): ResponseEntity<Flow<Droid>> {
-        val droids = droidService.getAllDroids()
-        return ResponseEntity.ok(droids)
+        return ResponseEntity.ok(droidsFacade.getAllDroids())
+    }
+
+    @RequestMapping(
+            method = [RequestMethod.PUT],
+            value = ["/api/droids/activate"],
+            produces = ["application/json"],
+    )
+    suspend fun activateDroid(deviceId: String, droidOrder: Int): ResponseEntity<Flow<Droid>> {
+        return ResponseEntity.ok(droidsFacade.activateDroidForUser(deviceId, droidOrder))
     }
 
 }
