@@ -20,6 +20,14 @@ services:
       - mongodb
     environment:
       SPRING_DATA_MONGODB_URI: mongodb://mongodb:27017/droidsdb
+  
+  frontend:
+      build:
+        context: .
+        dockerfile: frontend/Dockerfile
+      container_name: droid-scanner-frontend
+      ports:
+        - '5173:5173'
 
 volumes:
   mongodb_data:
