@@ -7,41 +7,66 @@ import {
   TextField,
   Typography,
   Unstable_Grid2 as Grid,
+  Backdrop,
+  CircularProgress,
 } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { ScreenContent } from '../components';
 
-const DROID_NAMES = [
-  'O-99A',
-  '5-X4',
-  '2-G7',
-  '71P-6',
-  'HF-43',
-  'K-SP',
-  '0H5-X',
-  'F1-08',
-  '0-P0Y',
-  'X0-6',
-  '0-3O',
-  '17-Z',
-  'H-I0I',
-  '4-03',
-  'O-739',
-  'K-NJN',
-  'D3-8J',
-  '45R-R',
-  'UUM-5',
-  '68-T0',
-] as const;
+import axios from 'axios';
+import { useDeviceUUID, useLoader, useNotify } from '../hooks';
+import { isAxiosError } from 'axios';
+import { formatError } from '../utils';
 
-const generateDroidName = () => {
-  return DROID_NAMES[Math.floor(Math.random() * DROID_NAMES.length)];
-};
+type User = Readonly<{
+  id: string;
+  name: string;
+  deviceId: string;
+  rank: string;
+  collectedDroids: Array<object>;
+}>;
 
 export const Welcome = () => {
-  const [nickName, setNickName] = useState('');
+  const [nickname, setNickname] = useState('');
+  const [loading, setLoading] = useLoader();
   const navigate = useNavigate();
+  const { notify } = useNotify();
+  const deviceId = useDeviceUUID();
+  async function asyncAction(action: () => Promise<void>) {
+    try {
+      setLoading(true);
+      await action();
+    } catch (error) {
+      notify({ message: formatError(error), severity: 'error' });
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  function generateName() {
+    asyncAction(async () => {
+      const { data } = await axios.get<string>(`/api/users/generate-nickname`);
+      setNickname(data);
+    });
+  }
+
+  function register() {
+    asyncAction(async () => {
+      const params = new URLSearchParams({
+        userNickname: nickname,
+        deviceId: deviceId,
+      });
+
+      const { data: user } = await axios.post<User>(
+        `/api/users/register?${params}`
+      );
+
+      console.log(user);
+
+      navigate('/');
+    });
+  }
 
   return (
     <ScreenContent>
@@ -103,13 +128,14 @@ export const Welcome = () => {
                   label='What is your name, padawan?'
                   variant='outlined'
                   size='medium'
-                  value={nickName}
-                  onChange={({ target }) => setNickName(target.value)}
+                  value={nickname}
+                  onChange={({ target }) => setNickname(target.value)}
                 />
                 <Button
+                  disabled={loading}
                   variant='text'
                   color='primary'
-                  onClick={() => setNickName(generateDroidName())}
+                  onClick={() => generateName()}
                 >
                   Generate nickname
                 </Button>
@@ -118,12 +144,7 @@ export const Welcome = () => {
           </Card>
         </Grid>
         <Grid xs={12}>
-          <Button
-            fullWidth
-            variant='contained'
-            size='large'
-            onClick={() => navigate('/')}
-          >
+          <Button fullWidth variant='contained' size='large' onClick={register}>
             Join Now!
           </Button>
         </Grid>

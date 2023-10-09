@@ -4,7 +4,8 @@ import { RouterProvider, createMemoryRouter } from 'react-router';
 
 import { Welcome, Dashboard, MyCollection, Hint } from './screens';
 
-import { Layout } from './components';
+import { Layout, Notification } from './components';
+import { LoaderProvider, NotifyProvider } from './providers';
 
 const memoryRouter = createMemoryRouter([
   {
@@ -28,7 +29,12 @@ const memoryRouter = createMemoryRouter([
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <Layout>
-      <RouterProvider router={memoryRouter} />
+      <LoaderProvider>
+        <NotifyProvider>
+          <Notification />
+          <RouterProvider router={memoryRouter} />
+        </NotifyProvider>
+      </LoaderProvider>
     </Layout>
   </React.StrictMode>
 );
