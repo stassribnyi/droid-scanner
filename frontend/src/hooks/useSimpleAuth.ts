@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDeviceUUID } from './useDeviceUUID';
-import { isStringNullOrEmpty } from '../utils';
 
 const STATUS = 'logged-in' as const
 
@@ -9,7 +8,7 @@ export const useSimpleAuth = (): [boolean, () => void] => {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (isStringNullOrEmpty(deviceId)) {
+    if (!deviceId) {
       return
     }
 
@@ -21,7 +20,7 @@ export const useSimpleAuth = (): [boolean, () => void] => {
 
     const status = localStorage.getItem(deviceId);
 
-    if (isStringNullOrEmpty(status)) {
+    if (!status) {
       setLoggedIn(false)
 
       return

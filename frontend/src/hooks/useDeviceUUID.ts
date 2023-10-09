@@ -1,12 +1,11 @@
 import { useEffect, useState } from 'react';
-import { isStringNullOrEmpty } from '../utils';
 
 const DEVICE_UUID = 'DeviceUUID' as const;
 
 const getDeviceUUID = () => {
   const uuid = localStorage.getItem(DEVICE_UUID);
 
-  if (!isStringNullOrEmpty(uuid)) {
+  if (uuid) {
     return uuid;
   }
 
@@ -20,7 +19,7 @@ export const useDeviceUUID = () => {
   const [deviceUUID, setDeviceUUID] = useState('');
 
   useEffect(() => {
-    if (!isStringNullOrEmpty(deviceUUID)) {
+    if (deviceUUID) {
       return;
     }
 

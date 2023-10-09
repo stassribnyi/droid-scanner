@@ -10,17 +10,28 @@ import {
   Button,
 } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useHintDroidId } from '../hooks/useHintDroidId';
 
 export const Hint = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [showHint, setShowHint] = useState(false);
+  const [stored, setStored] = useHintDroidId();
+console.log(stored);
+
+  useEffect(() => {
+    if (id) {
+      setStored(id);
+    }
+  }, [id, setStored]);
 
   return (
     <BaseScreen
       title='Current Hint'
-      onBack={() => (id ? navigate('/my-collection') : navigate('/'))}
+      onBack={() =>
+        id === stored ? navigate('/my-collection') : navigate('/')
+      }
     >
       <Card sx={{ mb: 2, mt: 2 }}>
         <CardMedia
