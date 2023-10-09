@@ -50,6 +50,8 @@ const InfoGrid: FC<{
 };
 
 const DROID_IMAGES = [
+  '/droid-scanner/bd-1.jpg',
+  '/droid-scanner/r5-d4.jpg',
   '/droid-scanner/c3po.jpg',
   '/droid-scanner/bb8.jpg',
   '/droid-scanner/k2so.jpg',
