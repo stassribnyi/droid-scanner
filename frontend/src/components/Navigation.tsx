@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
-import { EmojiEventsRounded, TipsAndUpdatesRounded } from '@mui/icons-material';
+import { EmojiEventsRounded, Terminal } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router';
 
 import { ScannerButton } from '../components';
@@ -42,8 +42,8 @@ export const Navigation: FC = () => {
       }}
     >
       <BottomNavigationAction
-        label='Current hint'
-        icon={<TipsAndUpdatesRounded />}
+        label='Quest'
+        icon={<Terminal />}
         onClick={() => navigate('/hint')}
         sx={{
           borderTopRightRadius: '30px',

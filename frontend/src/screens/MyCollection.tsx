@@ -225,7 +225,7 @@ export const MyCollection = () => {
         itemsPerColumn={3}
         items={droids.map((droid) => (
           <DroidCard
-            key={droid.id}
+            key={droid.name}
             idx={droid.order}
             name={droid.name}
             imageUrl={droid.imageUrl}
