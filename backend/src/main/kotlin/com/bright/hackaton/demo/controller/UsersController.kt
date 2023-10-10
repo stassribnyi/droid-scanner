@@ -1,22 +1,25 @@
 package com.bright.hackaton.demo.controller
 
 
+import com.bright.hackaton.demo.facade.UserFacade
 import com.bright.hackaton.demo.model.Leaderboard
 import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.service.UserService
 import com.bright.hackaton.demo.util.pickRandomNickNameAndModifyExisting
+import org.springframework.http.HttpStatus
+import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
-class UsersController(private val userService: UserService) {
+class UsersController(private val userFacade: UserFacade) {
     @RequestMapping(
         method = [RequestMethod.POST],
         value = ["/api/users/register"],
         produces = ["application/json"]
     )
     suspend fun registerUser(deviceId: String, userNickname: String): ResponseEntity<User> {
-        val createdUser = userService.createUser(deviceId, userNickname)
+        val createdUser = userFacade.createUser(deviceId, userNickname)
         return ResponseEntity.ok(createdUser)
     }
 
@@ -33,8 +36,8 @@ class UsersController(private val userService: UserService) {
         value = ["/api/users/{deviceId}"],
         produces = ["application/json"]
     )
-    suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<User> {
-        return ResponseEntity.ok(userService.getUserInfo(deviceId))
+    suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<Any> {
+        return ResponseEntity.ok(userFacade.getUserInfo(deviceId))
     }
 
     @RequestMapping(
@@ -43,6 +46,6 @@ class UsersController(private val userService: UserService) {
         produces = ["application/json"]
     )
     suspend fun getLeaderBoard(): ResponseEntity<List<Leaderboard>> {
-        return ResponseEntity.ok(userService.getLeaderboard())
+        return ResponseEntity.ok(userFacade.getLeaderboard())
     }
 }

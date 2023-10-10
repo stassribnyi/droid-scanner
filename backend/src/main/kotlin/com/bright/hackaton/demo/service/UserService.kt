@@ -1,46 +1,30 @@
 package com.bright.hackaton.demo.service
 
-import com.bright.hackaton.demo.model.Leaderboard
+import com.bright.hackaton.demo.exceptions.UserNotFoundException
 import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.repository.UserRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.toList
 import org.springframework.stereotype.Service
 
 @Service
 class UserService(private val userRepository: UserRepository, private val droidsService: DroidsService) {
 
-    suspend fun createUser(deviceId: String, userNickname: String): User {
-        val total = droidsService.getAllDroids().toList().size
+    suspend fun createUser(deviceId: String, userNickname: String, total: Int): User {
         return userRepository.save(User(deviceId = deviceId, name = userNickname, totalDroids = total))
     }
 
     suspend fun getUserInfo(deviceId: String): User {
-        //ToDo: update users total value if any droids were added
-        return userRepository.findByDeviceId(deviceId).first()
-    }
-
-    suspend fun getLeaderboard(): List<Leaderboard> {
-        val users = getAllUsers().toList()
-        val leadersList = generateLeaderboard(users)
-        return leadersList
+        return userRepository.findByDeviceId(deviceId)?.first() ?: throw UserNotFoundException(deviceId)
     }
 
     suspend fun updateUser(deviceId: String, updater: User.() -> Unit): User {
-        val userToUpdate = userRepository.findByDeviceId(deviceId).first()
+        val userToUpdate = getUserInfo(deviceId)
         return userRepository.save(userToUpdate.apply(updater))
         }
 
 
-    private fun generateLeaderboard(users: List<User>): List<Leaderboard> {
-        return users.map { user ->
-            Leaderboard(user.name, user.collectedDroids)
-        }.sortedByDescending { it.collectedDroids }
-    }
-
-
-    private fun getAllUsers(): Flow<User> {
+    fun getAllUsers(): Flow<User> {
         return userRepository.findAll()
     }
 }

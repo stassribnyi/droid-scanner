@@ -8,8 +8,6 @@ import org.springframework.context.annotation.Configuration
 import org.springdoc.core.providers.SpringWebProvider
 import org.springdoc.webflux.ui.*
 
-
-
 @Configuration
 class OpenApiConfig {
 
