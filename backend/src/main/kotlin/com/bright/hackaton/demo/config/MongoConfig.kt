@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory
+import org.springframework.data.mongodb.ReactiveMongoTransactionManager
+import org.springframework.transaction.ReactiveTransactionManager
+import org.springframework.transaction.reactive.TransactionalOperator
 
 @Configuration
 class MongoConfig {
@@ -32,5 +36,15 @@ class MongoConfig {
             @Value("droidsdb") dbName: String,
     ): MongoReactiveDriver {
         return MongoReactiveDriver.withDefaultLock(mongoClient, dbName)
+    }
+
+    @Bean
+    fun transactionManager(dbf: ReactiveMongoDatabaseFactory): ReactiveTransactionManager {
+        return ReactiveMongoTransactionManager(dbf)
+    }
+
+    @Bean
+    fun transactionalOperator(txm: ReactiveTransactionManager): TransactionalOperator {
+        return TransactionalOperator.create(txm)
     }
 }

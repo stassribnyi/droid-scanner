@@ -1,26 +1,39 @@
 package com.bright.hackaton.demo.facade
 
+import com.bright.hackaton.demo.config.migration.DroidsInitMigration
 import com.bright.hackaton.demo.model.Droid
+import com.bright.hackaton.demo.repository.DroidsRepository
 import com.bright.hackaton.demo.service.DroidsService
 import com.bright.hackaton.demo.service.UserService
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.asFlow
+import org.bson.Document
 import org.springframework.stereotype.Component
+import javax.print.Doc
 
 @Component
-class DroidsFacade(private val droidsService: DroidsService, private val userService: UserService) {
+class DroidsFacade(private val droidsService: DroidsService, private val droidsRepository: DroidsRepository, private val userService: UserService) {
 
-    suspend fun activateDroidForUser(deviceId: String, droidOrderNumber: Int): Flow<Droid> {
+    suspend fun activateDroidForUser(deviceId: String, droidOrderNumber: Int): Droid {
         userService.updateUser(deviceId) {
             activatedDroidsNumbers += droidOrderNumber
         }
-        droidsService.findByOrderAndActivate(droidOrderNumber)
-        return droidsService.getByOrder(droidOrderNumber)
+        droidsService.findByOrderAndActivate(droidOrderNumber, deviceId)
+        return droidsService.getByDeviceIdAndOrder(deviceId, droidOrderNumber)
     }
-    fun getAllDroids(): Flow<Droid> {
-        return droidsService.getAllDroids()
+
+    fun getAllDroids(deviceId: String): Flow<Droid> {
+        return droidsService.getAllDroidsByDeviceId(deviceId)
+    }
+
+    suspend fun getDroidByDeviceIdAndOrder(deviceId: String, droidOrderNumber: Int): Droid {
+        return droidsService.getByDeviceIdAndOrder(deviceId, droidOrderNumber)
     }
 
     suspend fun createDroid(droid: Droid): Droid {
         return droidsService.createDroid(droid)
     }
+
 }

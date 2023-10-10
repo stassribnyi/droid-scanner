@@ -1,10 +1,29 @@
 [
   {
-    "id": "65241372ea07024f97f4f9b3",
     "name": "Vova",
     "description": "BBBBB",
-    "order": "7",
+    "order": "1",
     "activated": false,
-    "hint": "defaulthint"
+    "hint": "defaulthint",
+    "deviceId": ""
+  },
+  {
+    "name": "gdadfgdfg",
+    "description": "BBBBB",
+    "order": "2",
+    "activated": false,
+    "hint": "defaulthint",
+    "deviceId": ""
+  },
+  {
+    "name": "Vovagdfgfdgafdagdrfsga",
+    "description": "BBBBB",
+    "order": "3",
+    "activated": false,
+    "hint": "defaulthint",
+    "deviceId": ""
   }
 ]
+
+
+

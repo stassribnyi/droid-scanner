@@ -2,14 +2,19 @@ package com.bright.hackaton.demo.config.migration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
+import com.mongodb.reactivestreams.client.MongoDatabase
 import io.mongock.api.annotations.*
+import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.reactive.asFlow
 import kotlinx.coroutines.reactive.awaitFirstOrNull
+import kotlinx.coroutines.reactive.awaitLast
+import kotlinx.coroutines.reactive.awaitSingle
 import kotlinx.coroutines.runBlocking
 import org.bson.Document
 import org.slf4j.LoggerFactory
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate
+import org.springframework.data.mongodb.core.insert
 import org.springframework.data.mongodb.core.query.Query
 
 @ChangeUnit(id = "DroidsInitChangelog", order = "1", author = "rsereb")
@@ -30,35 +35,20 @@ class DroidsInitMigration(private val reactiveMongoTemplate: ReactiveMongoTempla
         private val logger = LoggerFactory.getLogger(DroidsInitMigration::class.java)
     }
 
-    @BeforeExecution
-    fun cleanup() {
-        val query = Query()
-        runBlocking {
-            reactiveMongoTemplate.remove(query, droidCollectionName).awaitFirstOrNull()
-        }
-    }
-
     @Execution
-    fun firstMigration() {
+    fun firstMigration(database: MongoDatabase) {
         runBlocking {
-            createDroids()
+            database.createCollection(droidCollectionName)
+            val documents = createDroids()
+            reactiveMongoTemplate.insert(documents, droidCollectionName).awaitLast()
         }
-    }
-
-
-    @RollbackBeforeExecution
-    fun rollbackBeforeEx() {
     }
 
     @RollbackExecution
-    fun rollback(reactiveMongoTemplate: ReactiveMongoTemplate) {
-        val query = Query()
-        runBlocking {
-            reactiveMongoTemplate.remove(query, droidCollectionName).awaitFirstOrNull()
-        }
+    fun rollback() {
     }
 
-    private suspend fun createDroids() {
+    private fun createDroids(): List<Document> {
         val droids = jacksonObjectMapper().readValue<List<Droid>>(javaClass.getResource("/data/droids.json")!!)
         val documents = droids.map { droid ->
             val document = Document()
@@ -71,6 +61,6 @@ class DroidsInitMigration(private val reactiveMongoTemplate: ReactiveMongoTempla
             document
         }
         logger.info("Found droids': ${droids[0].id}")
-        reactiveMongoTemplate.insert(documents, droidCollectionName).asFlow().collect()
+        return documents
     }
 }
