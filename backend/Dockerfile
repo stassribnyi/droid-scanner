@@ -1,12 +1,12 @@
 #Build stage
-FROM gradle:8.2.1-jdk17 AS BUILD
+FROM gradle:8.4-jdk20 AS BUILD
 WORKDIR /app
 COPY backend .
 
 RUN ./gradlew clean build
 
-# Use the official Azul 17 image as a parent image
-FROM azul/zulu-openjdk:17
+# Use the official Azul 19 image as a parent image
+FROM azul/zulu-openjdk:20
 
 # Set the working directory inside the container
 WORKDIR /app

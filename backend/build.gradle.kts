@@ -11,8 +11,8 @@ group = "com.bright.hackaton"
 version = "0.0.1-SNAPSHOT"
 
 java {
-	sourceCompatibility = JavaVersion.VERSION_17
-	targetCompatibility = JavaVersion.VERSION_17
+	sourceCompatibility = JavaVersion.VERSION_19
+	targetCompatibility = JavaVersion.VERSION_19
 }
 
 repositories {
@@ -27,11 +27,9 @@ dependencies {
 	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
 
 	implementation("org.springframework.boot:spring-boot-starter-data-mongodb-reactive")
-	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.mongodb:mongodb-driver-reactivestreams")
-	val mongockVersion = "5.3.4"
-	implementation("io.mongock:mongock-springboot-v3:$mongockVersion")
-	implementation("io.mongock:mongodb-reactive-driver:$mongockVersion")
+
+	implementation("org.springframework.boot:spring-boot-starter-webflux")
 
 	implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.2.0")
 
@@ -45,7 +43,7 @@ dependencies {
 tasks.withType<KotlinCompile> {
 	kotlinOptions {
 		freeCompilerArgs += "-Xjsr305=strict"
-		jvmTarget = "17"
+		jvmTarget = "19"
 	}
 }
 
