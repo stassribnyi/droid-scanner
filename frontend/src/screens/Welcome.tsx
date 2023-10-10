@@ -51,7 +51,11 @@ export const Welcome = () => {
   });
 
   const [registering, register] = useAsyncAction(async () => {
-    await registerUser();
+    await registerUser().catch((error) => {
+      console.log(error);
+
+      return Promise.reject(error);
+    });
     grantAccess();
   });
 
@@ -60,6 +64,15 @@ export const Welcome = () => {
       <form
         onSubmit={(e) => {
           e.preventDefault();
+          // pseudo validation
+          const value = nickname.trim();
+
+          if (!value) {
+            setNickname('');
+
+            return;
+          }
+
           register();
         }}
       >

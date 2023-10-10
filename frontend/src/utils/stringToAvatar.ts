@@ -17,7 +17,7 @@ function stringToColor(string: string) {
 }
 
 export function stringToAvatar(name: string) {
-  if (!name) {
+  if (!name || !name.trim()) {
     name = 'Who the fuck are you?'
   }
 

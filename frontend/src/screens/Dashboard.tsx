@@ -162,9 +162,15 @@ export const Dashboard = () => {
           <Table aria-label='Ranks table' size='small'>
             <TableHead>
               <TableRow>
-                <TableCell align='center'>Nickname</TableCell>
-                <TableCell align='center'>Rank</TableCell>
-                <TableCell align='center'>Collected</TableCell>
+                <TableCell align='center' sx={{ padding: '6px 12px' }}>
+                  Nickname
+                </TableCell>
+                <TableCell align='center' sx={{ padding: '6px 12px' }}>
+                  Rank
+                </TableCell>
+                <TableCell align='center' sx={{ padding: '6px 12px' }}>
+                  Collected
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -179,8 +185,12 @@ export const Dashboard = () => {
                       <Typography variant='caption'>{row.name}</Typography>
                     </Stack>
                   </TableCell>
-                  <TableCell align='center'>{row.rank}</TableCell>
-                  <TableCell align='center'>{row.collected}</TableCell>
+                  <TableCell align='center'>
+                    <Typography variant='caption'>{row.rank}</Typography>
+                  </TableCell>
+                  <TableCell align='center'>
+                    <Typography variant='caption'>{row.collected}</Typography>
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
