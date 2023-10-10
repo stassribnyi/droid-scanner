@@ -2,7 +2,8 @@
 FROM gradle:8.2.1-jdk17 AS BUILD
 WORKDIR /app
 COPY backend .
-RUN gradle build --debug
+
+RUN ./gradlew clean build
 
 # Use the official Azul 17 image as a parent image
 FROM azul/zulu-openjdk:17

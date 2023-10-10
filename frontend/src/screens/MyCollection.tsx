@@ -52,28 +52,41 @@ const InfoGrid: FC<{
   );
 };
 
-const DROID_IMAGES = [
-  '/droid-scanner/bd-1.jpg',
-  '/droid-scanner/r5-d4.jpg',
-  '/droid-scanner/c3po.jpg',
-  '/droid-scanner/bb8.jpg',
-  '/droid-scanner/k2so.jpg',
-  '/droid-scanner/r2d2.jpg',
-  '/droid-scanner/battle-droid.jpg',
+const DROID_NAMES = [
+  { name: 'C-3PO' },
+  { name: 'R2-D2' },
+  { name: 'R5-D4' },
+  { name: 'AP-5' },
+  { name: 'BD-1' },
+  { name: 'C1-10P' },
+  { name: 'Mouse Droid' },
+  { name: '4-LOM' },
+  { name: 'IG-11' },
+  { name: 'EV-9D9' },
+  { name: 'R1-J5' },
+  { name: 'BB-8' },
+  { name: '2-1B' },
+  { name: 'L3-37' },
+  { name: 'K-2SO' },
+  { name: 'D-O' },
+  { name: 'CB-23' },
+  { name: 'R-3X' },
+  { name: 'R-3X' },
+  { name: 'Battle droid' },
 ];
 
 function getDroidInfo(order: number): Droid {
-  const imageUrl =
-    DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
+  const name =
+  DROID_NAMES[order - 1].name;
 
   return {
     id: (Math.random() * 100).toString(),
-    imageUrl,
+    imageUrl: `/droid-scanner/droids/${name.toLowerCase()}.jpg`,
     order,
     hint: 'some hint',
-    name: imageUrl.replace(/\.(jpg)/, '').split('/')[2],
+    name: name,
     description: 'description test',
-    activated: Math.floor(Math.random() * 100) >= 50,
+    activated: Math.floor(Math.random() * 100) >= 0,
   };
 }
 

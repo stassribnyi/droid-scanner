@@ -71,7 +71,7 @@ export const Dashboard = () => {
         <Card sx={{ mb: 2, mt: 2 }}>
           <CardMedia
             sx={{ height: 340 }}
-            image='/droid-scanner/welcome.jpg'
+            image='/droid-scanner/placeholder.jpg'
             title='leader board welcome'
           />
           <CardContent
