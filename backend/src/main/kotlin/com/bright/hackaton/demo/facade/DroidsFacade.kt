@@ -1,20 +1,13 @@
 package com.bright.hackaton.demo.facade
 
-import com.bright.hackaton.demo.config.migration.DroidsInitMigration
 import com.bright.hackaton.demo.model.Droid
-import com.bright.hackaton.demo.repository.DroidsRepository
 import com.bright.hackaton.demo.service.DroidsService
 import com.bright.hackaton.demo.service.UserService
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.asFlow
-import org.bson.Document
 import org.springframework.stereotype.Component
-import javax.print.Doc
 
 @Component
-class DroidsFacade(private val droidsService: DroidsService, private val droidsRepository: DroidsRepository, private val userService: UserService) {
+class DroidsFacade(private val droidsService: DroidsService, private val userService: UserService) {
 
     suspend fun activateDroidForUser(deviceId: String, droidOrderNumber: Int): Droid {
         userService.updateUser(deviceId) {

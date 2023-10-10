@@ -1,4 +1,4 @@
-package com.bright.hackaton.demo.config.migration
+/*package com.bright.hackaton.demo.config.migration
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
@@ -63,4 +63,4 @@ class DroidsInitMigration(private val reactiveMongoTemplate: ReactiveMongoTempla
         logger.info("Found droids': ${droids[0].id}")
         return documents
     }
-}
+}*/

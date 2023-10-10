@@ -1,3 +1,4 @@
+/*
 package com.bright.hackaton.demo.config
 
 import com.mongodb.reactivestreams.client.MongoClient
@@ -37,14 +38,4 @@ class MongoConfig {
     ): MongoReactiveDriver {
         return MongoReactiveDriver.withDefaultLock(mongoClient, dbName)
     }
-
-    @Bean
-    fun transactionManager(dbf: ReactiveMongoDatabaseFactory): ReactiveTransactionManager {
-        return ReactiveMongoTransactionManager(dbf)
-    }
-
-    @Bean
-    fun transactionalOperator(txm: ReactiveTransactionManager): TransactionalOperator {
-        return TransactionalOperator.create(txm)
-    }
-}
+}*/

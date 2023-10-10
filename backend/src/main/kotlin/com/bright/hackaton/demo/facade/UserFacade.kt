@@ -1,14 +1,11 @@
 package com.bright.hackaton.demo.facade
 
-import com.bright.hackaton.demo.config.migration.DroidsInitMigration
 import com.bright.hackaton.demo.model.Leaderboard
 import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.service.DroidsService
 import com.bright.hackaton.demo.service.UserService
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import kotlinx.coroutines.flow.toList
-import org.bson.Document
+
 import org.springframework.stereotype.Component
 
 @Component
@@ -35,7 +32,4 @@ class UserFacade(private val userService: UserService, private val droidsService
             Leaderboard(user.name, user.collectedDroids)
         }.sortedByDescending { it.collectedDroids }
     }
-
-
-
 }
