@@ -11,8 +11,11 @@ import {
 } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { BaseScreen } from '../components';
-import { FC, useState } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { QuestionMark } from '@mui/icons-material';
+import useAxios from 'axios-hooks';
+import { useAsyncAction } from '../hooks';
+import { Droid } from '../types';
 
 const InfoGrid: FC<{
   items: Array<React.ReactElement>;
@@ -59,14 +62,18 @@ const DROID_IMAGES = [
   '/droid-scanner/battle-droid.jpg',
 ];
 
-function getDroidInfo() {
+function getDroidInfo(order: number): Droid {
   const imageUrl =
     DROID_IMAGES[Math.floor(Math.random() * DROID_IMAGES.length)];
 
   return {
+    id: (Math.random() * 100).toString(),
     imageUrl,
+    order,
+    hint: 'some hint',
     name: imageUrl.replace(/\.(jpg)/, '').split('/')[2],
-    isFound: Math.floor(Math.random() * 100) >= 50,
+    description: 'description test',
+    activated: Math.floor(Math.random() * 100) >= 50,
   };
 }
 
@@ -74,9 +81,9 @@ const DroidCard: FC<{
   idx: number;
   name: string;
   imageUrl: string;
-  isFound: boolean;
+  activated: boolean;
   onClick: (id: number) => void;
-}> = ({ idx, name, imageUrl, isFound, onClick }) => {
+}> = ({ idx, name, imageUrl, activated, onClick }) => {
   const theme = useTheme();
 
   return (
@@ -96,7 +103,7 @@ const DroidCard: FC<{
       onClick={() => onClick(idx)}
     >
       <Stack alignItems='center' spacing={1}>
-        {isFound ? (
+        {activated ? (
           <img
             alt={name}
             src={imageUrl}
@@ -111,7 +118,7 @@ const DroidCard: FC<{
           sx={{ width: '100%' }}
         >
           <Typography variant='caption' color='#ff6855'>
-            {isFound ? name : 'Not Found'}
+            {activated ? name : 'Not Found'}
           </Typography>
           <Typography variant='caption'>{idx}</Typography>
         </Stack>
@@ -120,9 +127,49 @@ const DroidCard: FC<{
   );
 };
 
+const fakeDroids = (): Array<Droid> =>
+  Array(20)
+    .fill(1)
+    .map((item, idx) => getDroidInfo(item + idx));
+
+const compareByActivated = (d1: Droid, d2: Droid) =>
+  d1.activated === d2.activated ? 0 : d1.activated ? -1 : 1;
+
+const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
+
 export const MyCollection = () => {
   const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
+
+  const [droids, setDroids] = useState<Array<Droid>>([]);
+  const [, getMyCollection] = useAxios<Array<Droid>>(`/api/droids`, {
+    manual: true,
+  });
+
+  const [, getAll] = useAsyncAction(async () => {
+    const { data } = await getMyCollection();
+
+    setDroids((data?.length ?? 0) > 0 ? data : fakeDroids());
+  });
+
+  useEffect(() => {
+    getAll();
+  }, []);
+
+  useEffect(() => {
+    switch (orderBy) {
+      case 'collected':
+        setDroids((droids) => [...droids].sort(compareByActivated));
+
+        return;
+      case 'order':
+        setDroids((droids) => [...droids].sort(compareByOrder));
+
+        return;
+      default:
+        return;
+    }
+  }, [orderBy]);
 
   return (
     <BaseScreen title='My Collection' onBack={() => navigate('/')}>
@@ -151,22 +198,16 @@ export const MyCollection = () => {
       </Stack>
       <InfoGrid
         itemsPerColumn={3}
-        items={Array(20)
-          .fill(1)
-          .map((item, idx) => {
-            const droid = getDroidInfo();
-
-            return (
-              <DroidCard
-                key={idx}
-                idx={idx + item}
-                name={droid.name}
-                imageUrl={droid.imageUrl}
-                isFound={droid.isFound}
-                onClick={(id) => navigate(`/hint/${id}`)}
-              />
-            );
-          })}
+        items={droids.map((droid) => (
+          <DroidCard
+            key={droid.id}
+            idx={droid.order}
+            name={droid.name}
+            imageUrl={droid.imageUrl}
+            activated={droid.activated}
+            onClick={(id) => navigate(`/hint/${id}`)}
+          />
+        ))}
       />
     </BaseScreen>
   );

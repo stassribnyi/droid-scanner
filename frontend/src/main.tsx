@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createMemoryRouter } from 'react-router';
@@ -6,6 +7,9 @@ import { Welcome, Dashboard, MyCollection, Hint } from './screens';
 
 import { Layout, Notification } from './components';
 import { LoaderProvider, NotifyProvider } from './providers';
+
+// TODO: use variable
+// axios.defaults.baseURL = 'http://hack.brightgrove.com:8080';
 
 const memoryRouter = createMemoryRouter([
   {
