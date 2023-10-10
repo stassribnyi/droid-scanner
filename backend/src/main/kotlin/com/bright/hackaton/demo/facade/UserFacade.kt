@@ -5,15 +5,13 @@ import com.bright.hackaton.demo.model.User
 import com.bright.hackaton.demo.service.DroidsService
 import com.bright.hackaton.demo.service.UserService
 import kotlinx.coroutines.flow.toList
-
 import org.springframework.stereotype.Component
 
 @Component
 class UserFacade(private val userService: UserService, private val droidsService: DroidsService) {
 
     suspend fun createUser(deviceId: String, userNickname: String): User {
-        droidsService.createInitialDroidsList(deviceId)
-        val total = droidsService.getAllDroidsByDeviceId(deviceId).toList().size
+        val total = droidsService.getAllDroids().toList().size
         return userService.createUser(deviceId, userNickname, total)
     }
 
@@ -32,4 +30,5 @@ class UserFacade(private val userService: UserService, private val droidsService
             Leaderboard(user.name, user.collectedDroids)
         }.sortedByDescending { it.collectedDroids }
     }
+
 }

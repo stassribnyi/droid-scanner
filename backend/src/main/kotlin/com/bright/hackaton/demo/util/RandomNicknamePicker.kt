@@ -1,5 +1,6 @@
 package com.bright.hackaton.demo.util
 
+import org.springframework.stereotype.Service
 import java.util.*
 
 fun pickRandomNickNameAndModifyExisting(): String {
