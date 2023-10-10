@@ -138,7 +138,7 @@ export const Welcome = () => {
             size='large'
             onClick={register}
           >
-            Join Now!
+            Join Now! (validate)
           </Button>
         </Grid>
       </Grid>
