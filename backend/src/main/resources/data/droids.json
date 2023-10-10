@@ -1,7 +1,10 @@
-{
-  "_id" : "77777",
-  "name" : "Vova",
-  "description" : "BBBBB",
-  "number" : "7",
-  "isActivated" : false
-}
+[
+  {
+    "id": "65241372ea07024f97f4f9b3",
+    "name": "Vova",
+    "description": "BBBBB",
+    "order": "7",
+    "activated": false,
+    "hint": "defaulthint"
+  }
+]
