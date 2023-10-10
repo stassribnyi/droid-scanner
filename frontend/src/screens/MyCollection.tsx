@@ -14,7 +14,7 @@ import { BaseScreen } from '../components';
 import { FC, useEffect, useState } from 'react';
 import { QuestionMark } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
-import { useAsyncAction } from '../hooks';
+import { useAsyncAction, useDeviceUUID } from '../hooks';
 import { Droid } from '../types';
 
 const InfoGrid: FC<{
@@ -70,14 +70,13 @@ const DROID_NAMES = [
   { name: 'K-2SO' },
   { name: 'D-O' },
   { name: 'CB-23' },
+  { name: 'Mister Bones' },
   { name: 'R-3X' },
-  { name: 'R-3X' },
-  { name: 'Battle droid' },
+  { name: 'Battle Droid' },
 ];
 
 function getDroidInfo(order: number): Droid {
-  const name =
-  DROID_NAMES[order - 1].name;
+  const name = DROID_NAMES[order - 1].name;
 
   return {
     id: (Math.random() * 100).toString(),
@@ -153,21 +152,34 @@ const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
 export const MyCollection = () => {
   const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
-
+  const deviceId = useDeviceUUID();
   const [droids, setDroids] = useState<Array<Droid>>([]);
-  const [, getMyCollection] = useAxios<Array<Droid>>(`/api/droids`, {
-    manual: true,
-  });
+  const [, getMyCollection] = useAxios<Array<Droid>>(
+    {
+      url: '/api/droids',
+      params: {
+        deviceId,
+      },
+    },
+    {
+      manual: true,
+    }
+  );
 
   const [, getAll] = useAsyncAction(async () => {
     const { data } = await getMyCollection();
 
     setDroids((data?.length ?? 0) > 0 ? data : fakeDroids());
+    setDroids(fakeDroids());
   });
 
   useEffect(() => {
+    if (!deviceId) {
+      return;
+    }
+
     getAll();
-  }, []);
+  }, [deviceId]);
 
   useEffect(() => {
     switch (orderBy) {

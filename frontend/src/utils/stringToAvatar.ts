@@ -17,6 +17,10 @@ function stringToColor(string: string) {
 }
 
 export function stringToAvatar(name: string) {
+  if (!name) {
+    name = 'Who the fuck are you?'
+  }
+
   const [first, second] = name.split(' ');
 
   return {

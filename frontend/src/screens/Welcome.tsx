@@ -112,6 +112,7 @@ export const Welcome = () => {
                 </Typography>
 
                 <TextField
+                  required
                   label='What is your name, padawan?'
                   variant='outlined'
                   size='medium'
