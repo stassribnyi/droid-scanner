@@ -24,8 +24,18 @@ class DroidController(private val droidsFacade: DroidsFacade) {
         value = ["/api/droids"],
         produces = ["application/json"],
     )
-    fun getAllDroids(): ResponseEntity<Flow<Droid>> {
-        return ResponseEntity.ok(droidsFacade.getAllDroids())
+    fun getAllDroids(deviceId: String): ResponseEntity<Flow<Droid>> {
+        return ResponseEntity.ok(droidsFacade.getAllDroids(deviceId))
+    }
+
+
+    @RequestMapping(
+            method = [RequestMethod.GET],
+            value = ["/api/droids/{deviceId}"],
+            produces = ["application/json"],
+    )
+    suspend fun getOneDroidByDeviceIdAndOrder(deviceId: String, order: Int): ResponseEntity<Droid> {
+        return ResponseEntity.ok(droidsFacade.getDroidByDeviceIdAndOrder(deviceId, order))
     }
 
     @RequestMapping(
@@ -33,7 +43,7 @@ class DroidController(private val droidsFacade: DroidsFacade) {
             value = ["/api/droids/activate"],
             produces = ["application/json"],
     )
-    suspend fun activateDroid(deviceId: String, droidOrder: Int): ResponseEntity<Flow<Droid>> {
+    suspend fun activateDroid(deviceId: String, droidOrder: Int): ResponseEntity<Droid> {
         return ResponseEntity.ok(droidsFacade.activateDroidForUser(deviceId, droidOrder))
     }
 

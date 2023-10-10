@@ -1,3 +1,4 @@
+/*
 package com.bright.hackaton.demo.config
 
 import com.mongodb.reactivestreams.client.MongoClient
@@ -9,6 +10,10 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.ApplicationContext
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.data.mongodb.ReactiveMongoDatabaseFactory
+import org.springframework.data.mongodb.ReactiveMongoTransactionManager
+import org.springframework.transaction.ReactiveTransactionManager
+import org.springframework.transaction.reactive.TransactionalOperator
 
 @Configuration
 class MongoConfig {
@@ -33,4 +38,4 @@ class MongoConfig {
     ): MongoReactiveDriver {
         return MongoReactiveDriver.withDefaultLock(mongoClient, dbName)
     }
-}
+}*/

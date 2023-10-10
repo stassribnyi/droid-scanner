@@ -4,10 +4,7 @@ package com.bright.hackaton.demo.controller
 import com.bright.hackaton.demo.facade.UserFacade
 import com.bright.hackaton.demo.model.Leaderboard
 import com.bright.hackaton.demo.model.User
-import com.bright.hackaton.demo.service.UserService
 import com.bright.hackaton.demo.util.pickRandomNickNameAndModifyExisting
-import org.springframework.http.HttpStatus
-import org.springframework.http.HttpStatusCode
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
@@ -19,8 +16,7 @@ class UsersController(private val userFacade: UserFacade) {
         produces = ["application/json"]
     )
     suspend fun registerUser(deviceId: String, userNickname: String): ResponseEntity<User> {
-        val createdUser = userFacade.createUser(deviceId, userNickname)
-        return ResponseEntity.ok(createdUser)
+        return ResponseEntity.ok(userFacade.createUser(deviceId, userNickname))
     }
 
     @RequestMapping(

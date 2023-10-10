@@ -12,5 +12,5 @@ data class Droid(
     var order: Int,
     var activated: Boolean = false,
     var hint: String?,
-    var imageUrl: String?
+    var deviceId: String
 )
