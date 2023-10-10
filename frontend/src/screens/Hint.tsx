@@ -24,7 +24,7 @@ export const Hint = () => {
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
-  const [{ data: droids }, getDroid] = useAxios<Array<Droid>>(
+  const [, getDroid] = useAxios<Array<Droid>>(
     {
       url: '/api/droids',
       params: {
@@ -95,8 +95,8 @@ export const Hint = () => {
             <Box
               component='img'
               sx={{ height: '100%', width: '100%' }}
-              // /droid-scanner/droids/${name.toLowerCase()}.jpg
-              src='/droid-scanner/droids/4-lom.jpg'
+              // /droids/${name.toLowerCase()}.jpg
+              src='/droids/4-lom.jpg'
               alt='leader board welcome'
             />
           </Box>

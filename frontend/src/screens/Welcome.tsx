@@ -107,7 +107,7 @@ export const Welcome = () => {
             >
               <CardMedia
                 sx={{ height: 340 }}
-                image='/droid-scanner/welcome.png'
+                image='/welcome.png'
                 title='green iguana'
               />
               <CardContent

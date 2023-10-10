@@ -7,7 +7,7 @@ const FALLBACK_PROXY_API = 'http://localhost:8080/'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: "/droid-scanner/",
+  base: '',
   server: {
     watch: {
       usePolling: true,

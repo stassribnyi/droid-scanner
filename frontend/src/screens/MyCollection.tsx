@@ -80,7 +80,7 @@ function getDroidInfo(order: number): Droid {
 
   return {
     id: (Math.random() * 100).toString(),
-    imageUrl: `/droid-scanner/droids/${name.toLowerCase()}.jpg`,
+    imageUrl: `/droids/${name.toLowerCase()}.jpg`,
     order,
     hint: 'some hint',
     name: name,

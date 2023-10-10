@@ -1,21 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { QrReader } from 'react-qr-reader';
 import { Box, Typography, styled } from '@mui/material';
-
-function tryParseDroidId(data: string) {
-  try {
-    const url = new URL(data);
-    const droidId = url.searchParams.get('droidId');
-
-    if (!droidId) {
-      return null;
-    }
-
-    return parseInt(droidId, 10);
-  } catch (err) {
-    return null;
-  }
-}
 
 // const HINT = 'Please point your camera at the QR code you want to scan. Make sure the QR code is fully visible and in focus. The app will automatically detect and process the QR code for you.'
 
@@ -56,17 +41,9 @@ const ViewFinder = () => (
 );
 
 export const Scanner: React.FC<{
-  onResult: (id: number) => void;
+  onResult: (data?: string) => void;
 }> = ({ onResult }) => {
-  const [data, setData] = useState('Please align with QR code');
-
-  useEffect(() => {
-    const droidId = tryParseDroidId(data);
-
-    if (droidId) {
-      onResult(droidId);
-    }
-  }, [data, onResult]);
+  const [error, setError] = useState('Please align with QR code');
 
   return (
     <Box sx={{ position: 'relative' }}>
@@ -78,11 +55,13 @@ export const Scanner: React.FC<{
         ViewFinder={ViewFinder}
         onResult={(result, error) => {
           if (result) {
-            setData(result?.getText());
+            onResult(result?.getText());
+
+            return;
           }
 
           if (error) {
-            setData(error.message);
+            setError(error.message);
           }
         }}
       />
@@ -91,7 +70,7 @@ export const Scanner: React.FC<{
         align='center'
         sx={{ position: 'absolute', bottom: 0, width: '100%', zIndex: 1 }}
       >
-        {data}
+        {error}
       </Typography>
     </Box>
   );

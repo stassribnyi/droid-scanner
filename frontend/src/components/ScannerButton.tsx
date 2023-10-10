@@ -5,6 +5,8 @@ import { Close, QrCodeScannerRounded } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 
 import { Scanner } from './Scanner';
+import { useActivateDroid } from '../hooks';
+import { tryParseDroidId } from '../utils';
 
 const Transition = forwardRef(
   (props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
@@ -15,6 +17,7 @@ const Transition = forwardRef(
 export const ScannerButton = () => {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
+  const activateDroid = useActivateDroid();
 
   function closeScanner() {
     setIsOpen(false);
@@ -81,12 +84,16 @@ export const ScannerButton = () => {
             flexDirection: 'column',
             justifyContent: 'center',
             width: '100%',
-            height: '100%'
+            height: '100%',
           }}
         >
           <Scanner
-            onResult={() => {
-              // TODO: send droid info
+            onResult={(data) => {
+              const droidId = tryParseDroidId(data);
+              if (droidId) {
+                activateDroid(droidId);
+              }
+
               setIsOpen(false);
             }}
           />
