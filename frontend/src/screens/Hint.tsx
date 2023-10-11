@@ -1,5 +1,3 @@
-import { useNavigate, useParams } from 'react-router';
-import { BaseScreen } from '../components';
 import {
   Card,
   CardContent,
@@ -9,14 +7,25 @@ import {
   Button,
   Box,
   Unstable_Grid2 as Grid,
+  Dialog,
+  IconButton,
+  CardMedia,
+  Stack,
 } from '@mui/material';
-import { ExpandLess, ExpandMore, QuestionMark } from '@mui/icons-material';
-import { useEffect, useState } from 'react';
-import { useHintDroidId } from '../hooks/useHintDroidId';
+import {
+  Close,
+  ExpandLess,
+  ExpandMore,
+  QuestionMark,
+} from '@mui/icons-material';
 import useAxios from 'axios-hooks';
-import { useDeviceUUID, useAsyncAction } from '../hooks';
-import { Droid, User } from '../types';
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router';
+
+import { useHintDroidId, useDeviceUUID, useAsyncAction } from '../hooks';
+import { BaseScreen } from '../components';
 import { collectedToRank } from '../utils';
+import { Droid, User } from '../types';
 
 const PLACEHOLDER_DROID: Droid = {
   id: '',
@@ -34,6 +43,7 @@ export const Hint = () => {
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
+  const [showCongrats, setShowCongrats] = useState(false);
 
   const [{ data: found }, getDroid] = useAxios<Droid>(
     {
@@ -52,8 +62,10 @@ export const Hint = () => {
   });
 
   const [, getAll] = useAsyncAction(async () => {
-    await getUser();
     await getDroid();
+    const { data } = await getUser();
+
+    setShowCongrats(data.collectedDroids === data.totalDroids);
   });
 
   useEffect(() => {
@@ -69,8 +81,6 @@ export const Hint = () => {
 
     getAll();
   }, [deviceId, stored]);
-
-  // const found = droid;
 
   const droid = found ?? PLACEHOLDER_DROID;
 
@@ -162,6 +172,67 @@ export const Hint = () => {
           </Typography>
         </Collapse>
       </Paper>
+      <Dialog open={showCongrats} onClose={() => setShowCongrats(false)}>
+        <IconButton
+          edge='start'
+          color='inherit'
+          onClick={() => setShowCongrats(false)}
+          aria-label='close'
+          sx={{
+            position: 'absolute',
+            top: '0.5rem',
+            right: '1rem',
+            zIndex: 1,
+          }}
+        >
+          <Close />
+        </IconButton>
+        {/* Consider reusing? */}
+        <Card
+          sx={{
+            background: 'none',
+          }}
+        >
+          <CardMedia
+            sx={{ height: 340 }}
+            image='/welcome.png'
+            title='green iguana'
+          />
+          <CardContent
+            sx={{
+              marginTop: '-6rem',
+              borderRadius: '2rem',
+              background: 'rgba(35, 45, 60, 0.5)',
+              borderBottomLeftRadius: '1rem',
+              borderBottomRightRadius: '1rem',
+              backdropFilter: 'blur(16px)',
+            }}
+          >
+            <Stack direction='column' gap={2}>
+              <Typography align='center' color='#ff6855' variant='h6'>
+                Congratulations!
+              </Typography>
+              <Typography
+                gutterBottom
+                variant='body1'
+                component='div'
+                align='justify'
+                sx={{}}
+              >
+                A fantastic achievement! You've finished all the quests we've
+                prepared for you. You have proven yourself to be a master jedi.
+              </Typography>
+              <Typography align='center' sx={{ fontWeight: '700' }}>
+                Will force be with you!
+              </Typography>
+              <Typography variant='caption' align='center'>
+                Thanks for playing our little game, your Coders of Republic
+                team!
+              </Typography>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Dialog>
     </BaseScreen>
   );
 };
