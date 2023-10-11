@@ -53,11 +53,7 @@ export const Welcome = () => {
   });
 
   const [registering, register] = useAsyncAction(async () => {
-    await registerUser().catch((error) => {
-      console.log(error);
-
-      return Promise.reject(error);
-    });
+    await registerUser();
     grantAccess();
   });
 

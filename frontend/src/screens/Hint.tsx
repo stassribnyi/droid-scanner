@@ -34,7 +34,6 @@ export const Hint = () => {
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
-  console.log(stored);
   
   const [{ data: found }, getDroid] = useAxios<Droid>(
     {
