@@ -15,6 +15,7 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import {
+  useActivateDroid,
   useAsyncAction,
   useDeviceUUID,
   useNotify,
@@ -35,16 +36,23 @@ export const Welcome = () => {
   const navigate = useNavigate();
   const [hasAccess, grantAccess] = useSimpleAuth();
   const { notify } = useNotify();
+  const activateDroid = useActivateDroid();
 
   useEffect(() => {
     if (!hasAccess) {
       return;
     }
 
-    notify(`DroidId: ${tryParseDroidId(getCurrentURL())}`);
+    const droidId = tryParseDroidId(getCurrentURL());
+
+    if (droidId) {
+      activateDroid(droidId);
+
+      return;
+    }
 
     navigate('/dashboard');
-  }, [hasAccess, navigate, notify]);
+  }, [activateDroid, hasAccess, navigate, notify]);
 
   const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
     manual: true,
