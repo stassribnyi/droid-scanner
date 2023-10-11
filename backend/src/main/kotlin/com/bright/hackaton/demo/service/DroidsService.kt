@@ -40,4 +40,8 @@ class DroidsService(private val droidsRepository: DroidsRepository) {
         }
         return droids
     }
+
+    suspend fun deleteAll() {
+        droidsRepository.deleteAll()
+    }
 }

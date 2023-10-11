@@ -34,14 +34,14 @@ class DroidController(private val droidsFacade: DroidsFacade) {
             value = ["/api/droids/{deviceId}"],
             produces = ["application/json"],
     )
-    suspend fun getOneDroidByDeviceIdAndOrder(deviceId: String, order: Int): ResponseEntity<Droid> {
+    suspend fun getOneDroidByDeviceIdAndOrder(@PathVariable deviceId: String, order: Int): ResponseEntity<Droid> {
         return ResponseEntity.ok(droidsFacade.getDroidByDeviceIdAndOrder(deviceId, order))
     }
 
     @RequestMapping(
-            method = [RequestMethod.PUT],
-            value = ["/api/droids/activate"],
-            produces = ["application/json"],
+        method = [RequestMethod.PUT],
+        value = ["/api/droids/activate"],
+        produces = ["application/json"],
     )
     suspend fun activateDroid(deviceId: String, droidOrder: Int): ResponseEntity<Droid> {
         return ResponseEntity.ok(droidsFacade.activateDroidForUser(deviceId, droidOrder))
