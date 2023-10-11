@@ -38,11 +38,17 @@ const InfoGrid: FC<{
       }
 
       cells.push(
-        <Grid key={itemIdx} xs={Math.floor(12 / itemsPerColumn)}>{items[itemIdx]}</Grid>
+        <Grid key={itemIdx} xs={Math.floor(12 / itemsPerColumn)}>
+          {items[itemIdx]}
+        </Grid>
       );
     }
 
-    rows.push(<Grid container key={rowIdx}>{cells}</Grid>);
+    rows.push(
+      <Grid container key={rowIdx}>
+        {cells}
+      </Grid>
+    );
   }
 
   return (
@@ -114,7 +120,13 @@ const DroidCard: FC<{
       }}
       onClick={() => onClick(idx)}
     >
-      <Stack alignItems='center' spacing={1}>
+      <Stack
+        alignItems='center'
+        spacing={1}
+        sx={{
+          position: 'relative',
+        }}
+      >
         {activated ? (
           <img
             alt={name}
@@ -124,16 +136,22 @@ const DroidCard: FC<{
         ) : (
           <QuestionMark sx={{ width: 100, height: 100 }} />
         )}
-        <Stack
-          direction='row'
-          justifyContent='space-between'
-          sx={{ width: '100%' }}
+        <Typography variant='caption' color='#ff6855' sx={{ width: '100%' }}>
+          {activated ? name : 'Not Found'}
+        </Typography>
+        <Typography
+          variant='caption'
+          color='#caa357'
+          sx={{
+            top: -4,
+            right: 0,
+            m: '0!important',
+            fontWeight: 'bold',
+            position: 'absolute',
+          }}
         >
-          <Typography variant='caption' color='#ff6855'>
-            {activated ? name : 'Not Found'}
-          </Typography>
-          <Typography variant='caption'>{idx}</Typography>
-        </Stack>
+          {idx}
+        </Typography>
       </Stack>
     </Paper>
   );
@@ -169,7 +187,9 @@ export const MyCollection = () => {
   const [, getAll] = useAsyncAction(async () => {
     const { data } = await getMyCollection();
 
-    setDroids((data?.length ?? 0) > 0 ? data.sort(compareByOrder) : fakeDroids());
+    setDroids(
+      (data?.length ?? 0) > 0 ? data.sort(compareByOrder) : fakeDroids()
+    );
   });
 
   useEffect(() => {
