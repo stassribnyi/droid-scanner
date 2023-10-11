@@ -10,9 +10,6 @@ export const useActivateDroid = (): (droidId: number) => Promise<Droid> => {
         {
             url: '/api/droids/activate',
             method: 'PUT',
-            params: {
-                deviceId,
-            },
         },
         {
             manual: true,
@@ -22,9 +19,9 @@ export const useActivateDroid = (): (droidId: number) => Promise<Droid> => {
     return useCallback((droidId: number) =>
         activateDroid({
             params: {
-                droidOrder: droidId
+                deviceId, droidOrder: droidId,
             }
         }).then(({ data }) => data),
-        [activateDroid]
+        [activateDroid, deviceId]
     )
 }
