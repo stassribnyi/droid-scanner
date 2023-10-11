@@ -1,26 +1,162 @@
 [
   {
-    "name": "Vova",
-    "description": "BBBBB",
+    "name": "C-3PO",
+    "description": "Meet C-3PO (See-Threepio), a golden humanoid protocol droid fluent in vast languages. He's your diplomatic guide, aiding in communication across the galaxy.",
     "order": "1",
     "activated": false,
-    "hint": "defaulthint",
+    "hint": "One of the most famous droid in the Star Wars universe, this is. At the enter of our Bright office, you can find it, hmmm.",
     "deviceId": ""
   },
   {
-    "name": "gdadfgdfg",
-    "description": "BBBBB",
+    "name": "R2-D2",
+    "description": "R2-D2 (Artoo-Detoo), the agile astromech with a blue and white dome, is your loyal technician and ship companion. Ready to repair and assist in your space adventures.",
     "order": "2",
     "activated": false,
-    "hint": "defaulthint",
+    "hint": "In the most challenging times, help you it will, hmmm. A person who will assist in any matter, Angela knows where it is",
     "deviceId": ""
   },
   {
-    "name": "Vovagdfgfdgafdagdrfsga",
-    "description": "BBBBB",
+    "name": "R5-D4",
+    "description": "Encounter R5-D4, the red and white astromech. Though initially overlooked, this droid proves its worth with resourcefulness and determination.",
     "order": "3",
     "activated": false,
-    "hint": "defaulthint",
+    "hint": "And if help still needed, who but HR will assist you, hmmm.",
+    "deviceId": ""
+  },
+  {
+    "name": "AP-5",
+    "description": "AP-5, a strategic protocol droid with precision in calculations and navigation, offers vital insights and guidance during your quests.",
+    "order": "4",
+    "activated": false,
+    "hint": "Calculate everything he can, everything he knows he can calculate. In him, the wisdom of many computers is.",
+    "deviceId": ""
+  },
+  {
+    "name": "BD-1",
+    "description": "BD-1, a trusty astromech droid, accompanies you on your journey. Equipped for mapping and tool assistance, BD-1 is a true ally.",
+    "order": "5",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "C1-10P",
+    "description": "C1-10P (Chopper), a spirited astromech droid with a unique personality, joins your crew. Despite a rugged exterior, C1-10P excels in mechanics and loyalty.",
+    "order": "6",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "Mouse Droid",
+    "description": "The Mouse Droid scurries swiftly, perfect for missions in confined spaces. Use it for swift deliveries and data retrieval.",
+    "order": "7",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "Mister Bones",
+    "description": "Mister Bones, a modified battle droid, is your fierce ally. Armed and energetic, Mister Bones stands strong in battle.",
+    "order": "8",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "4-LOM",
+    "description": "4-LOM, the insectoid bounty hunter turned protocol droid, brings tracking and capturing expertise to your team.",
+    "order": "9",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "IG-11",
+    "description": "IG-11, the versatile assassin droid, ensures protection and caregiving during your adventures, adapting to various roles.",
+    "order": "10",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "EV-9D9",
+    "description": "Meet EV-9D9, the stern administration droid overseeing operations. Use her expertise to manage your resources effectively.",
+    "order": "11",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "R1-J5",
+    "description": "R1-J5, also known as Bucket, is a skilled astromech droid aiding in repairs and maintenance. Keep your ships in top condition with Bucket by your side.",
+    "order": "12",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "BB-8",
+    "description": "BB-8, the expressive spherical astromech, stands as a symbol of loyalty and bravery. Your companion in the Resistance, always ready for action.",
+    "order": "13",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "2-1B",
+    "description": "2-1B, the proficient medical droid, is crucial for treating injuries and keeping your team in good health during missions.",
+    "order": "14",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "L3-37",
+    "description": "L3-37, the self-built astromech with a passion for droid rights, is a skilled pilot and vital member of your rebellion.",
+    "order": "15",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "K-2SO",
+    "description": "K-2SO, the reprogrammed security droid, brings his wit and courage to your team. Count on K-2SO for combat and strategy.",
+    "order": "16",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "Battle Droid",
+    "description": "Battle Droid, the backbone of the Separatist army, is a mechanical soldier designed for combat. Armed with blasters and programmed for battle tactics, this droid stands ready to engage enemies and fulfill its mission objectives.",
+    "order": "17",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "D-O",
+    "description": "D-O, the small wheel-based droid, is shy yet lovable, quickly becoming a cherished companion on your adventures.",
+    "order": "18",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "CB-23",
+    "description": "CB-23, the astromech ally, stands by your side, offering support and assistance in critical moments.",
+    "order": "19",
+    "activated": false,
+    "hint": "",
+    "deviceId": ""
+  },
+  {
+    "name": "R-3X",
+    "description": "DJ R-3X, the droid DJ, is here to spin tunes and keep the vibe lively at your galactic gatherings. Get ready to groove!",
+    "order": "20",
+    "activated": false,
+    "hint": "",
     "deviceId": ""
   }
 ]

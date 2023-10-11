@@ -32,4 +32,9 @@ class UserFacade(private val userService: UserService, private val droidsService
             Leaderboard(user.name, user.collectedDroids)
         }.sortedByDescending { it.collectedDroids }
     }
+
+    suspend fun usersAndDroidsCleanupDB() {
+        droidsService.deleteAll()
+        userService.deleteAll()
+    }
 }

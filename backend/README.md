@@ -6,30 +6,7 @@ This is the backend part of the Droid Scanner project, which is responsible for 
 
 Before you begin, ensure you have the following installed:
 
-- [Java Development Kit (JDK)](https://docs.aws.amazon.com/corretto/latest/corretto-17-ug/downloads-list.html)
-- [Gradle](https://gradle.org/install/)
-- [MongoDB](https://docs.mongodb.com/manual/installation/)
-
-## Setup MongoDB
-
-1. Install MongoDB by following the [official installation guide](https://docs.mongodb.com/manual/installation/).
-
-2. Start the MongoDB service:
-
-   ```bash
-   sudo service mongod start
-Certainly, here's a README.md file for your GitHub repository with instructions on how to set up MongoDB, Java, and Gradle for your Droid Scanner backend project:
-
-
-# Droid Scanner Backend
-
-This is the backend part of the Droid Scanner project, which is responsible for managing and analyzing droids. Follow the instructions below to set up MongoDB and build the project using Java and Gradle.
-
-## Prerequisites
-
-Before you begin, ensure you have the following installed:
-
-- [Java Development Kit (JDK)](https://adoptium.net/?variant=openjdk11&jvmVariant=hotspot)
+- [Java Development Kit (JDK)](https://www.azul.com/downloads/?package=jdk#zulu)
 - [Gradle](https://gradle.org/install/)
 - [MongoDB](https://docs.mongodb.com/manual/installation/)
 
