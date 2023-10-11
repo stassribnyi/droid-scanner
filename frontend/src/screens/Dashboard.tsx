@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Card,
   CardContent,
   CardMedia,
@@ -99,21 +98,21 @@ export const Dashboard = () => {
             sx={{
               marginTop: '-6rem',
               borderRadius: '2rem',
-              background: 'rgba(35, 45, 60, 0.4)',
+              background: 'rgba(35, 45, 60, 0.75)',
               borderBottomLeftRadius: '1rem',
               borderBottomRightRadius: '1rem',
-              backdropFilter: 'blur(8px)',
+              backdropFilter: 'blur(16px)',
             }}
           >
             <Typography
-              variant='h5'
+              variant='h6'
               component='div'
               align='center'
               sx={{ mb: 3 }}
             >
               Welcome,{' '}
               <Typography
-                variant='h5'
+                variant='h6'
                 component='span'
                 color='#ff6855'
                 sx={{ fontWeight: 'bold' }}
@@ -127,8 +126,9 @@ export const Dashboard = () => {
                   sx={{
                     p: 1,
                     backgroundImage:
-                      'linear-gradient(to bottom, #9CD0B2, #7d9d8bde)',
-                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #A7D9BD',
+                      'linear-gradient(to bottom, #76B591, #4c6256de)',
+                    boxShadow:
+                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #84B398',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
@@ -145,7 +145,8 @@ export const Dashboard = () => {
                     p: 1,
                     backgroundImage:
                       'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
-                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #ff4b34',
+                    boxShadow:
+                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #dc422f',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
@@ -162,7 +163,8 @@ export const Dashboard = () => {
                     p: 1,
                     backgroundImage:
                       'linear-gradient(to bottom, #803DE1, #5b298e)',
-                    boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #874cef',
+                    boxShadow:
+                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #874cef',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>

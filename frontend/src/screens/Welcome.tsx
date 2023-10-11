@@ -144,10 +144,10 @@ export const Welcome = () => {
                 sx={{
                   marginTop: '-6rem',
                   borderRadius: '2rem',
-                  background: 'rgba(35, 45, 60, 0.4)',
+                  background: 'rgba(35, 45, 60, 0.5)',
                   borderBottomLeftRadius: '1rem',
                   borderBottomRightRadius: '1rem',
-                  backdropFilter: 'blur(8px)',
+                  backdropFilter: 'blur(16px)',
                 }}
               >
                 <Stack direction='column' gap={2}>
