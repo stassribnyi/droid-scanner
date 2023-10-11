@@ -169,8 +169,7 @@ export const MyCollection = () => {
   const [, getAll] = useAsyncAction(async () => {
     const { data } = await getMyCollection();
 
-    setDroids((data?.length ?? 0) > 0 ? data : fakeDroids());
-    // setDroids(fakeDroids());
+    setDroids((data?.length ?? 0) > 0 ? data.sort(compareByOrder) : fakeDroids());
   });
 
   useEffect(() => {

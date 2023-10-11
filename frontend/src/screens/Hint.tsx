@@ -10,7 +10,7 @@ import {
   Box,
   Unstable_Grid2 as Grid,
 } from '@mui/material';
-import { ExpandLess, ExpandMore } from '@mui/icons-material';
+import { ExpandLess, ExpandMore, QuestionMark } from '@mui/icons-material';
 import { useEffect, useState } from 'react';
 import { useHintDroidId } from '../hooks/useHintDroidId';
 import useAxios from 'axios-hooks';
@@ -24,7 +24,7 @@ export const Hint = () => {
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
-  const [, getDroid] = useAxios<Array<Droid>>(
+  const [{ data: droids }, getDroid] = useAxios<Array<Droid>>(
     {
       url: '/api/droids',
       params: {
@@ -59,7 +59,23 @@ export const Hint = () => {
     getAll();
   }, [deviceId]);
 
-  // const droid = (droids ?? []).find((d) => d.order === +stored);
+  const found = (droids ?? []).find((d) => d.order === +stored);
+
+  const droid = found || {
+    id: '',
+    name: '4-LOM',
+    description: `I am 4-LOM, the insectoid bounty hunter turned protocol droid, brings tracking and capturing expertise to your team.`,
+    order: 1,
+    activated: false,
+    hint: `You have a score to settle with this droid, who once betrayed
+    you in a crucial mission. You have tracked him down to a
+    location where people work, but you need to be more specific.
+    Look for a table with some papers and a computer on it. There
+    might be a plant nearby, adding some greenery to the dull
+    environment. Scan the QR code on the droid’s head to confront
+    him and get your revenge.`,
+    imageUrl: '',
+  };
 
   const user = data || {
     deviceId: deviceId,
@@ -92,13 +108,16 @@ export const Hint = () => {
               boxShadow: '1px 1px 6px #c4dec457',
             }}
           >
-            <Box
-              component='img'
-              sx={{ height: '100%', width: '100%' }}
-              // /droids/${name.toLowerCase()}.jpg
-              src='/droids/4-lom.jpg'
-              alt='leader board welcome'
-            />
+            {droid.activated ? (
+              <Box
+                component='img'
+                sx={{ height: '100%', width: '100%' }}
+                src={`/droids/${droid.name.toLowerCase()}.jpg`}
+                alt={droid.name}
+              />
+            ) : (
+              <QuestionMark sx={{ height: '100%', width: '100%' }} />
+            )}
           </Box>
         </Grid>
         <Grid xs={8}>
@@ -107,8 +126,11 @@ export const Hint = () => {
             <Typography variant='body2' component='span' color='#ff6855'>
               {collectedToRank(user.collectedDroids, user.totalDroids)}
             </Typography>
-            , I have a small task for you. It will test your skills and
-            challenge your mind. Shell we begin?
+            !{' '}
+            {droid?.activated
+              ? `I have a small task for you. It will test your skills and
+            challenge your mind. Shell we begin?`
+              : `You don't know where this droid is, but he left some task for you...`}
           </Typography>
         </Grid>
       </Grid>
@@ -120,25 +142,23 @@ export const Hint = () => {
             sx={{ textIndent: '2rem' }}
             align='justify'
           >
-            {
-            // droid?.hint
-            //   ? droid.hint
-            //   : 
-              `You have a score to settle with this droid, who once betrayed
-                you in a crucial mission. You have tracked him down to a
-                location where people work, but you need to be more specific.
-                Look for a table with some papers and a computer on it. There
-                might be a plant nearby, adding some greenery to the dull
-                environment. Scan the QR code on the droid’s head to confront
-                him and get your revenge.`}
+            {droid.hint}
           </Typography>
         </CardContent>
       </Card>
       <Paper sx={{ p: 1, width: '100%' }}>
-        <Button onClick={() => setShowHint((value) => !value)}>
-          {showHint ? 'Who am I?' : 'Wanna chat more?'}
-          {showHint ? <ExpandLess /> : <ExpandMore />}
-        </Button>
+        {droid.activated ? (
+          <Button onClick={() => setShowHint((value) => !value)}>
+            {showHint ? 'Who am I?' : 'Wanna chat more?'}
+            {showHint ? <ExpandLess /> : <ExpandMore />}
+          </Button>
+        ) : (
+          <Box sx={{ p: 1 }}>
+            <Typography color='info' variant='caption'>
+              Find this droid to learn more about him.
+            </Typography>
+          </Box>
+        )}
         <Collapse in={showHint} timeout='auto' unmountOnExit>
           <Typography
             gutterBottom
@@ -146,11 +166,7 @@ export const Hint = () => {
             sx={{ textIndent: '2rem' }}
             align='justify'
           >
-            {
-            // !droid?.hint
-            //   ? droid.hint
-            //   : 
-              `I am 4-LOM, the insectoid bounty hunter turned protocol droid, brings tracking and capturing expertise to your team.`}
+            {droid.description}
           </Typography>
         </Collapse>
       </Paper>
