@@ -63,17 +63,11 @@ export const Hint = () => {
 
   const droid = found || {
     id: '',
-    name: '4-LOM',
-    description: `I am 4-LOM, the insectoid bounty hunter turned protocol droid, brings tracking and capturing expertise to your team.`,
+    name: 'Loading...',
+    description: `Loading...`,
     order: 1,
     activated: false,
-    hint: `You have a score to settle with this droid, who once betrayed
-    you in a crucial mission. You have tracked him down to a
-    location where people work, but you need to be more specific.
-    Look for a table with some papers and a computer on it. There
-    might be a plant nearby, adding some greenery to the dull
-    environment. Scan the QR code on the droid’s head to confront
-    him and get your revenge.`,
+    hint: `Loading...`,
     imageUrl: '',
   };
 

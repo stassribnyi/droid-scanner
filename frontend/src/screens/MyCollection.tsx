@@ -227,7 +227,7 @@ export const MyCollection = () => {
             key={droid.name}
             idx={droid.order}
             name={droid.name}
-            imageUrl={droid.imageUrl}
+            imageUrl={`/droids/${droid.name.toLocaleLowerCase()}.jpg`}
             activated={droid.activated}
             onClick={(id) => navigate(`/hint/${id}`)}
           />
