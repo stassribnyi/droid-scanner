@@ -36,7 +36,7 @@ export const Hint = () => {
   const deviceId = useDeviceUUID();
   console.log(stored);
   
-  const [{ data: found }, getDroid] = useAxios<Array<Droid>>(
+  const [{ data: found }, getDroid] = useAxios<Droid>(
     {
       url: `/api/droids/${deviceId}`,
       params: {
