@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface DroidsRepository: CoroutineCrudRepository<Droid, String> {
-    @Query(value = "{ 'order' : ?0}", fields = "{ 'deviceId' : ?1}")
+    @Query(value = "{ 'order' : ?0, 'deviceId' : ?1}")
     @Update("{\$set : { 'activated' : true } }")
     suspend fun findByOrderAndActivate(order: Int, deviceId: String): Int
 
