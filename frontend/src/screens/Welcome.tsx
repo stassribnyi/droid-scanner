@@ -43,12 +43,23 @@ export const Welcome = () => {
       return;
     }
 
+    // Handle droidId activation if scanned via smartphone camera
     const droidId = tryParseDroidId(getCurrentURL());
 
     if (droidId) {
-      activateDroid(droidId);
+      // TODO: refactor to use server side error
+      if (droidId <= 20) {
+        activateDroid(droidId).finally(() => history.replaceState({}, '', '/'));
 
-      return;
+        return;
+      }
+
+      history.replaceState({}, '', '/');
+
+      notify({
+        message: 'These aren’t the droids you are looking for!',
+        severity: 'info',
+      });
     }
 
     navigate('/dashboard');
