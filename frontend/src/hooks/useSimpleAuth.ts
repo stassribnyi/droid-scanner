@@ -3,7 +3,7 @@ import { useDeviceUUID } from './useDeviceUUID';
 
 const STATUS = 'logged-in' as const
 
-export const useSimpleAuth = (): [boolean, () => void] => {
+export const useSimpleAuth = (): [boolean, () => void, () => void] => {
   const deviceId = useDeviceUUID()
   const [isLoggedIn, setLoggedIn] = useState(false);
 
@@ -29,5 +29,9 @@ export const useSimpleAuth = (): [boolean, () => void] => {
     setLoggedIn(status === STATUS)
   }, [deviceId, isLoggedIn]);
 
-  return [isLoggedIn, () => setLoggedIn(true)];
+  return [isLoggedIn, () => setLoggedIn(true), () => {
+    localStorage.removeItem(deviceId);
+
+    setLoggedIn(false)
+  }];
 };

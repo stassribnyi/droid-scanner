@@ -158,7 +158,7 @@ export const Welcome = () => {
               size='large'
               type='submit'
             >
-              Join Now! (validate)
+              Join Now!
             </Button>
           </Grid>
         </Grid>

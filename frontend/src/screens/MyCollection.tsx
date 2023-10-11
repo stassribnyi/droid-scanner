@@ -170,7 +170,7 @@ export const MyCollection = () => {
     const { data } = await getMyCollection();
 
     setDroids((data?.length ?? 0) > 0 ? data : fakeDroids());
-    setDroids(fakeDroids());
+    // setDroids(fakeDroids());
   });
 
   useEffect(() => {
