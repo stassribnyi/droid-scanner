@@ -223,7 +223,7 @@ export const Hint = () => {
                 prepared for you. You have proven yourself to be a master jedi.
               </Typography>
               <Typography align='center' sx={{ fontWeight: '700' }}>
-                Will force be with you!
+                May the force be with you!
               </Typography>
               <Typography variant='caption' align='center'>
                 Thanks for playing our little game, your Coders of Republic
