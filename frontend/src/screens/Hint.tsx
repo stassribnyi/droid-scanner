@@ -34,7 +34,7 @@ export const Hint = () => {
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
-  
+
   const [{ data: found }, getDroid] = useAxios<Droid>(
     {
       url: `/api/droids/${deviceId}`,
@@ -82,12 +82,7 @@ export const Hint = () => {
   };
 
   return (
-    <BaseScreen
-      title='Current Quest'
-      onBack={() =>
-        id === stored ? navigate('/my-collection') : navigate('/')
-      }
-    >
+    <BaseScreen title='Current Quest' onBack={() => navigate('/')}>
       <Grid
         container
         direction='row'
@@ -143,7 +138,7 @@ export const Hint = () => {
           </Typography>
         </CardContent>
       </Card>
-      <Paper sx={{ p: 1, width: '100%' }}>
+      <Paper sx={{ p: 2, width: '100%' }}>
         {droid.activated ? (
           <Button onClick={() => setShowHint((value) => !value)}>
             {showHint ? 'Who am I?' : 'Wanna chat more?'}

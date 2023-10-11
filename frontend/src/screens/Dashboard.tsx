@@ -21,7 +21,28 @@ import { Navigation, ScreenContent } from '../components';
 import { useAsyncAction, useDeviceUUID } from '../hooks';
 import { Rating, User } from '../types';
 
-import { collectedToRank, stringToAvatar } from '../utils';
+import { collectedToRank } from '../utils';
+import { WorkspacePremium } from '@mui/icons-material';
+
+function collectedToRankColor(collected: number, total: number) {
+  if (total === 0) {
+    return 'white';
+  }
+
+  const coefficient = collected / total;
+
+  if (coefficient < 0.5) {
+    return '#9CD0B2';
+  }
+
+  if (coefficient >= 0.5 && coefficient < 0.75) {
+    return '#aa9cd0';
+  }
+
+  if (coefficient >= 0.75) {
+    return '#ffc05f';
+  }
+}
 
 const createLeaderboardData = (rating: Rating, totalDroids: number) => ({
   name: rating.nickname,
@@ -162,12 +183,11 @@ export const Dashboard = () => {
           <Table aria-label='Ranks table' size='small'>
             <TableHead>
               <TableRow>
-                <TableCell align='center' sx={{ padding: '6px 12px' }}>
-                  Nickname
-                </TableCell>
-                <TableCell align='center' sx={{ padding: '6px 12px' }}>
+                <TableCell align='center' sx={{ padding: 0 }}></TableCell>
+                <TableCell sx={{ padding: '6px 12px' }}>Nickname</TableCell>
+                {/* <TableCell align='center' sx={{ padding: '6px 12px' }}>
                   Rank
-                </TableCell>
+                </TableCell> */}
                 <TableCell align='center' sx={{ padding: '6px 12px' }}>
                   Collected
                 </TableCell>
@@ -180,14 +200,29 @@ export const Dashboard = () => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>
-                    <Stack direction='row' alignItems='center' gap={2}>
-                      <Avatar {...stringToAvatar(row.name)} />
-                      <Typography variant='caption'>{row.name}</Typography>
-                    </Stack>
+                    {/* <Stack direction='row' alignItems='center' gap={2}> */}
+                    {/* <Avatar {...stringToAvatar(row.name)} /> */}
+                    <WorkspacePremium
+                      sx={{
+                        color: collectedToRankColor(
+                          row.collected,
+                          user.totalDroids
+                        ),
+                      }}
+                    />
+                    {/* <Typography variant='caption'>{row.name}</Typography> */}
+                    {/* </Stack> */}
                   </TableCell>
-                  <TableCell align='center'>
+                  <TableCell>
+                    {/* <Stack direction='row' alignItems='center' gap={2}> */}
+                    {/* <Avatar {...stringToAvatar(row.name)} /> */}
+                    {/* <WorkspacePremium /> */}
+                    <Typography variant='caption'>{row.name}</Typography>
+                    {/* </Stack> */}
+                  </TableCell>
+                  {/* <TableCell align='center'>
                     <Typography variant='caption'>{row.rank}</Typography>
-                  </TableCell>
+                  </TableCell> */}
                   <TableCell align='center'>
                     <Typography variant='caption'>{row.collected}</Typography>
                   </TableCell>

@@ -1,7 +1,7 @@
 import { AppBar, Box, IconButton, Toolbar, Typography } from '@mui/material';
 import { ScreenContent } from './ScreenContent';
 import { Navigation } from './Navigation';
-import { ChevronLeft } from '@mui/icons-material';
+import { Home } from '@mui/icons-material';
 import { FC, PropsWithChildren } from 'react';
 
 // TODO: extract appbar
@@ -26,12 +26,17 @@ export const BaseScreen: FC<
             edge='start'
             color='inherit'
             aria-label='back'
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, position: 'absolute' }}
             onClick={onBack}
           >
-            <ChevronLeft />
+            <Home />
           </IconButton>
-          <Typography variant='h6' component='div' sx={{ flexGrow: 1 }}>
+          <Typography
+            variant='h6'
+            component='div'
+            sx={{ flexGrow: 1 }}
+            align='center'
+          >
             {title}
           </Typography>
         </Toolbar>

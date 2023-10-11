@@ -131,12 +131,17 @@ const DroidCard: FC<{
           <img
             alt={name}
             src={imageUrl}
-            style={{ width: 100, height: 100, mixBlendMode: 'lighten' }}
+            style={{ width: 80, height: 80, mixBlendMode: 'lighten' }}
           />
         ) : (
-          <QuestionMark sx={{ width: 100, height: 100 }} />
+          <QuestionMark sx={{ width: 80, height: 80, color: '#fdfcfa' }} />
         )}
-        <Typography variant='caption' color='#ff6855' sx={{ width: '100%' }}>
+        <Typography
+          variant='caption'
+          color='#ff6855'
+          sx={{ width: '100%', fontSize: 12 }}
+          align='center'
+        >
           {activated ? name : 'Not Found'}
         </Typography>
         <Typography
