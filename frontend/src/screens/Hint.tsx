@@ -18,18 +18,30 @@ import { useDeviceUUID, useAsyncAction } from '../hooks';
 import { Droid, User } from '../types';
 import { collectedToRank } from '../utils';
 
+const PLACEHOLDER_DROID: Droid = {
+  id: '',
+  name: 'Loading...',
+  description: `Loading...`,
+  order: 1,
+  activated: false,
+  hint: `Loading...`,
+  imageUrl: '',
+};
+
 export const Hint = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
   const deviceId = useDeviceUUID();
-  const [{ data: droids }, getDroid] = useAxios<Array<Droid>>(
+  console.log(stored);
+  
+  const [{ data: found }, getDroid] = useAxios<Array<Droid>>(
     {
-      url: '/api/droids',
+      url: `/api/droids/${deviceId}`,
       params: {
         deviceId,
-        order: stored,
+        order: stored || 1,
       },
     },
     {
@@ -57,19 +69,11 @@ export const Hint = () => {
     }
 
     getAll();
-  }, [deviceId]);
+  }, [deviceId, stored]);
 
-  const found = (droids ?? []).find((d) => d.order === +stored);
+  // const found = droid;
 
-  const droid = found || {
-    id: '',
-    name: 'Loading...',
-    description: `Loading...`,
-    order: 1,
-    activated: false,
-    hint: `Loading...`,
-    imageUrl: '',
-  };
+  const droid = found ?? PLACEHOLDER_DROID;
 
   const user = data || {
     deviceId: deviceId,

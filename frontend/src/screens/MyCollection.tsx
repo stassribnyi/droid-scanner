@@ -38,11 +38,11 @@ const InfoGrid: FC<{
       }
 
       cells.push(
-        <Grid xs={Math.floor(12 / itemsPerColumn)}>{items[itemIdx]}</Grid>
+        <Grid key={itemIdx} xs={Math.floor(12 / itemsPerColumn)}>{items[itemIdx]}</Grid>
       );
     }
 
-    rows.push(<Grid container>{cells}</Grid>);
+    rows.push(<Grid container key={rowIdx}>{cells}</Grid>);
   }
 
   return (

@@ -3,9 +3,12 @@ import { useCallback } from 'react';
 
 import { useDeviceUUID } from './useDeviceUUID';
 import { Droid } from '../types';
+import { useNavigate } from 'react-router';
 
 export const useActivateDroid = (): (droidId: number) => Promise<Droid> => {
     const deviceId = useDeviceUUID();
+    const navigate = useNavigate();
+
     const [, activateDroid] = useAxios<Droid>(
         {
             url: '/api/droids/activate',
@@ -21,7 +24,11 @@ export const useActivateDroid = (): (droidId: number) => Promise<Droid> => {
             params: {
                 deviceId, droidOrder: droidId,
             }
-        }).then(({ data }) => data),
-        [activateDroid, deviceId]
+        }).then(({ data }) => {
+            navigate(`/hint/${data.order}`)
+
+            return data
+        }),
+        [activateDroid, deviceId, navigate]
     )
 }

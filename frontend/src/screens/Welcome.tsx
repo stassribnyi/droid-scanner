@@ -26,9 +26,11 @@ export const Welcome = () => {
   const [hasAccess, grantAccess] = useSimpleAuth();
 
   useEffect(() => {
-    if (hasAccess) {
-      navigate('/dashboard');
+    if (!hasAccess) {
+      return;
     }
+
+    navigate('/dashboard');
   }, [hasAccess, navigate]);
 
   const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
