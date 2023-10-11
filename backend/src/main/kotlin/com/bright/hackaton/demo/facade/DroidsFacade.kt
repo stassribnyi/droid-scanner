@@ -12,6 +12,7 @@ class DroidsFacade(private val droidsService: DroidsService, private val userSer
     suspend fun activateDroidForUser(deviceId: String, droidOrderNumber: Int): Droid {
         userService.updateUser(deviceId) {
             activatedDroidsNumbers += droidOrderNumber
+            collectedDroids+=1
         }
         droidsService.findByOrderAndActivate(droidOrderNumber, deviceId)
         return droidsService.getByDeviceIdAndOrder(deviceId, droidOrderNumber)
