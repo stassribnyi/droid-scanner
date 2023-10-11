@@ -14,24 +14,37 @@ import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
-import { useAsyncAction, useDeviceUUID, useSimpleAuth } from '../hooks';
+import {
+  useAsyncAction,
+  useDeviceUUID,
+  useNotify,
+  useSimpleAuth,
+} from '../hooks';
 import { ScreenContent } from '../components';
 
 import type { User } from '../types';
+import { tryParseDroidId } from '../utils';
+
+function getCurrentURL(): string {
+  return window.location.href;
+}
 
 export const Welcome = () => {
   const [nickname, setNickname] = useState('');
   const deviceId = useDeviceUUID();
   const navigate = useNavigate();
   const [hasAccess, grantAccess] = useSimpleAuth();
+  const { notify } = useNotify();
 
   useEffect(() => {
     if (!hasAccess) {
       return;
     }
 
+    notify(`DroidId: ${tryParseDroidId(getCurrentURL())}`);
+
     navigate('/dashboard');
-  }, [hasAccess, navigate]);
+  }, [hasAccess, navigate, notify]);
 
   const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
     manual: true,

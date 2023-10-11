@@ -29,12 +29,6 @@ export const useAsyncAction = (action: () => Promise<void>): [boolean, () => Pro
 
                     return;
                 }
-
-                if (error.response?.status === 404 && error.response.config.url?.includes('/api/droids')) {
-                    notify({ message: "These aren’t the droids you are looking for!", severity: 'info' });
-
-                    return;
-                }
             }
 
             notify({ message: formatError(error), severity: 'error' });
