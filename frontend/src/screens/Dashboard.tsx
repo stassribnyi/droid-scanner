@@ -13,35 +13,16 @@ import {
   TableRow,
   Typography,
 } from '@mui/material';
+import { WorkspacePremium } from '@mui/icons-material';
+
 import { useEffect } from 'react';
 import useAxios from 'axios-hooks';
 
 import { Navigation, ScreenContent } from '../components';
 import { useAsyncAction, useDeviceUUID } from '../hooks';
+
+import { collectedToRank, collectedToColor } from '../utils';
 import { Rating, User } from '../types';
-
-import { collectedToRank } from '../utils';
-import { WorkspacePremium } from '@mui/icons-material';
-
-function collectedToRankColor(collected: number, total: number) {
-  if (total === 0) {
-    return 'white';
-  }
-
-  const coefficient = collected / total;
-
-  if (coefficient < 0.5) {
-    return '#9CD0B2';
-  }
-
-  if (coefficient >= 0.5 && coefficient < 0.75) {
-    return '#aa9cd0';
-  }
-
-  if (coefficient >= 0.75) {
-    return '#ffc05f';
-  }
-}
 
 const createLeaderboardData = (rating: Rating, totalDroids: number) => ({
   name: rating.nickname,
@@ -110,10 +91,9 @@ export const Dashboard = () => {
               align='center'
               sx={{ mb: 3 }}
             >
-              Welcome,{' '}
+              Welcome,
               <Typography
                 variant='h6'
-                component='span'
                 color='#ff6855'
                 sx={{ fontWeight: 'bold' }}
               >
@@ -126,14 +106,14 @@ export const Dashboard = () => {
                   sx={{
                     p: 1,
                     backgroundImage:
-                      'linear-gradient(to bottom, #76B591, #4c6256de)',
+                      'linear-gradient(to bottom, #76B591, #577163)',
                     boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #84B398',
+                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #84B398',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
                     <Typography sx={{ fontWeight: 'bold' }}>Rank</Typography>
-                    <Typography>
+                    <Typography variant='body2'>
                       {collectedToRank(user.collectedDroids, user.totalDroids)}
                     </Typography>
                   </Stack>
@@ -146,14 +126,16 @@ export const Dashboard = () => {
                     backgroundImage:
                       'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
                     boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #dc422f',
+                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #dc422f',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
                     <Typography sx={{ fontWeight: 'bold' }}>
                       Collected
                     </Typography>
-                    <Typography>{user?.collectedDroids}</Typography>
+                    <Typography variant='body2'>
+                      {user?.collectedDroids}
+                    </Typography>
                   </Stack>
                 </Paper>
               </Grid>
@@ -164,12 +146,12 @@ export const Dashboard = () => {
                     backgroundImage:
                       'linear-gradient(to bottom, #803DE1, #5b298e)',
                     boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.5),inset 0px 2px 3px #874cef',
+                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #874cef',
                   }}
                 >
                   <Stack alignItems='center' gap={1}>
                     <Typography sx={{ fontWeight: 'bold' }}>Left</Typography>
-                    <Typography>
+                    <Typography variant='body2'>
                       {user.totalDroids - user.collectedDroids}
                     </Typography>
                   </Stack>
@@ -187,9 +169,7 @@ export const Dashboard = () => {
               <TableRow>
                 <TableCell align='center' sx={{ padding: 0 }}></TableCell>
                 <TableCell sx={{ padding: '6px 12px' }}>Nickname</TableCell>
-                {/* <TableCell align='center' sx={{ padding: '6px 12px' }}>
-                  Rank
-                </TableCell> */}
+
                 <TableCell align='center' sx={{ padding: '6px 12px' }}>
                   Collected
                 </TableCell>
@@ -202,31 +182,25 @@ export const Dashboard = () => {
                   sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                 >
                   <TableCell>
-                    {/* <Stack direction='row' alignItems='center' gap={2}> */}
-                    {/* <Avatar {...stringToAvatar(row.name)} /> */}
                     <WorkspacePremium
                       sx={{
-                        color: collectedToRankColor(
+                        height: '28px',
+                        width: '28px',
+                        color: collectedToColor(
                           row.collected,
                           user.totalDroids
                         ),
                       }}
                     />
-                    {/* <Typography variant='caption'>{row.name}</Typography> */}
-                    {/* </Stack> */}
                   </TableCell>
                   <TableCell>
-                    {/* <Stack direction='row' alignItems='center' gap={2}> */}
-                    {/* <Avatar {...stringToAvatar(row.name)} /> */}
-                    {/* <WorkspacePremium /> */}
                     <Typography variant='caption'>{row.name}</Typography>
-                    {/* </Stack> */}
                   </TableCell>
-                  {/* <TableCell align='center'>
-                    <Typography variant='caption'>{row.rank}</Typography>
-                  </TableCell> */}
+
                   <TableCell align='center'>
-                    <Typography variant='caption'>{row.collected}</Typography>
+                    <Typography variant='caption' sx={{ fontWeight: 500 }}>
+                      {row.collected}
+                    </Typography>
                   </TableCell>
                 </TableRow>
               ))}
