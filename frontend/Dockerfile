@@ -4,13 +4,13 @@ WORKDIR /app
 
 COPY frontend/package.json .
 
-RUN yarn
-
 ENV PORT=$PORT
 ENV PROXY_API=$PROXY_API
 
 COPY frontend .
 
-EXPOSE 5173
+RUN yarn build
 
-CMD ["yarn", "dev"]
+EXPOSE $PORT
+
+CMD ["yarn", "preview"]
