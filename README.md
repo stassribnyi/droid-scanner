@@ -4,28 +4,37 @@ Droids of Republic is a web application that allows users to scan QR codes and f
 
 ## Features
 
-- Scan QR codes using your device's camera or upload an image of a QR code
-- Find droids from the Star Wars API and see their details
-- Collect and manage your droid collection in your profile
-- Rank your droids by dragging and dropping them in the ranking page
-- View the global leaderboard of other users and their droid collections
-- Responsive and user-friendly interface
+- Scan QR codes using your device's camera
+- Find droids from Star Wars universe and see their details
+- Finish quests droid gives to you
+- View the global leaderboard of other users
+- Mobile-friendly interface
 
 ## Technologies
 
 - Frontend: Vite + React + TypeScript + MUI
 - Backend: Kotlin + Spring Boot + MongoDB
 
-## Installation
+## Getting Started
 
-To run this project, you need to have Node.js, Java, and PostgreSQL installed on your machine.
+These instructions will cover usage information and docker container 
 
-Clone this repository. You need to have docker cli installed on your machine.
+### Prerequisities
 
-> docker compose run
+In order to run this project container you'll need docker installed.
 
-Open your browser and go to `http://localhost:3000` to see the application
+* [Windows](https://docs.docker.com/windows/started)
+* [OS X](https://docs.docker.com/mac/started/)
+* [Linux](https://docs.docker.com/linux/started/)
 
-## Usage
+### Usage
 
-To use this application, you need to register your user name. Then, you can scan QR codes by clicking on the scan icon in the navigation bar. You can either use your device's camera or upload an image of a QR code. If the QR code contains a valid URL of a droid from the Star Wars API, you will see the details of the droid and have the option to add it to your collection. Your rank depends on the amount of droids you've collected. You can view the global leaderboard of other users and their droids by clicking on the leaderboard icon in the navigation bar.
+Run all containers with:
+
+```shell
+docker compose up
+```
+
+## Application flow
+
+To use this application, you need to register your user name. Then, you can scan QR codes by clicking on the scan icon in the navigation bar. You can either use your device's camera directly or via app. If the QR code contains a valid URL of a droid from Star Wars universe, you will see the details of the activated droid. Your rank depends on the amount of droids you've collected. You can view the global leaderboard of other users and droids they've collected.
