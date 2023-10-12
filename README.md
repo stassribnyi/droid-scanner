@@ -15,15 +15,26 @@ Droids of Republic is a web application that allows users to scan QR codes and f
 - Frontend: Vite + React + TypeScript + MUI
 - Backend: Kotlin + Spring Boot + MongoDB
 
-## Installation
+## Getting Started
+These instructions will cover usage information and docker container 
 
-To run this project, you need to have Node.js, Java, and PostgreSQL installed on your machine.
+### Prerequisities
+In order to run this project container you'll need docker installed.
+* [Windows](https://docs.docker.com/windows/started)
+* [OS X](https://docs.docker.com/mac/started/)
+* [Linux](https://docs.docker.com/linux/started/)
+* 
+### Start
+Run all containers with:
+```shell
+docker compose up
+```
 
-Clone this repository. You need to have docker cli installed on your machine.
+UI 
+> http://localhost:3000
 
-> docker compose run
-
-Open your browser and go to `http://localhost:3000` to see the application
+Swagger
+> http://localhost:8080
 
 ## Usage
 
