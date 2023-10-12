@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useDeviceUUID } from './useDeviceUUID';
+import axios from 'axios';
 
 const STATUS = 'logged-in' as const
 
@@ -26,7 +27,10 @@ export const useSimpleAuth = (): [boolean, () => void, () => void] => {
       return
     }
 
-    setLoggedIn(status === STATUS)
+    // TODO: refactor
+    axios.get(`/api/users/${deviceId}`)
+      .then(() => { setLoggedIn(status === STATUS) })
+      .catch(() => { localStorage.removeItem(deviceId); setLoggedIn(false) })
   }, [deviceId, isLoggedIn]);
 
   return [isLoggedIn, () => setLoggedIn(true), () => {
