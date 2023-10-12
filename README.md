@@ -35,6 +35,12 @@ Run all containers with:
 docker compose up
 ```
 
+UI 
+> http://localhost:3000
+
+Swagger
+> http://localhost:8080
+
 ## Application flow
 
 To use this application, you need to register your user name. Then, you can scan QR codes by clicking on the scan icon in the navigation bar. You can either use your device's camera directly or via app. If the QR code contains a valid URL of a droid from Star Wars universe, you will see the details of the activated droid. Your rank depends on the amount of droids you've collected. You can view the global leaderboard of other users and droids they've collected.
