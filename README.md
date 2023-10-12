@@ -15,32 +15,33 @@ Droids of Republic is a web application that allows users to scan QR codes and f
 - Frontend: Vite + React + TypeScript + MUI
 - Backend: Kotlin + Spring Boot + MongoDB
 
-## Getting Started
+## Installation
 
-These instructions will cover usage information and docker container 
+To run this project, you need to have Node.js, Java, and PostgreSQL installed on your machine.
 
-### Prerequisities
+Clone this repository. You need to have docker cli installed on your machine.
 
-In order to run this project container you'll need docker installed.
+> docker compose run
 
-* [Windows](https://docs.docker.com/windows/started)
-* [OS X](https://docs.docker.com/mac/started/)
-* [Linux](https://docs.docker.com/linux/started/)
+Open your browser and go to `http://localhost:3000` to see the application
 
-### Usage
+## Usage
 
-Run all containers with:
+To use this application, you need to register your user name. You can use button Generate Nickname or enter your own.
 
-```shell
-docker compose up
-```
+![img.png](img.png)
 
-UI 
-> http://localhost:3000
+Then, you can scan QR codes by clicking on the scan icon in the navigation bar. You can either use your device's camera or upload an image of a QR code. 
 
-Swagger
-> http://localhost:8080
+![img_1.png](img_1.png)
 
-## Application flow
+If the QR code contains a valid URL of a droid from the Star Wars API, you will see the details of the droid and have the option to add it to your collection. 
 
-To use this application, you need to register your user name. Then, you can scan QR codes by clicking on the scan icon in the navigation bar. You can either use your device's camera directly or via app. If the QR code contains a valid URL of a droid from Star Wars universe, you will see the details of the activated droid. Your rank depends on the amount of droids you've collected. You can view the global leaderboard of other users and droids they've collected.
+![img_2.png](img_2.png)
+
+Your rank depends on the amount of droids you've collected. You can view the global leaderboard of other users and their droids by clicking on the leaderboard icon in the navigation bar.
+
+For testing, you can use these QR codes:
+
+![c3p0.png](c3p0.png)
+![r2d2.png](r2d2.png)
