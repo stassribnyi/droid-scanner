@@ -42,7 +42,7 @@ function getCurrentURL(): string {
 export const Welcome = () => {
   const { control, handleSubmit, setValue, formState } = useForm<RegisterForm>({
     defaultValues: { nickname: '' },
-    resolver: yupResolver(schema)
+    resolver: yupResolver(schema),
   });
 
   const deviceId = useDeviceUUID();
@@ -71,26 +71,11 @@ export const Welcome = () => {
     }
 
     // Handle droidId activation if scanned via smartphone camera
-    const droidId = tryParseDroidId(getCurrentURL());
-
-    if (droidId) {
-      // TODO: refactor to use server side error
-      if (droidId <= 20) {
-        activateDroid(droidId).finally(() => history.replaceState({}, '', '/'));
-
-        return;
-      }
-
-      history.replaceState({}, '', '/');
-
-      notify({
-        message: 'These aren’t the droids you are looking for!',
-        severity: 'info',
-      });
-    }
-
-    navigate('/dashboard');
-  }, [activateDroid, hasAccess, navigate, notify]);
+    activateDroid(tryParseDroidId(getCurrentURL())).finally(() =>
+      // Remove any query params left after activation
+      history.replaceState({}, '', '/')
+    );
+  }, [activateDroid, hasAccess, navigate]);
 
   const generateNickname = useCallback(async () => {
     try {

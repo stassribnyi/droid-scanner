@@ -1,34 +1,47 @@
 import useAxios from 'axios-hooks';
 import { useCallback } from 'react';
-
-import { useDeviceUUID } from './useDeviceUUID';
-import { Droid } from '../types';
 import { useNavigate } from 'react-router';
 
-export const useActivateDroid = (): (droidId: number) => Promise<Droid> => {
+import { useDeviceUUID } from './useDeviceUUID';
+import { useNotify } from './useNotify';
+
+import { Droid } from '../types';
+
+export const useActivateDroid = (): (droidId: null | number) => Promise<void> => {
     const deviceId = useDeviceUUID();
     const navigate = useNavigate();
+    const { notify } = useNotify();
 
     const [, activateDroid] = useAxios<Droid>(
         {
             url: '/api/droids/activate',
             method: 'PUT',
         },
-        {
-            manual: true,
-        }
+        { manual: true, }
     );
 
-    return useCallback((droidId: number) =>
-        activateDroid({
-            params: {
-                deviceId, droidOrder: droidId,
-            }
-        }).then(({ data }) => {
-            navigate(`/hint/${data.order}`)
+    // TODO: is this a good place for navigation?
+    return useCallback(
+        async (droidId: null | number) => {
+            try {
+                if (!droidId) {
+                    throw new Error('Invalid droid');
+                }
 
-            return data
-        }),
-        [activateDroid, deviceId, navigate]
+                const { data } = await activateDroid({
+                    params: { deviceId, droidOrder: droidId, }
+                });
+
+                navigate(`/hint/${data.order}`);
+            } catch (error) {
+                notify({
+                    message: `These aren't the droids you are looking for!`,
+                    severity: 'info',
+                });
+
+                navigate('/dashboard');
+            }
+        },
+        [activateDroid, deviceId, navigate, notify]
     )
 }
