@@ -4,39 +4,66 @@ import {
   CardContent,
   CardMedia,
   Stack,
-  TextField,
   Typography,
   Unstable_Grid2 as Grid,
+  TextField,
 } from '@mui/material';
 
 import useAxios from 'axios-hooks';
 
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 import {
   useActivateDroid,
-  useAsyncAction,
   useDeviceUUID,
   useNotify,
   useSimpleAuth,
 } from '../hooks';
-import { ScreenContent } from '../components';
+import { ScreenContent, Shake } from '../components';
 
 import type { User } from '../types';
-import { tryParseDroidId } from '../utils';
+import { formatError, tryParseDroidId } from '../utils';
+
+type RegisterForm = Readonly<{ nickname: string }>;
+
+const schema = yup
+  .object({ nickname: yup.string().trim().required("Sorry, I didn't get it!") })
+  .required();
 
 function getCurrentURL(): string {
   return window.location.href;
 }
 
 export const Welcome = () => {
-  const [nickname, setNickname] = useState('');
+  const { control, handleSubmit, setValue, formState } = useForm<RegisterForm>({
+    defaultValues: { nickname: '' },
+    resolver: yupResolver(schema)
+  });
+
   const deviceId = useDeviceUUID();
   const navigate = useNavigate();
   const [hasAccess, grantAccess] = useSimpleAuth();
   const { notify } = useNotify();
   const activateDroid = useActivateDroid();
+
+  // TODO: consider whether it has any benefits over pure axios calls
+  const [{ loading: isGenerating }, getGenerateNickname] = useAxios(
+    '/api/users/generate-nickname',
+    { manual: true }
+  );
+
+  const [, postRegisterUser] = useAxios<User>(
+    {
+      method: 'POST',
+      url: '/api/users/register',
+    },
+    { manual: true }
+  );
 
   useEffect(() => {
     if (!hasAccess) {
@@ -65,47 +92,37 @@ export const Welcome = () => {
     navigate('/dashboard');
   }, [activateDroid, hasAccess, navigate, notify]);
 
-  const [, getGeneratedNickName] = useAxios('/api/users/generate-nickname', {
-    manual: true,
-  });
+  const generateNickname = useCallback(async () => {
+    try {
+      const { data } = await getGenerateNickname();
 
-  const [, registerUser] = useAxios<User>(
-    {
-      method: 'POST',
-      url: '/api/users/register',
-      params: { userNickname: nickname, deviceId: deviceId },
+      setValue('nickname', data);
+    } catch (error) {
+      notify({
+        message:
+          'Droid is trying to come up with the nickname for you, but he is struggling. Try again later!',
+        severity: 'error',
+      });
+    }
+  }, [getGenerateNickname, notify, setValue]);
+
+  const registerUser = useCallback<SubmitHandler<RegisterForm>>(
+    async ({ nickname }) => {
+      try {
+        await postRegisterUser({
+          params: { userNickname: nickname, deviceId: deviceId },
+        });
+        grantAccess();
+      } catch (error) {
+        notify({ message: formatError(error), severity: 'error' });
+      }
     },
-    { manual: true }
+    [deviceId, grantAccess, notify, postRegisterUser]
   );
-
-  const [generating, generateName] = useAsyncAction(async () => {
-    const { data } = await getGeneratedNickName();
-
-    setNickname(data);
-  });
-
-  const [registering, register] = useAsyncAction(async () => {
-    await registerUser();
-    grantAccess();
-  });
 
   return (
     <ScreenContent>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          // pseudo validation
-          const value = nickname.trim();
-
-          if (!value) {
-            setNickname('');
-
-            return;
-          }
-
-          register();
-        }}
-      >
+      <form onSubmit={handleSubmit(registerUser)}>
         <Grid
           container
           justifyContent='center'
@@ -138,7 +155,7 @@ export const Welcome = () => {
               <CardMedia
                 sx={{ height: 340 }}
                 image='/welcome.png'
-                title='green iguana'
+                title='Welcome droid'
               />
               <CardContent
                 sx={{
@@ -159,20 +176,29 @@ export const Welcome = () => {
                   >
                     Welcome to our ranks!
                   </Typography>
-
-                  <TextField
-                    required
-                    label='What is your name, padawan?'
-                    variant='outlined'
-                    size='medium'
-                    value={nickname}
-                    onChange={({ target }) => setNickname(target.value)}
+                  <Controller
+                    name='nickname'
+                    control={control}
+                    render={({ field, fieldState: { error } }) => (
+                      <Shake enabled={!!error}>
+                        <TextField
+                          {...field}
+                          fullWidth
+                          size='medium'
+                          variant='outlined'
+                          error={!!error}
+                          helperText={error?.message}
+                          label='What is your name, padawan?'
+                        />
+                      </Shake>
+                    )}
                   />
+
                   <Button
-                    disabled={generating}
                     variant='text'
                     color='primary'
-                    onClick={generateName}
+                    disabled={isGenerating}
+                    onClick={generateNickname}
                   >
                     Generate nickname
                   </Button>
@@ -182,11 +208,17 @@ export const Welcome = () => {
           </Grid>
           <Grid xs={12}>
             <Button
-              disabled={registering}
+              disabled={formState.isSubmitting || isGenerating}
               fullWidth
               variant='contained'
               size='large'
               type='submit'
+              sx={(theme) => ({
+                transition: theme.transitions.create(['filter'], {
+                  duration: theme.transitions.duration.standard,
+                }),
+                ...(!formState.isValid && { filter: 'brightness(0.75)' }),
+              })}
             >
               Join Now!
             </Button>
