@@ -34,10 +34,12 @@ export const useActivateDroid = (): (droidId: null | number) => Promise<void> =>
 
                 navigate(`/hint/${data.order}`);
             } catch (error) {
-                notify({
-                    message: `These aren't the droids you are looking for!`,
-                    severity: 'info',
-                });
+                if (droidId) {
+                    notify({
+                        message: `These aren't the droids you are looking for!`,
+                        severity: 'info',
+                    });
+                }
 
                 navigate('/dashboard');
             }

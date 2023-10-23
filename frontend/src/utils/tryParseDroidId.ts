@@ -13,6 +13,6 @@ export function tryParseDroidId(data: string | undefined) {
 
     return parseInt(droidId, 10);
   } catch (err) {
-    return null;
+    return -1;
   }
 }
