@@ -1,11 +1,11 @@
 import { ReactElement, Ref, forwardRef, useState } from 'react';
 
 import { Box, Dialog, IconButton, Slide, useTheme } from '@mui/material';
-import { Close, QrCodeScannerRounded } from '@mui/icons-material';
+import { Close, QrCodeSharp as QrCode } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 
 import { Scanner } from './Scanner';
-import { useActivateDroid, useNotify } from '../hooks';
+import { useActivateDroid } from '../hooks';
 import { tryParseDroidId } from '../utils';
 
 const Transition = forwardRef(
@@ -18,7 +18,6 @@ export const ScannerButton = () => {
   const theme = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const activateDroid = useActivateDroid();
-  const { notify } = useNotify();
 
   function closeScanner() {
     setIsOpen(false);
@@ -33,6 +32,7 @@ export const ScannerButton = () => {
       <IconButton
         onClick={openScanner}
         sx={{
+          padding: '12px',
           backdropFilter: 'blur(8px)',
 
           color: 'white',
@@ -52,12 +52,7 @@ export const ScannerButton = () => {
           },
         }}
       >
-        <QrCodeScannerRounded
-          sx={{
-            width: '100%',
-            height: '100%',
-          }}
-        />
+        <QrCode sx={{ width: '100%', height: '100%' }} />
       </IconButton>
       <Dialog
         fullScreen
@@ -90,16 +85,7 @@ export const ScannerButton = () => {
         >
           <Scanner
             onResult={(data) => {
-              const droidId = tryParseDroidId(data);
-              // TODO: rely on server errors
-              if (droidId && 1 <= droidId && droidId <= 20) {
-                activateDroid(droidId);
-              } else {
-                notify({
-                  message: 'These aren’t the droids you are looking for!',
-                  severity: 'info',
-                });
-              }
+              activateDroid(tryParseDroidId(data));
 
               setIsOpen(false);
             }}

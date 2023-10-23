@@ -151,7 +151,7 @@ export const Hint = () => {
       <Paper sx={{ p: 2, width: '100%' }}>
         {droid.activated ? (
           <Button onClick={() => setShowHint((value) => !value)}>
-            {showHint ? 'Who am I?' : 'Wanna chat more?'}
+            Who am I?
             {showHint ? <ExpandLess /> : <ExpandMore />}
           </Button>
         ) : (
@@ -201,7 +201,7 @@ export const Hint = () => {
           <CardContent
             sx={{
               marginTop: '-6rem',
-              borderRadius: '2rem',
+              borderRadius: '1.5rem',
               background: 'rgba(35, 45, 60, 0.5)',
               borderBottomLeftRadius: '1rem',
               borderBottomRightRadius: '1rem',

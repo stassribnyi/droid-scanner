@@ -145,7 +145,7 @@ export const Welcome = () => {
               <CardContent
                 sx={{
                   marginTop: '-6rem',
-                  borderRadius: '2rem',
+                  borderRadius: '1.5rem',
                   background: 'rgba(35, 45, 60, 0.5)',
                   borderBottomLeftRadius: '1rem',
                   borderBottomRightRadius: '1rem',

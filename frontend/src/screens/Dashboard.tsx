@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { WorkspacePremium } from '@mui/icons-material';
 
-import { useEffect } from 'react';
+import { FC, PropsWithChildren, useEffect } from 'react';
 import useAxios from 'axios-hooks';
 
 import { Navigation, ScreenContent } from '../components';
@@ -29,6 +29,28 @@ const createLeaderboardData = (rating: Rating, totalDroids: number) => ({
   collected: rating.collectedDroids,
   rank: collectedToRank(rating.collectedDroids, totalDroids),
 });
+
+const calculateProgress = (collected: number, total: number): string => {
+  return `${((collected / total) * 100).toFixed(1)}%`;
+};
+
+const InfoItem: FC<
+  PropsWithChildren<Readonly<{ label: string; color?: string }>>
+> = ({ label, color, children }) => (
+  <Paper
+    sx={{
+      p: 1,
+      background: 'transparent',
+      boxShadow:
+        'inset 2px 2px 6px 0 rgba(0, 0, 0, 0.3), inset -1px -2px 6px 0 rgba(255, 255, 255, 0.07)',
+    }}
+  >
+    <Stack alignItems='center' gap={1}>
+      <Typography variant='body2'>{label}</Typography>
+      <Typography sx={{ color, fontWeight: 'bold' }}>{children}</Typography>
+    </Stack>
+  </Paper>
+);
 
 export const Dashboard = () => {
   const deviceId = useDeviceUUID();
@@ -59,7 +81,7 @@ export const Dashboard = () => {
     deviceId: deviceId,
     name: 'loading...',
     collectedDroids: 0,
-    totalDroids: 0,
+    totalDroids: 20,
   };
 
   const leaders = (leadersData ?? []).map((rating) =>
@@ -78,7 +100,7 @@ export const Dashboard = () => {
           <CardContent
             sx={{
               marginTop: '-6rem',
-              borderRadius: '2rem',
+              borderRadius: '1.5rem',
               background: 'rgba(35, 45, 60, 0.75)',
               borderBottomLeftRadius: '1rem',
               borderBottomRightRadius: '1rem',
@@ -89,7 +111,7 @@ export const Dashboard = () => {
               variant='h6'
               component='div'
               align='center'
-              sx={{ mb: 3 }}
+              sx={{ mb: 3, textShadow: '2px 1px 4px rgba(0, 0, 0, 0.3)' }}
             >
               Welcome,
               <Typography
@@ -102,60 +124,25 @@ export const Dashboard = () => {
             </Typography>
             <Grid container spacing={2}>
               <Grid xs={4}>
-                <Paper
-                  sx={{
-                    p: 1,
-                    backgroundImage:
-                      'linear-gradient(to bottom, #76B591, #577163)',
-                    boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #84B398',
-                  }}
+                <InfoItem
+                  label='Rank'
+                  color={collectedToColor(
+                    user.collectedDroids,
+                    user.totalDroids
+                  )}
                 >
-                  <Stack alignItems='center' gap={1}>
-                    <Typography sx={{ fontWeight: 'bold' }}>Rank</Typography>
-                    <Typography variant='body2'>
-                      {collectedToRank(user.collectedDroids, user.totalDroids)}
-                    </Typography>
-                  </Stack>
-                </Paper>
+                  {collectedToRank(user.collectedDroids, user.totalDroids)}
+                </InfoItem>
               </Grid>
               <Grid xs={4}>
-                <Paper
-                  sx={{
-                    p: 1,
-                    backgroundImage:
-                      'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
-                    boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #dc422f',
-                  }}
-                >
-                  <Stack alignItems='center' gap={1}>
-                    <Typography sx={{ fontWeight: 'bold' }}>
-                      Collected
-                    </Typography>
-                    <Typography variant='body2'>
-                      {user?.collectedDroids}
-                    </Typography>
-                  </Stack>
-                </Paper>
+                <InfoItem label='Collected' color='#ff988b'>
+                  {user?.collectedDroids}
+                </InfoItem>
               </Grid>
               <Grid xs={4}>
-                <Paper
-                  sx={{
-                    p: 1,
-                    backgroundImage:
-                      'linear-gradient(to bottom, #803DE1, #5b298e)',
-                    boxShadow:
-                      '0px 3px 8px rgba(0, 0, 0, 0.2),inset 0px 2px 3px #874cef',
-                  }}
-                >
-                  <Stack alignItems='center' gap={1}>
-                    <Typography sx={{ fontWeight: 'bold' }}>Left</Typography>
-                    <Typography variant='body2'>
-                      {user.totalDroids - user.collectedDroids}
-                    </Typography>
-                  </Stack>
-                </Paper>
+                <InfoItem label='Progress' color='#caa2ff'>
+                  {calculateProgress(user.collectedDroids, user.totalDroids)}
+                </InfoItem>
               </Grid>
             </Grid>
           </CardContent>
@@ -171,7 +158,7 @@ export const Dashboard = () => {
                 <TableCell sx={{ padding: '6px 12px' }}>Nickname</TableCell>
 
                 <TableCell align='center' sx={{ padding: '6px 12px' }}>
-                  Collected
+                  Progress
                 </TableCell>
               </TableRow>
             </TableHead>
@@ -199,7 +186,7 @@ export const Dashboard = () => {
 
                   <TableCell align='center'>
                     <Typography variant='caption' sx={{ fontWeight: 500 }}>
-                      {row.collected}
+                      {calculateProgress(row.collected, user.totalDroids)}
                     </Typography>
                   </TableCell>
                 </TableRow>
