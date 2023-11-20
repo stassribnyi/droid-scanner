@@ -9,7 +9,7 @@ import {
   Typography,
   useTheme,
 } from '@mui/material';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 import { BaseScreen } from '../components';
 import { FC, useEffect, useState } from 'react';
 import { QuestionMark } from '@mui/icons-material';

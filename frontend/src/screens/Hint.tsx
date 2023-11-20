@@ -20,7 +20,7 @@ import {
 } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { useHintDroidId, useDeviceUUID, useAsyncAction } from '../hooks';
 import { BaseScreen } from '../components';

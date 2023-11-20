@@ -2,7 +2,7 @@ import { FC, useEffect, useState } from 'react';
 
 import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
 import { EmojiEventsRounded, Terminal } from '@mui/icons-material';
-import { useLocation, useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ScannerButton } from '../components';
 

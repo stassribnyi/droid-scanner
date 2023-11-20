@@ -12,7 +12,7 @@ import {
 import useAxios from 'axios-hooks';
 
 import { useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';

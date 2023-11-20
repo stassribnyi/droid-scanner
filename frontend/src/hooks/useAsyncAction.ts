@@ -1,6 +1,6 @@
 import { isAxiosError } from 'axios';
 import { useCallback } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate } from 'react-router-dom';
 
 
 import { useLoader } from './useLoader';
