@@ -1,6 +1,6 @@
 import {
+  Box,
   FormControl,
-  Unstable_Grid2 as Grid,
   InputLabel,
   MenuItem,
   Paper,
@@ -16,84 +16,6 @@ import { QuestionMark } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { useAsyncAction, useDeviceUUID } from '../hooks';
 import { Droid } from '../types';
-
-const InfoGrid: FC<{
-  items: Array<React.ReactElement>;
-  itemsPerColumn: number;
-}> = ({ items, itemsPerColumn }) => {
-  const rows = [];
-
-  for (
-    let rowIdx = 0;
-    rowIdx < Math.ceil(items.length / itemsPerColumn);
-    rowIdx++
-  ) {
-    const cells = [];
-
-    for (let cellIdx = 0; cellIdx < itemsPerColumn; cellIdx++) {
-      const itemIdx = itemsPerColumn * rowIdx + cellIdx;
-
-      if (items.length <= itemIdx) {
-        break;
-      }
-
-      cells.push(
-        <Grid key={itemIdx} xs={Math.floor(12 / itemsPerColumn)}>
-          {items[itemIdx]}
-        </Grid>
-      );
-    }
-
-    rows.push(
-      <Grid container key={rowIdx}>
-        {cells}
-      </Grid>
-    );
-  }
-
-  return (
-    <Grid container direction='column' spacing={2}>
-      {rows}
-    </Grid>
-  );
-};
-
-const DROID_NAMES = [
-  { name: 'C-3PO' },
-  { name: 'R2-D2' },
-  { name: 'R5-D4' },
-  { name: 'AP-5' },
-  { name: 'BD-1' },
-  { name: 'C1-10P' },
-  { name: 'Mouse Droid' },
-  { name: '4-LOM' },
-  { name: 'IG-11' },
-  { name: 'EV-9D9' },
-  { name: 'R1-J5' },
-  { name: 'BB-8' },
-  { name: '2-1B' },
-  { name: 'L3-37' },
-  { name: 'K-2SO' },
-  { name: 'D-O' },
-  { name: 'CB-23' },
-  { name: 'Mister Bones' },
-  { name: 'R-3X' },
-  { name: 'Battle Droid' },
-];
-
-function getDroidInfo(order: number): Droid {
-  const name = DROID_NAMES[order - 1].name;
-
-  return {
-    id: (Math.random() * 100).toString(),
-    imageUrl: `/droids/${name.toLowerCase()}.jpg`,
-    order,
-    hint: 'some hint',
-    name: name,
-    description: 'description test',
-    activated: Math.floor(Math.random() * 100) >= 0,
-  };
-}
 
 const DroidCard: FC<{
   idx: number;
@@ -162,11 +84,6 @@ const DroidCard: FC<{
   );
 };
 
-const fakeDroids = (): Array<Droid> =>
-  Array(20)
-    .fill(1)
-    .map((item, idx) => getDroidInfo(item + idx));
-
 const compareByActivated = (d1: Droid, d2: Droid) =>
   d1.activated === d2.activated ? 0 : d1.activated ? -1 : 1;
 
@@ -192,9 +109,7 @@ export const MyCollection = () => {
   const [, getAll] = useAsyncAction(async () => {
     const { data } = await getMyCollection();
 
-    setDroids(
-      (data?.length ?? 0) > 0 ? data.sort(compareByOrder) : fakeDroids()
-    );
+    setDroids((data?.length ?? 0) > 0 ? data.sort(compareByOrder) : []);
   });
 
   useEffect(() => {
@@ -245,9 +160,14 @@ export const MyCollection = () => {
           </Select>
         </FormControl>
       </Stack>
-      <InfoGrid
-        itemsPerColumn={3}
-        items={droids.map((droid) => (
+      <Box
+        sx={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: 2,
+        }}
+      >
+        {droids.map((droid) => (
           <DroidCard
             key={droid.name}
             idx={droid.order}
@@ -257,7 +177,7 @@ export const MyCollection = () => {
             onClick={(id) => navigate(`/hint/${id}`)}
           />
         ))}
-      />
+      </Box>
     </BaseScreen>
   );
 };
