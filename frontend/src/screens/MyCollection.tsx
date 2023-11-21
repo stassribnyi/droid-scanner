@@ -145,7 +145,7 @@ export const MyCollection = () => {
       >
         <Typography>Want to sort your collection?</Typography>
         <FormControl size='small' sx={{ minWidth: '130px' }}>
-          <InputLabel id='order-by-select-label'>Order By</InputLabel>
+          <InputLabel id='order-by-select-label'>Sort By</InputLabel>
           <Select
             labelId='order-by-select-label'
             id='order-by-select'
