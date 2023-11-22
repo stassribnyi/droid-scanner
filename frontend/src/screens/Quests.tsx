@@ -20,7 +20,7 @@ import {
 } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 
 import { useHintDroidId, useDeviceUUID, useAsyncAction } from '../hooks';
 import { BaseScreen } from '../components';
@@ -37,8 +37,7 @@ const PLACEHOLDER_DROID: Droid = {
   imageUrl: '',
 };
 
-export const Hint = () => {
-  const navigate = useNavigate();
+export const Quests = () => {
   const { id } = useParams();
   const [showHint, setShowHint] = useState(false);
   const [stored, setStored] = useHintDroidId();
@@ -92,7 +91,7 @@ export const Hint = () => {
   };
 
   return (
-    <BaseScreen title='Current Quest' onBack={() => navigate('/')}>
+    <BaseScreen title='Current Quest'>
       <Grid
         container
         direction='row'

@@ -1,7 +1,7 @@
 import { FC, useEffect, useState } from 'react';
 
 import { BottomNavigation, BottomNavigationAction, Box } from '@mui/material';
-import { EmojiEventsRounded, Terminal } from '@mui/icons-material';
+import { AutoStoriesRounded, Terminal } from '@mui/icons-material';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ScannerButton } from '../components';
@@ -13,12 +13,12 @@ export const Navigation: FC = () => {
   const { pathname } = useLocation();
 
   useEffect(() => {
-    if (pathname.includes('/my-collection')) {
+    if (pathname.includes('/journal')) {
       setCurrent(2);
       return;
     }
 
-    if (pathname.includes('/hint')) {
+    if (pathname.includes('/quests')) {
       setCurrent(0);
       return;
     }
@@ -42,9 +42,9 @@ export const Navigation: FC = () => {
       }}
     >
       <BottomNavigationAction
-        label='Quest'
+        label='Quests'
         icon={<Terminal />}
-        onClick={() => navigate('/hint')}
+        onClick={() => navigate('/quests')}
         sx={{
           borderTopRightRadius: '30px',
           maxWidth: 200,
@@ -90,9 +90,9 @@ export const Navigation: FC = () => {
         </Box>
       </Box>
       <BottomNavigationAction
-        label='Progress'
-        icon={<EmojiEventsRounded />}
-        onClick={() => navigate('/my-collection')}
+        label='Journal'
+        icon={<AutoStoriesRounded />}
+        onClick={() => navigate('/journal')}
         sx={{
           background: 'rgba(35, 45, 60, 0.9)',
           backdropFilter: 'blur(8px)',

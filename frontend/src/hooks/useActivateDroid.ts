@@ -32,7 +32,7 @@ export const useActivateDroid = (): (droidId: null | number) => Promise<void> =>
                     params: { deviceId, droidOrder: droidId, }
                 });
 
-                navigate(`/hint/${data.order}`);
+                navigate(`/quests/${data.order}`);
             } catch (error) {
                 if (droidId) {
                     notify({

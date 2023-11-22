@@ -2,16 +2,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import {RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 
-import { Welcome, Dashboard, MyCollection, Hint } from './screens';
+import { Welcome, Dashboard, Journal, Quests } from './screens';
 
 import { Layout, Notification } from './components';
 import { LoaderProvider, NotifyProvider } from './providers';
 
-// TODO: use variable
-// axios.defaults.baseURL = 'http://hack.brightgrove.com:8080';
-
+// TODO: handle login flow differently
+// '/dashboard' should be '/'
 const router = createBrowserRouter([
   {
     path: '/',
@@ -22,13 +21,17 @@ const router = createBrowserRouter([
     element: <Dashboard />,
   },
   {
-    path: '/my-collection',
-    element: <MyCollection />,
+    path: '/journal',
+    element: <Journal />,
   },
   {
-    path: '/hint/:id?',
-    element: <Hint />,
+    path: '/quests/:id?',
+    element: <Quests />,
   },
+  {
+    path: '*',
+    element: <Navigate to="/" />
+  }
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(

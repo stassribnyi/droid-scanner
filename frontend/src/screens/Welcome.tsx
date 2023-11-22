@@ -73,7 +73,7 @@ export const Welcome = () => {
     // Handle droidId activation if scanned via smartphone camera
     activateDroid(tryParseDroidId(getCurrentURL())).finally(() =>
       // Remove any query params left after activation
-      history.replaceState({}, '', '/')
+      history.replaceState({}, '', '/dashboard')
     );
   }, [activateDroid, hasAccess, navigate]);
 

@@ -89,7 +89,7 @@ const compareByActivated = (d1: Droid, d2: Droid) =>
 
 const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
 
-export const MyCollection = () => {
+export const Journal = () => {
   const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
   const deviceId = useDeviceUUID();
@@ -136,14 +136,14 @@ export const MyCollection = () => {
   }, [orderBy]);
 
   return (
-    <BaseScreen title='My Collection' onBack={() => navigate('/')}>
+    <BaseScreen title='My Journal'>
       <Stack
         direction='row'
         justifyContent='space-between'
         sx={{ mb: 3 }}
         alignItems='center'
       >
-        <Typography>Want to sort your collection?</Typography>
+        <Typography>Droids you've found</Typography>
         <FormControl size='small' sx={{ minWidth: '130px' }}>
           <InputLabel id='order-by-select-label'>Sort By</InputLabel>
           <Select
@@ -174,7 +174,7 @@ export const MyCollection = () => {
             name={droid.name}
             imageUrl={`/droids/${droid.name.toLocaleLowerCase()}.jpg`}
             activated={droid.activated}
-            onClick={(id) => navigate(`/hint/${id}`)}
+            onClick={(id) => navigate(`/quests/${id}`)}
           />
         ))}
       </Box>
