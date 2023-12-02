@@ -1,14 +1,4 @@
-import {
-  Box,
-  FormControl,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Select,
-  Stack,
-  Typography,
-  useTheme,
-} from '@mui/material';
+import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography, useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { BaseScreen } from '../components';
 import { FC, useEffect, useState } from 'react';
@@ -43,32 +33,23 @@ const DroidCard: FC<{
       onClick={() => onClick(idx)}
     >
       <Stack
-        alignItems='center'
+        alignItems="center"
         spacing={1}
         sx={{
           position: 'relative',
         }}
       >
         {activated ? (
-          <img
-            alt={name}
-            src={imageUrl}
-            style={{ width: 80, height: 80, mixBlendMode: 'lighten' }}
-          />
+          <img alt={name} src={imageUrl} style={{ width: 80, height: 80, mixBlendMode: 'lighten' }} />
         ) : (
           <QuestionMark sx={{ width: 80, height: 80, color: '#fdfcfa' }} />
         )}
-        <Typography
-          variant='caption'
-          color='#ff6855'
-          sx={{ width: '100%', fontSize: 12 }}
-          align='center'
-        >
+        <Typography variant="caption" color="#ff6855" sx={{ width: '100%', fontSize: 12 }} align="center">
           {activated ? name : 'Not Found'}
         </Typography>
         <Typography
-          variant='caption'
-          color='#caa357'
+          variant="caption"
+          color="#caa357"
           sx={{
             top: -4,
             right: 0,
@@ -84,8 +65,7 @@ const DroidCard: FC<{
   );
 };
 
-const compareByActivated = (d1: Droid, d2: Droid) =>
-  d1.activated === d2.activated ? 0 : d1.activated ? -1 : 1;
+const compareByActivated = (d1: Droid, d2: Droid) => (d1.activated === d2.activated ? 0 : d1.activated ? -1 : 1);
 
 const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
 
@@ -103,7 +83,7 @@ export const Journal = () => {
     },
     {
       manual: true,
-    }
+    },
   );
 
   const [, getAll] = useAsyncAction(async () => {
@@ -136,27 +116,20 @@ export const Journal = () => {
   }, [orderBy]);
 
   return (
-    <BaseScreen title='My Journal'>
-      <Stack
-        direction='row'
-        justifyContent='space-between'
-        sx={{ mb: 3 }}
-        alignItems='center'
-      >
+    <BaseScreen title="My Journal">
+      <Stack direction="row" justifyContent="space-between" sx={{ mb: 3 }} alignItems="center">
         <Typography>Droids you've found</Typography>
-        <FormControl size='small' sx={{ minWidth: '130px' }}>
-          <InputLabel id='order-by-select-label'>Sort By</InputLabel>
+        <FormControl size="small" sx={{ minWidth: '130px' }}>
+          <InputLabel id="order-by-select-label">Sort By</InputLabel>
           <Select
-            labelId='order-by-select-label'
-            id='order-by-select'
+            labelId="order-by-select-label"
+            id="order-by-select"
             value={orderBy}
-            label='Order By'
-            onChange={({ target }) =>
-              setOrderBy(target.value as 'order' | 'collected')
-            }
+            label="Order By"
+            onChange={({ target }) => setOrderBy(target.value as 'order' | 'collected')}
           >
-            <MenuItem value='order'>Order</MenuItem>
-            <MenuItem value='collected'>Collected</MenuItem>
+            <MenuItem value="order">Order</MenuItem>
+            <MenuItem value="collected">Collected</MenuItem>
           </Select>
         </FormControl>
       </Stack>

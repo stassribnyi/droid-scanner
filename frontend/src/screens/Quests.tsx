@@ -12,12 +12,7 @@ import {
   CardMedia,
   Stack,
 } from '@mui/material';
-import {
-  Close,
-  ExpandLess,
-  ExpandMore,
-  QuestionMark,
-} from '@mui/icons-material';
+import { Close, ExpandLess, ExpandMore, QuestionMark } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -54,7 +49,7 @@ export const Quests = () => {
     },
     {
       manual: true,
-    }
+    },
   );
   const [{ data }, getUser] = useAxios<User>(`/api/users/${deviceId}`, {
     manual: true,
@@ -91,13 +86,8 @@ export const Quests = () => {
   };
 
   return (
-    <BaseScreen title='Current Quest'>
-      <Grid
-        container
-        direction='row'
-        justifyContent='space-between'
-        spacing={1}
-      >
+    <BaseScreen title="Current Quest">
+      <Grid container direction="row" justifyContent="space-between" spacing={1}>
         <Grid xs={4}>
           <Box
             sx={{
@@ -111,7 +101,7 @@ export const Quests = () => {
           >
             {droid.activated ? (
               <Box
-                component='img'
+                component="img"
                 sx={{ height: '100%', width: '100%' }}
                 src={`/droids/${droid.name.toLowerCase()}.jpg`}
                 alt={droid.name}
@@ -122,9 +112,9 @@ export const Quests = () => {
           </Box>
         </Grid>
         <Grid xs={8}>
-          <Typography variant='body2' component='div'>
+          <Typography variant="body2" component="div">
             Greetings{' '}
-            <Typography variant='body2' component='span' color='#ff6855'>
+            <Typography variant="body2" component="span" color="#ff6855">
               {collectedToRank(user.collectedDroids, user.totalDroids)}
             </Typography>
             !{' '}
@@ -137,12 +127,7 @@ export const Quests = () => {
       </Grid>
       <Card sx={{ mb: 2, mt: 2 }}>
         <CardContent sx={{ background: 'rgba(35, 45, 60, 0.4)' }}>
-          <Typography
-            gutterBottom
-            variant='body2'
-            sx={{ textIndent: '2rem' }}
-            align='justify'
-          >
+          <Typography gutterBottom variant="body2" sx={{ textIndent: '2rem' }} align="justify">
             {droid.hint}
           </Typography>
         </CardContent>
@@ -155,28 +140,23 @@ export const Quests = () => {
           </Button>
         ) : (
           <Box sx={{ p: 1 }}>
-            <Typography color='info' variant='caption'>
+            <Typography color="info" variant="caption">
               Find this droid to learn more about him.
             </Typography>
           </Box>
         )}
-        <Collapse in={showHint} timeout='auto' unmountOnExit>
-          <Typography
-            gutterBottom
-            variant='body2'
-            sx={{ textIndent: '2rem' }}
-            align='justify'
-          >
+        <Collapse in={showHint} timeout="auto" unmountOnExit>
+          <Typography gutterBottom variant="body2" sx={{ textIndent: '2rem' }} align="justify">
             {droid.description}
           </Typography>
         </Collapse>
       </Paper>
       <Dialog open={showCongrats} onClose={() => setShowCongrats(false)}>
         <IconButton
-          edge='start'
-          color='inherit'
+          edge="start"
+          color="inherit"
           onClick={() => setShowCongrats(false)}
-          aria-label='close'
+          aria-label="close"
           sx={{
             position: 'absolute',
             top: '0.5rem',
@@ -192,11 +172,7 @@ export const Quests = () => {
             background: 'none',
           }}
         >
-          <CardMedia
-            sx={{ height: 340 }}
-            image='/welcome.png'
-            title='green iguana'
-          />
+          <CardMedia sx={{ height: 340 }} image="/welcome.png" title="green iguana" />
           <CardContent
             sx={{
               marginTop: '-6rem',
@@ -207,26 +183,19 @@ export const Quests = () => {
               backdropFilter: 'blur(16px)',
             }}
           >
-            <Stack direction='column' gap={2}>
-              <Typography align='center' color='#ff6855' variant='h6'>
+            <Stack direction="column" gap={2}>
+              <Typography align="center" color="#ff6855" variant="h6">
                 Congratulations!
               </Typography>
-              <Typography
-                gutterBottom
-                variant='body1'
-                component='div'
-                align='justify'
-                sx={{}}
-              >
-                A fantastic achievement! You've finished all the quests we've
-                prepared for you. You have proven yourself to be a master jedi.
+              <Typography gutterBottom variant="body1" component="div" align="justify" sx={{}}>
+                A fantastic achievement! You've finished all the quests we've prepared for you. You have proven yourself
+                to be a master jedi.
               </Typography>
-              <Typography align='center' sx={{ fontWeight: '700' }}>
+              <Typography align="center" sx={{ fontWeight: '700' }}>
                 May the force be with you!
               </Typography>
-              <Typography variant='caption' align='center'>
-                Thanks for playing our little game, your Coders of Republic
-                team!
+              <Typography variant="caption" align="center">
+                Thanks for playing our little game, your Coders of Republic team!
               </Typography>
             </Stack>
           </CardContent>

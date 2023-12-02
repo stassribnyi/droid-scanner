@@ -1,4 +1,4 @@
 export type Rating = Readonly<{
-    nickname: string;
-    collectedDroids: number;
-}>
+  nickname: string;
+  collectedDroids: number;
+}>;

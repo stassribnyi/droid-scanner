@@ -17,7 +17,7 @@ const QrStream: FC<{
       highlightScanRegion: true,
       highlightCodeOutline: true,
       preferredCamera: 'environment',
-      onDecodeError: onError
+      onDecodeError: onError,
     });
 
     qrScanner.start();
@@ -25,37 +25,49 @@ const QrStream: FC<{
     return () => {
       qrScanner.stop();
       qrScanner.destroy();
-    }
+    };
   }, [video.current]);
 
-  return <Box component='video' ref={video} sx={{
-    width: "100%",
-    objectFit: 'cover',
-    aspectRatio: '1/1'
-  }} />
-})
+  return (
+    <Box
+      component="video"
+      ref={video}
+      sx={{
+        width: '100%',
+        objectFit: 'cover',
+        aspectRatio: '1/1',
+      }}
+    />
+  );
+});
 
 export const Scanner: React.FC<{
   onResult: (data?: string) => void;
 }> = ({ onResult }) => {
   const [error, setError] = useState('Please align with QR code');
 
-  const handleScan = useCallback((result: QrScanner.ScanResult) => {
-    if (!result.data) {
-      return;
-    }
+  const handleScan = useCallback(
+    (result: QrScanner.ScanResult) => {
+      if (!result.data) {
+        return;
+      }
 
-    onResult(result.data);
-  }, [onResult])
+      onResult(result.data);
+    },
+    [onResult],
+  );
 
-  const handleError = useCallback((decodeError: string | Error) => {
-    setError(typeof decodeError === 'string' ? decodeError : decodeError.message);
-  }, [setError])
+  const handleError = useCallback(
+    (decodeError: string | Error) => {
+      setError(typeof decodeError === 'string' ? decodeError : decodeError.message);
+    },
+    [setError],
+  );
 
   return (
     <Box>
       <QrStream onDecode={handleScan} onError={handleError} />
-      <Typography variant='body1' align='center'>
+      <Typography variant="body1" align="center">
         {error}
       </Typography>
     </Box>

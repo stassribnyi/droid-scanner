@@ -2,15 +2,15 @@ import { useEffect, useState } from 'react';
 import { useDeviceUUID } from './useDeviceUUID';
 import axios from 'axios';
 
-const STATUS = 'logged-in' as const
+const STATUS = 'logged-in' as const;
 
 export const useSimpleAuth = (): [boolean, () => void, () => void] => {
-  const deviceId = useDeviceUUID()
+  const deviceId = useDeviceUUID();
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
     if (!deviceId) {
-      return
+      return;
     }
 
     if (isLoggedIn) {
@@ -22,20 +22,30 @@ export const useSimpleAuth = (): [boolean, () => void, () => void] => {
     const status = localStorage.getItem(deviceId);
 
     if (!status) {
-      setLoggedIn(false)
+      setLoggedIn(false);
 
-      return
+      return;
     }
 
     // TODO: refactor
-    axios.get(`/api/users/${deviceId}`)
-      .then(() => { setLoggedIn(status === STATUS) })
-      .catch(() => { localStorage.removeItem(deviceId); setLoggedIn(false) })
+    axios
+      .get(`/api/users/${deviceId}`)
+      .then(() => {
+        setLoggedIn(status === STATUS);
+      })
+      .catch(() => {
+        localStorage.removeItem(deviceId);
+        setLoggedIn(false);
+      });
   }, [deviceId, isLoggedIn]);
 
-  return [isLoggedIn, () => setLoggedIn(true), () => {
-    localStorage.removeItem(deviceId);
+  return [
+    isLoggedIn,
+    () => setLoggedIn(true),
+    () => {
+      localStorage.removeItem(deviceId);
 
-    setLoggedIn(false)
-  }];
+      setLoggedIn(false);
+    },
+  ];
 };

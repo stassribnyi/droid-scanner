@@ -1,10 +1,4 @@
-import {
-  createContext,
-  FC,
-  useState,
-  useCallback,
-  PropsWithChildren,
-} from 'react';
+import { createContext, FC, useState, useCallback, PropsWithChildren } from 'react';
 
 import { AlertColor } from '@mui/material';
 
@@ -28,14 +22,9 @@ export const NotifyContext = createContext<NotifyContextType>({
 export const NotifyProvider: FC<PropsWithChildren> = ({ children }) => {
   const [current, setNotify] = useState<NotifyContextType['current']>(null);
 
-  const clear: NotifyContextType['clear'] = useCallback(
-    () => setNotify(null),
-    []
-  );
+  const clear: NotifyContextType['clear'] = useCallback(() => setNotify(null), []);
 
-  const notify: NotifyContextType['notify'] = useCallback<
-    NotifyContextType['notify']
-  >((props) => {
+  const notify: NotifyContextType['notify'] = useCallback<NotifyContextType['notify']>((props) => {
     if (typeof props === 'string') {
       setNotify({ message: props });
 

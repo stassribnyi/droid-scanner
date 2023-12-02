@@ -1,11 +1,5 @@
 import { FC, PropsWithChildren } from 'react';
-import {
-  CssBaseline,
-  GlobalStyles,
-  GlobalStylesProps,
-  ThemeProvider,
-  createTheme,
-} from '@mui/material';
+import { CssBaseline, GlobalStyles, GlobalStylesProps, ThemeProvider, createTheme } from '@mui/material';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';

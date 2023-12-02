@@ -8,10 +8,7 @@ const shakeEffect = keyframes`
    100% { transform: translateX(0rem) }
 `;
 
-export const Shake: FC<PropsWithChildren<Readonly<{ enabled: boolean }>>> = ({
-  enabled,
-  children,
-}) => {
+export const Shake: FC<PropsWithChildren<Readonly<{ enabled: boolean }>>> = ({ enabled, children }) => {
   const [shake, setShake] = useState(false);
 
   useEffect(() => {
