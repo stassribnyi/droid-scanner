@@ -4,7 +4,6 @@ import { BaseScreen } from '../components';
 import { FC, useEffect, useState } from 'react';
 import { QuestionMark } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
-import { useAsyncAction, useDeviceUUID } from '../hooks';
 import { Droid } from '../types';
 
 const DroidCard: FC<{
@@ -72,33 +71,22 @@ const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
 export const Journal = () => {
   const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
-  const deviceId = useDeviceUUID();
   const [droids, setDroids] = useState<Array<Droid>>([]);
   const [, getMyCollection] = useAxios<Array<Droid>>(
     {
       url: '/api/droids',
-      params: {
-        deviceId,
-      },
     },
     {
       manual: true,
     },
   );
 
-  const [, getAll] = useAsyncAction(async () => {
-    const { data } = await getMyCollection();
-
-    setDroids((data?.length ?? 0) > 0 ? data.sort(compareByOrder) : []);
-  });
-
   useEffect(() => {
-    if (!deviceId) {
-      return;
-    }
-
-    getAll();
-  }, [deviceId]);
+    // TODO: review later
+    getMyCollection().then(({ data }) => {
+      setDroids((data?.length ?? 0) > 0 ? data.sort(compareByOrder) : []);
+    });
+  }, []);
 
   useEffect(() => {
     switch (orderBy) {

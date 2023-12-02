@@ -1,3 +1,4 @@
+export { AxiosErrorHandler } from './AxiosErrorHandler';
 export { Dialog } from './Dialog';
 export { Layout } from './Layout';
 export { Navigation } from './Navigation';
