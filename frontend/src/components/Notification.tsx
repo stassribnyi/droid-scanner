@@ -13,11 +13,7 @@ export const Notification = () => {
       anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
     >
       {open ? (
-        <Alert
-          onClose={clear}
-          severity={current.severity}
-          sx={{ width: '100%' }}
-        >
+        <Alert onClose={clear} severity={current.severity} sx={{ width: '100%' }}>
           {current.message}
         </Alert>
       ) : (

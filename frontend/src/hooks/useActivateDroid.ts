@@ -7,43 +7,43 @@ import { useNotify } from './useNotify';
 
 import { Droid } from '../types';
 
-export const useActivateDroid = (): (droidId: null | number) => Promise<void> => {
-    const deviceId = useDeviceUUID();
-    const navigate = useNavigate();
-    const { notify } = useNotify();
+export const useActivateDroid = (): ((droidId: null | number) => Promise<void>) => {
+  const deviceId = useDeviceUUID();
+  const navigate = useNavigate();
+  const { notify } = useNotify();
 
-    const [, activateDroid] = useAxios<Droid>(
-        {
-            url: '/api/droids/activate',
-            method: 'PUT',
-        },
-        { manual: true, }
-    );
+  const [, activateDroid] = useAxios<Droid>(
+    {
+      url: '/api/droids/activate',
+      method: 'PUT',
+    },
+    { manual: true },
+  );
 
-    // TODO: is this a good place for navigation?
-    return useCallback(
-        async (droidId: null | number) => {
-            try {
-                if (!droidId) {
-                    throw new Error('Invalid droid');
-                }
+  // TODO: is this a good place for navigation?
+  return useCallback(
+    async (droidId: null | number) => {
+      try {
+        if (!droidId) {
+          throw new Error('Invalid droid');
+        }
 
-                const { data } = await activateDroid({
-                    params: { deviceId, droidOrder: droidId, }
-                });
+        const { data } = await activateDroid({
+          params: { deviceId, droidOrder: droidId },
+        });
 
-                navigate(`/quests/${data.order}`);
-            } catch (error) {
-                if (droidId) {
-                    notify({
-                        message: `These aren't the droids you are looking for!`,
-                        severity: 'info',
-                    });
-                }
+        navigate(`/quests/${data.order}`);
+      } catch (error) {
+        if (droidId) {
+          notify({
+            message: `These aren't the droids you are looking for!`,
+            severity: 'info',
+          });
+        }
 
-                navigate('/dashboard');
-            }
-        },
-        [activateDroid, deviceId, navigate, notify]
-    )
-}
+        navigate('/dashboard');
+      }
+    },
+    [activateDroid, deviceId, navigate, notify],
+  );
+};

@@ -18,12 +18,7 @@ import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 
-import {
-  useActivateDroid,
-  useDeviceUUID,
-  useNotify,
-  useSimpleAuth,
-} from '../hooks';
+import { useActivateDroid, useDeviceUUID, useNotify, useSimpleAuth } from '../hooks';
 import { ScreenContent, Shake } from '../components';
 
 import type { User } from '../types';
@@ -31,9 +26,7 @@ import { formatError, tryParseDroidId } from '../utils';
 
 type RegisterForm = Readonly<{ nickname: string }>;
 
-const schema = yup
-  .object({ nickname: yup.string().trim().required("Sorry, I didn't get it!") })
-  .required();
+const schema = yup.object({ nickname: yup.string().trim().required("Sorry, I didn't get it!") }).required();
 
 function getCurrentURL(): string {
   return window.location.href;
@@ -52,17 +45,14 @@ export const Welcome = () => {
   const activateDroid = useActivateDroid();
 
   // TODO: consider whether it has any benefits over pure axios calls
-  const [{ loading: isGenerating }, getGenerateNickname] = useAxios(
-    '/api/users/generate-nickname',
-    { manual: true }
-  );
+  const [{ loading: isGenerating }, getGenerateNickname] = useAxios('/api/users/generate-nickname', { manual: true });
 
   const [, postRegisterUser] = useAxios<User>(
     {
       method: 'POST',
       url: '/api/users/register',
     },
-    { manual: true }
+    { manual: true },
   );
 
   useEffect(() => {
@@ -73,7 +63,7 @@ export const Welcome = () => {
     // Handle droidId activation if scanned via smartphone camera
     activateDroid(tryParseDroidId(getCurrentURL())).finally(() =>
       // Remove any query params left after activation
-      history.replaceState({}, '', '/dashboard')
+      history.replaceState({}, '', '/dashboard'),
     );
   }, [activateDroid, hasAccess, navigate]);
 
@@ -84,8 +74,7 @@ export const Welcome = () => {
       setValue('nickname', data);
     } catch (error) {
       notify({
-        message:
-          'Droid is trying to come up with the nickname for you, but he is struggling. Try again later!',
+        message: 'Droid is trying to come up with the nickname for you, but he is struggling. Try again later!',
         severity: 'error',
       });
     }
@@ -102,7 +91,7 @@ export const Welcome = () => {
         notify({ message: formatError(error), severity: 'error' });
       }
     },
-    [deviceId, grantAccess, notify, postRegisterUser]
+    [deviceId, grantAccess, notify, postRegisterUser],
   );
 
   return (
@@ -110,7 +99,7 @@ export const Welcome = () => {
       <form onSubmit={handleSubmit(registerUser)}>
         <Grid
           container
-          justifyContent='center'
+          justifyContent="center"
           spacing={3}
           sx={{
             paddingTop: '2rem',
@@ -119,7 +108,7 @@ export const Welcome = () => {
         >
           <Grid>
             <Typography
-              variant='h5'
+              variant="h5"
               style={{
                 color: 'black',
                 fontWeight: 'bold',
@@ -137,11 +126,7 @@ export const Welcome = () => {
                 background: 'none',
               }}
             >
-              <CardMedia
-                sx={{ height: 340 }}
-                image='/welcome.png'
-                title='Welcome droid'
-              />
+              <CardMedia sx={{ height: 340 }} image="/welcome.png" title="Welcome droid" />
               <CardContent
                 sx={{
                   marginTop: '-6rem',
@@ -152,39 +137,29 @@ export const Welcome = () => {
                   backdropFilter: 'blur(16px)',
                 }}
               >
-                <Stack direction='column' gap={2}>
-                  <Typography
-                    gutterBottom
-                    variant='h5'
-                    component='div'
-                    align='center'
-                  >
+                <Stack direction="column" gap={2}>
+                  <Typography gutterBottom variant="h5" component="div" align="center">
                     Welcome to our ranks!
                   </Typography>
                   <Controller
-                    name='nickname'
+                    name="nickname"
                     control={control}
                     render={({ field, fieldState: { error } }) => (
                       <Shake enabled={!!error}>
                         <TextField
                           {...field}
                           fullWidth
-                          size='medium'
-                          variant='outlined'
+                          size="medium"
+                          variant="outlined"
                           error={!!error}
                           helperText={error?.message}
-                          label='What is your name, padawan?'
+                          label="What is your name, padawan?"
                         />
                       </Shake>
                     )}
                   />
 
-                  <Button
-                    variant='text'
-                    color='primary'
-                    disabled={isGenerating}
-                    onClick={generateNickname}
-                  >
+                  <Button variant="text" color="primary" disabled={isGenerating} onClick={generateNickname}>
                     Generate nickname
                   </Button>
                 </Stack>
@@ -195,9 +170,9 @@ export const Welcome = () => {
             <Button
               disabled={formState.isSubmitting || isGenerating}
               fullWidth
-              variant='contained'
-              size='large'
-              type='submit'
+              variant="contained"
+              size="large"
+              type="submit"
               sx={(theme) => ({
                 transition: theme.transitions.create(['filter'], {
                   duration: theme.transitions.duration.standard,

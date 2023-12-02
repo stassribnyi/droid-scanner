@@ -1,7 +1,7 @@
 export function tryParseDroidId(data: string | undefined) {
   try {
     if (!data) {
-      return null
+      return null;
     }
 
     const url = new URL(data);

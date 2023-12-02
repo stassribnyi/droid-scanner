@@ -42,7 +42,7 @@ export const Navigation: FC = () => {
       }}
     >
       <BottomNavigationAction
-        label='Quests'
+        label="Quests"
         icon={<Terminal />}
         onClick={() => navigate('/quests')}
         sx={{
@@ -90,7 +90,7 @@ export const Navigation: FC = () => {
         </Box>
       </Box>
       <BottomNavigationAction
-        label='Journal'
+        label="Journal"
         icon={<AutoStoriesRounded />}
         onClick={() => navigate('/journal')}
         sx={{

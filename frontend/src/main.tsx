@@ -30,8 +30,8 @@ const router = createBrowserRouter([
   },
   {
     path: '*',
-    element: <Navigate to="/" />
-  }
+    element: <Navigate to="/" />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
@@ -44,5 +44,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(
         </NotifyProvider>
       </LoaderProvider>
     </Layout>
-  </React.StrictMode>
+  </React.StrictMode>,
 );

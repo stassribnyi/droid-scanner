@@ -8,11 +8,9 @@ import { Scanner } from './Scanner';
 import { useActivateDroid } from '../hooks';
 import { tryParseDroidId } from '../utils';
 
-const Transition = forwardRef(
-  (props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
-    <Slide direction='up' ref={ref} {...props} />
-  )
-);
+const Transition = forwardRef((props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
+  <Slide direction="up" ref={ref} {...props} />
+));
 
 export const ScannerButton = () => {
   const theme = useTheme();
@@ -36,14 +34,10 @@ export const ScannerButton = () => {
           backdropFilter: 'blur(8px)',
 
           color: 'white',
-          transition: theme.transitions.create(
-            ['background-color', 'transform'],
-            {
-              duration: theme.transitions.duration.standard,
-            }
-          ),
-          backgroundImage:
-            'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
+          transition: theme.transitions.create(['background-color', 'transform'], {
+            duration: theme.transitions.duration.standard,
+          }),
+          backgroundImage: 'linear-gradient(to bottom, rgba(222, 72, 53, 0.9), rgba(125, 29, 16, 0.9))',
           boxShadow: '0px 3px 8px #250f0c,inset 0px 2px 3px #d94834',
 
           '&:hover': {
@@ -54,17 +48,12 @@ export const ScannerButton = () => {
       >
         <QrCode sx={{ width: '100%', height: '100%' }} />
       </IconButton>
-      <Dialog
-        fullScreen
-        open={isOpen}
-        onClose={closeScanner}
-        TransitionComponent={Transition}
-      >
+      <Dialog fullScreen open={isOpen} onClose={closeScanner} TransitionComponent={Transition}>
         <IconButton
-          edge='start'
-          color='inherit'
+          edge="start"
+          color="inherit"
           onClick={closeScanner}
-          aria-label='close'
+          aria-label="close"
           sx={{
             position: 'absolute',
             top: '0.5rem',
