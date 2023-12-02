@@ -34,7 +34,7 @@ export const BaseScreen: FC<
             >
               <ArrowBack />
             </IconButton>
-            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }} align="center">
+            <Typography component="div" sx={{ flexGrow: 1, fontWeight: 'regular', fontSize: '1.35rem' }} align="center">
               {title}
             </Typography>
             <IconButton
