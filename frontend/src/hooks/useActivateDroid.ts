@@ -2,13 +2,11 @@ import useAxios from 'axios-hooks';
 import { useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { useDeviceUUID } from './useDeviceUUID';
 import { useNotify } from './useNotify';
 
 import { Droid } from '../types';
 
 export const useActivateDroid = (): ((droidId: null | number) => Promise<void>) => {
-  const deviceId = useDeviceUUID();
   const navigate = useNavigate();
   const { notify } = useNotify();
 
@@ -29,7 +27,7 @@ export const useActivateDroid = (): ((droidId: null | number) => Promise<void>) 
         }
 
         const { data } = await activateDroid({
-          params: { deviceId, droidOrder: droidId },
+          params: { droidOrder: droidId },
         });
 
         navigate(`/quests/${data.order}`);
@@ -44,6 +42,6 @@ export const useActivateDroid = (): ((droidId: null | number) => Promise<void>) 
         navigate('/dashboard');
       }
     },
-    [activateDroid, deviceId, navigate, notify],
+    [activateDroid, navigate, notify],
   );
 };

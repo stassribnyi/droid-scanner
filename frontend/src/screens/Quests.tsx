@@ -1,13 +1,12 @@
-import { Typography, Paper, Button, Box, IconButton, Stack, css } from '@mui/material';
-import { Launch } from '@mui/icons-material';
 import useAxios from 'axios-hooks';
-import { FC, PropsWithChildren, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { FC, useEffect, useState } from 'react';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
-import { useHintDroidId, useDeviceUUID, useAsyncAction } from '../hooks';
+import { Launch } from '@mui/icons-material';
+import { Typography, Paper, Button, Box, IconButton, Stack, css } from '@mui/material';
+
 import { BaseScreen, Dialog } from '../components';
 import { Droid, User } from '../types';
-import { useLocalStorage } from '@uidotdev/usehooks';
 
 type QuestItemProps = Readonly<{
   description: string;
@@ -110,41 +109,13 @@ const QuestList: FC<{
 );
 
 export const Quests = () => {
-  const { id } = useParams();
+  // TODO: ping bakend team to set some droid as activated, so user can begin from somewhere
+  const [currentQuestId, setCurrentQuestId] = useLocalStorage<number | undefined>('current-quest-id', 1);
   const [selected, setSelected] = useState<Droid | null>(null);
-  const [stored, setStored] = useHintDroidId();
-  const deviceId = useDeviceUUID();
-  const [currentQuestId, setCurrentQuestId] = useLocalStorage<number | undefined>('current-quest-id');
 
-  const [{ data: droids }, getDroids] = useAxios<Droid[]>(
-    {
-      url: `/api/droids`,
-      params: {
-        deviceId,
-      },
-    },
-    {
-      manual: true,
-    },
-  );
-
-  const [, getAll] = useAsyncAction(async () => {
-    await getDroids();
+  const [{ data: droids }, getDroids] = useAxios<Droid[]>({
+    url: `/api/droids`,
   });
-
-  useEffect(() => {
-    if (id) {
-      setStored(id);
-    }
-  }, [id, setStored]);
-
-  useEffect(() => {
-    if (!deviceId) {
-      return;
-    }
-
-    getAll();
-  }, [deviceId, stored]);
 
   // TODO: finished quest vs non finished probably should be implemented on server side
   const currentQuests = droids?.filter((d) => d.order === currentQuestId);
@@ -204,26 +175,23 @@ export const Quests = () => {
 // probably it could be called on last scan and shown as a modal
 // backend can send some info about quest finished or not
 const TODOCongrats = () => {
-  const deviceId = useDeviceUUID();
   const [showCongrats, setShowCongrats] = useState(false);
 
-  const [, getUser] = useAxios<User>(`/api/users/${deviceId}`, {
+  const [{ data: user }, getUser] = useAxios<User>(`/api/users`, {
     manual: true,
   });
 
-  const [, getAll] = useAsyncAction(async () => {
-    const { data } = await getUser();
-
-    setShowCongrats(data.collectedDroids === data.totalDroids);
-  });
+  useEffect(() => {
+    getUser();
+  }, []);
 
   useEffect(() => {
-    if (!deviceId) {
+    if (!user) {
       return;
     }
 
-    getAll();
-  }, [deviceId]);
+    setShowCongrats(user.collectedDroids === user.totalDroids);
+  }, [user]);
 
   return (
     <Dialog imageUrl="/welcome.png" open={showCongrats} onClose={() => setShowCongrats(false)}>

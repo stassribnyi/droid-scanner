@@ -1,5 +1,3 @@
-import { useEffect, useState } from 'react';
-
 const DEVICE_UUID = 'DeviceUUID' as const;
 // function uuidv4() {
 //   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'
@@ -10,7 +8,7 @@ const DEVICE_UUID = 'DeviceUUID' as const;
 //     });
 // }
 
-const getDeviceUUID = () => {
+export const getDeviceUUID = () => {
   const uuid = localStorage.getItem(DEVICE_UUID);
 
   if (uuid) {
@@ -21,18 +19,4 @@ const getDeviceUUID = () => {
   localStorage.setItem(DEVICE_UUID, randomUUID);
 
   return randomUUID;
-};
-
-export const useDeviceUUID = () => {
-  const [deviceUUID, setDeviceUUID] = useState('');
-
-  useEffect(() => {
-    if (deviceUUID) {
-      return;
-    }
-
-    setDeviceUUID(getDeviceUUID());
-  }, [deviceUUID]);
-
-  return deviceUUID;
 };

@@ -8,6 +8,9 @@ import { Scanner } from './Scanner';
 import { useActivateDroid } from '../hooks';
 import { tryParseDroidId } from '../utils';
 
+// TODO: remove once it is on app level
+import { AxiosErrorHandler } from './AxiosErrorHandler';
+
 const Transition = forwardRef((props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
   <Slide direction="up" ref={ref} {...props} />
 ));
@@ -26,7 +29,7 @@ export const ScannerButton = () => {
   }
 
   return (
-    <>
+    <AxiosErrorHandler>
       <IconButton
         onClick={openScanner}
         sx={{
@@ -81,6 +84,6 @@ export const ScannerButton = () => {
           />
         </Box>
       </Dialog>
-    </>
+    </AxiosErrorHandler>
   );
 };

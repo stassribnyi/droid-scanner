@@ -19,7 +19,6 @@ import { FC, PropsWithChildren, useEffect } from 'react';
 import useAxios from 'axios-hooks';
 
 import { Navigation, ScreenContent } from '../components';
-import { useAsyncAction, useDeviceUUID } from '../hooks';
 
 import { collectedToRank, collectedToColor } from '../utils';
 import { Rating, User } from '../types';
@@ -50,29 +49,20 @@ const InfoItem: FC<PropsWithChildren<Readonly<{ label: string; color?: string }>
 );
 
 export const Dashboard = () => {
-  const deviceId = useDeviceUUID();
   const [{ data: leadersData }, getLeaders] = useAxios<Array<Rating>>('/api/users/leaderboard', {
     manual: true,
   });
-  const [{ data }, getUser] = useAxios<User>(`/api/users/${deviceId}`, {
+  const [{ data }, getUser] = useAxios<User>(`/api/me`, {
     manual: true,
   });
 
-  const [, getAll] = useAsyncAction(async () => {
-    await getUser();
-    await getLeaders();
-  });
-
   useEffect(() => {
-    if (!deviceId) {
-      return;
-    }
-
-    getAll();
-  }, [deviceId]);
+    getUser();
+    getLeaders();
+  }, []);
 
   const user = data || {
-    deviceId: deviceId,
+    deviceId: '',
     name: 'loading...',
     collectedDroids: 0,
     totalDroids: 20,
