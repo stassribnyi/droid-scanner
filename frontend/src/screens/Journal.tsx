@@ -135,7 +135,7 @@ export const Journal = () => {
             name={droid.name}
             imageUrl={`/droids/${droid.name.toLocaleLowerCase()}.jpg`}
             activated={droid.activated}
-            onClick={(id) => navigate(`/quests/${id}`)}
+            onClick={(id) => navigate('/quests')}
           />
         ))}
       </Box>

@@ -1,4 +1,4 @@
-export { AxiosErrorHandler } from './AxiosErrorHandler';
+export { AuthProvider } from '../providers/AuthProvider';
 export { Dialog } from './Dialog';
 export { Layout } from './Layout';
 export { Navigation } from './Navigation';
@@ -8,3 +8,4 @@ export { ScannerButton } from './ScannerButton';
 export { BaseScreen } from './BaseScreen';
 export { Notification } from './Notification';
 export { Shake } from './Shake';
+export { ProtectedRoute } from './ProtectedRoute';

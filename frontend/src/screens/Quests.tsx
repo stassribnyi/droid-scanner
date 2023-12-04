@@ -95,7 +95,7 @@ const QuestList: FC<{
     </Typography>
     <Box component="ul" sx={{ listStyle: 'none', p: 0, m: 0 }}>
       {items.map((item) => (
-        <Box component="li" sx={{ mb: 2 }}>
+        <Box key={item.id} component="li" sx={{ mb: 2 }}>
           <QuestItem
             variant={variant}
             description={item.hint}
