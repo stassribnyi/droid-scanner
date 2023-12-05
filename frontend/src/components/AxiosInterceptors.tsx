@@ -4,7 +4,6 @@ import { useLayoutEffect } from 'react';
 import type { FC, PropsWithChildren } from 'react';
 
 import { useLoader, useNotify } from '../hooks';
-import { formatError } from '../utils';
 
 // TODO
 import { getDeviceUUID } from '../utils';
@@ -17,6 +16,7 @@ export const AxiosInterceptors: FC<PropsWithChildren> = ({ children }) => {
   // that requests from useEffeck are being intercepted
   useLayoutEffect(() => {
     const requestInterceptor = axios.interceptors.request.use((request) => {
+      // TODO: add message for requests that are taking too long
       setLoading(true);
 
       const deviceId = getDeviceUUID();
@@ -42,9 +42,13 @@ export const AxiosInterceptors: FC<PropsWithChildren> = ({ children }) => {
         // TODO: this might not be called when request is cancelled
         setLoading(false);
 
-        notify({ message: formatError(error), severity: 'error' });
+        if (error.response?.status === 500) {
+          notify({ message: 'Sorry, our camp is under atack, please wait and retry later!', severity: 'error' });
 
-        return {};
+          return { data: null };
+        }
+
+        return Promise.reject(error);
       },
     );
 

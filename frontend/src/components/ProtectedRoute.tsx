@@ -13,10 +13,10 @@ export const ProtectedRoute: React.FC<
 
   switch (allowed) {
     case 'auth-only':
-      return isLoggedIn ? <Outlet /> : <Navigate to={navigatePath} />;
-    case 'login-only':
       // TODO: restore previos location
-      return isLoggedIn ? <Navigate to={navigatePath} state={{ from: location }} replace /> : <Outlet />;
+      return isLoggedIn ? <Outlet /> : <Navigate to={navigatePath} state={{ from: location }} replace />;
+    case 'login-only':
+      return isLoggedIn ? <Navigate to={navigatePath} /> : <Outlet />;
     case 'all':
     default:
       return <Outlet />;

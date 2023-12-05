@@ -4,10 +4,10 @@ import { createContext, useEffect, useContext, useCallback, useState } from 'rea
 import type { FC, PropsWithChildren } from 'react';
 
 import { useNotify } from '../hooks';
-import { formatError } from '../utils';
 
 import useAxios from 'axios-hooks';
 import { User } from '../types';
+import { useLocalStorage } from '@uidotdev/usehooks';
 
 const AuthContext = createContext<{
   isLoggedIn: boolean;
@@ -23,6 +23,9 @@ const AuthContext = createContext<{
 
 export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
+
+  // keep session status for optimistic UI rendering
+  const [isLoggedIn, setIsLoggedIn] = useLocalStorage<boolean>('is-logged-in', false);
 
   const { notify } = useNotify();
 
@@ -41,14 +44,20 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
       const { data } = await fetchUser();
 
       setUser(data);
+      setIsLoggedIn(true);
     } catch (error) {
       // TODO: ping backend team to implement proper authorization
       if (isAxiosError(error) && error.response?.status === 404) {
-        localStorage.clear();
+        setIsLoggedIn(false);
         setUser(null);
+        localStorage.clear();
+
+        notify({ message: "We couldn't find your profile in our ranks, wanna join us?", severity: 'info' });
+
+        return;
       }
 
-      notify({ message: formatError(error), severity: 'error' });
+      notify({ message: 'Hm, there is too much recruits lately, please try again later!', severity: 'info' });
     }
   }, [notify, registerUser]);
 
@@ -60,8 +69,9 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
         });
 
         setUser(data);
+        setIsLoggedIn(true);
       } catch (error) {
-        notify({ message: formatError(error), severity: 'error' });
+        notify({ message: 'Our register terminal seems to be bugging out, please try again later!', severity: 'info' });
       }
     },
     [notify, registerUser],
@@ -73,9 +83,7 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
   }, []);
 
   // TODO: pay close attention to performance
-  return (
-    <AuthContext.Provider value={{ isLoggedIn: !!user, user, refreshUser, register }}>{children}</AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={{ isLoggedIn, user, refreshUser, register }}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => useContext(AuthContext);
