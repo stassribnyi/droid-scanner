@@ -9,3 +9,4 @@ export { BaseScreen } from './BaseScreen';
 export { Notification } from './Notification';
 export { Shake } from './Shake';
 export { ProtectedRoute } from './ProtectedRoute';
+export { AxiosInterceptors } from './AxiosInterceptors';

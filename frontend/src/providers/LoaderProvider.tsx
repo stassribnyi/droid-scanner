@@ -9,9 +9,7 @@ export const LoaderContext = createContext<[boolean, Toggle]>([false, () => {}])
 export const LoaderProvider: FC<PropsWithChildren> = ({ children }) => {
   const [loading, setLoader] = useState(false);
 
-  const toggle = useCallback<Toggle>((value) => {
-    setLoader(value);
-  }, []);
+  const toggle = useCallback<Toggle>((value) => setLoader(value), []);
 
   return (
     <LoaderContext.Provider value={[loading, toggle]}>

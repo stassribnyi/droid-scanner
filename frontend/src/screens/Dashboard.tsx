@@ -21,7 +21,8 @@ import useAxios from 'axios-hooks';
 import { Navigation, ScreenContent } from '../components';
 
 import { collectedToRank, collectedToColor } from '../utils';
-import { Rating, User } from '../types';
+import { Rating } from '../types';
+import { useAuthContext } from '../providers';
 
 const createLeaderboardData = (rating: Rating, totalDroids: number) => ({
   name: rating.nickname,
@@ -49,26 +50,10 @@ const InfoItem: FC<PropsWithChildren<Readonly<{ label: string; color?: string }>
 );
 
 export const Dashboard = () => {
-  const [{ data: leadersData }, getLeaders] = useAxios<Array<Rating>>('/api/users/leaderboard', {
-    manual: true,
-  });
-  const [{ data }, getUser] = useAxios<User>(`/api/me`, {
-    manual: true,
-  });
+  const [{ data: leadersData }] = useAxios<Array<Rating>>('/api/users/leaderboard');
+  const { user } = useAuthContext();
 
-  useEffect(() => {
-    getUser();
-    getLeaders();
-  }, []);
-
-  const user = data || {
-    deviceId: '',
-    name: 'loading...',
-    collectedDroids: 0,
-    totalDroids: 20,
-  };
-
-  const leaders = (leadersData ?? []).map((rating) => createLeaderboardData(rating, user.totalDroids));
+  const leaders = (leadersData ?? []).map((rating) => createLeaderboardData(rating, user?.totalDroids ?? 0));
 
   return (
     <>
@@ -93,23 +78,23 @@ export const Dashboard = () => {
             >
               Welcome,
               <Typography variant="h6" color="#ff6855" sx={{ fontWeight: 'bold' }}>
-                {user?.name}
+                {user?.name ?? 'Loading...'}
               </Typography>
             </Typography>
             <Grid container spacing={2}>
               <Grid xs={4}>
-                <InfoItem label="Rank" color={collectedToColor(user.collectedDroids, user.totalDroids)}>
-                  {collectedToRank(user.collectedDroids, user.totalDroids)}
+                <InfoItem label="Rank" color={collectedToColor(user?.collectedDroids ?? 0, user?.totalDroids ?? 0)}>
+                  {collectedToRank(user?.collectedDroids ?? 0, user?.totalDroids ?? 0)}
                 </InfoItem>
               </Grid>
               <Grid xs={4}>
                 <InfoItem label="Collected" color="#ff988b">
-                  {user?.collectedDroids}
+                  {user?.collectedDroids ?? 0}
                 </InfoItem>
               </Grid>
               <Grid xs={4}>
                 <InfoItem label="Progress" color="#caa2ff">
-                  {calculateProgress(user.collectedDroids, user.totalDroids)}
+                  {calculateProgress(user?.collectedDroids ?? 0, user?.totalDroids ?? 0)}
                 </InfoItem>
               </Grid>
             </Grid>
@@ -138,7 +123,7 @@ export const Dashboard = () => {
                       sx={{
                         height: '28px',
                         width: '28px',
-                        color: collectedToColor(row.collected, user.totalDroids),
+                        color: collectedToColor(row.collected, user?.totalDroids ?? 0),
                       }}
                     />
                   </TableCell>
@@ -148,7 +133,7 @@ export const Dashboard = () => {
 
                   <TableCell align="center">
                     <Typography variant="caption" sx={{ fontWeight: 500 }}>
-                      {calculateProgress(row.collected, user.totalDroids)}
+                      {calculateProgress(row.collected, user?.totalDroids ?? 0)}
                     </Typography>
                   </TableCell>
                 </TableRow>
