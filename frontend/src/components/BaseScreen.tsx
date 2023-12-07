@@ -5,9 +5,6 @@ import { Assessment as Home, ArrowBackIosNewRounded as ArrowBack } from '@mui/ic
 import { FC, PropsWithChildren } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-// TODO: should be alongside other wrapper components
-import { AxiosErrorHandler } from './AxiosErrorHandler';
-
 // TODO: extract appbar
 export const BaseScreen: FC<
   PropsWithChildren<{
@@ -18,7 +15,7 @@ export const BaseScreen: FC<
   const navigate = useNavigate();
 
   return (
-    <AxiosErrorHandler>
+    <>
       <ScreenContent>
         <AppBar
           position="absolute"
@@ -61,6 +58,6 @@ export const BaseScreen: FC<
         </Box>
       </ScreenContent>
       <Navigation />
-    </AxiosErrorHandler>
+    </>
   );
 };

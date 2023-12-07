@@ -1,24 +1,22 @@
 import axios from 'axios';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLayoutEffect } from 'react';
 
 import type { FC, PropsWithChildren } from 'react';
 
-import { useSimpleAuth, useLoader, useNotify } from '../hooks';
-import { formatError } from '../utils';
+import { useLoader, useNotify } from '../hooks';
 
 // TODO
 import { getDeviceUUID } from '../utils';
 
-export const AxiosErrorHandler: FC<PropsWithChildren> = ({ children }) => {
-  const [, , revokeAccess] = useSimpleAuth();
+export const AxiosInterceptors: FC<PropsWithChildren> = ({ children }) => {
   const [, setLoading] = useLoader();
-  const navigate = useNavigate();
-
   const { notify } = useNotify();
 
-  useEffect(() => {
+  // register interceptors before any visual feedback to make sure,
+  // that requests from useEffeck are being intercepted
+  useLayoutEffect(() => {
     const requestInterceptor = axios.interceptors.request.use((request) => {
+      // TODO: add message for requests that are taking too long
       setLoading(true);
 
       const deviceId = getDeviceUUID();
@@ -36,25 +34,21 @@ export const AxiosErrorHandler: FC<PropsWithChildren> = ({ children }) => {
         return response;
       },
       (error) => {
-        setLoading(false);
-
         // TODO: learn more about this behavior and how to prevent it
         if (axios.isCancel(error)) {
           return Promise.reject(error);
         }
 
-        // TODO: ping backend team to implement proper authorization
-        if (error.response?.status === 404 && error.response.config.url?.includes('/api/me')) {
-          localStorage.clear();
-          revokeAccess();
-          navigate('/');
+        // TODO: this might not be called when request is cancelled
+        setLoading(false);
 
-          return;
+        if (error.response?.status === 500) {
+          notify({ message: 'Sorry, our camp is under atack, please wait and retry later!', severity: 'error' });
+
+          return { data: null };
         }
 
-        notify({ message: formatError(error), severity: 'error' });
-
-        return {};
+        return Promise.reject(error);
       },
     );
 

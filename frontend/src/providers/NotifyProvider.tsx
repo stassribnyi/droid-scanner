@@ -1,6 +1,7 @@
 import { createContext, FC, useState, useCallback, PropsWithChildren } from 'react';
 
 import { AlertColor } from '@mui/material';
+import { Notification } from '../components';
 
 type Notify = Readonly<{
   message: string;
@@ -42,6 +43,7 @@ export const NotifyProvider: FC<PropsWithChildren> = ({ children }) => {
         clear,
       }}
     >
+      <Notification />
       {children}
     </NotifyContext.Provider>
   );
