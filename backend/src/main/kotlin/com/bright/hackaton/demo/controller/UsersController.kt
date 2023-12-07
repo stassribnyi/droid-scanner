@@ -33,7 +33,6 @@ class UsersController(private val userFacade: UserFacade) {
     )
     suspend fun getUserInfo(@PathVariable deviceId: String): ResponseEntity<User> {
         return ResponseEntity.ok(userFacade.getUserInfo(deviceId))
-
     }
 
     @RequestMapping(
@@ -43,7 +42,6 @@ class UsersController(private val userFacade: UserFacade) {
     )
     suspend fun getMeInfo(deviceId: String): ResponseEntity<User> {
         return ResponseEntity.ok(userFacade.getUserInfo(deviceId))
-
     }
 
     @RequestMapping(
