@@ -5,8 +5,8 @@ import { Close, QrCodeSharp as QrCode } from '@mui/icons-material';
 import { TransitionProps } from '@mui/material/transitions';
 
 import { Scanner } from './Scanner';
-import { useActivateDroid } from '../hooks';
 import { tryParseDroidId } from '../utils';
+import { useNavigate } from 'react-router-dom';
 
 const Transition = forwardRef((props: TransitionProps & { children: ReactElement }, ref: Ref<unknown>) => (
   <Slide direction="up" ref={ref} {...props} />
@@ -14,8 +14,8 @@ const Transition = forwardRef((props: TransitionProps & { children: ReactElement
 
 export const ScannerButton = () => {
   const theme = useTheme();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  const activateDroid = useActivateDroid();
 
   function closeScanner() {
     setIsOpen(false);
@@ -74,9 +74,8 @@ export const ScannerButton = () => {
         >
           <Scanner
             onResult={(data) => {
-              activateDroid(tryParseDroidId(data));
-
               setIsOpen(false);
+              navigate('/quests', { state: { droidId: tryParseDroidId(data) } });
             }}
           />
         </Box>

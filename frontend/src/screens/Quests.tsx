@@ -3,10 +3,14 @@ import { FC, useEffect, useState } from 'react';
 import { useLocalStorage } from '@uidotdev/usehooks';
 
 import { Launch } from '@mui/icons-material';
-import { Typography, Paper, Button, Box, IconButton, Stack, css } from '@mui/material';
+import { Typography, Paper, Button, Box, IconButton, Stack } from '@mui/material';
 
 import { BaseScreen, Dialog } from '../components';
-import { Droid, User } from '../types';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useNotify } from '../hooks';
+
+import type { Droid } from '../types';
+import type { Location } from 'react-router-dom';
 
 type QuestItemProps = Readonly<{
   description: string;
@@ -65,15 +69,16 @@ const QuestItem: FC<QuestItemProps> = ({ description, variant, imageUrl, onClick
     </Box>
     <Typography
       variant="caption"
-      sx={css`
-        display: -webkit-box;
-        max-width: 400px;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        text-shadow: 1px 1px 1px #111;
-      `}
+      sx={{
+        // TODO: use better approach
+        display: '-webkit-box',
+        maxWidth: '400px',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical',
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        textShadow: '1px 1px 1px #111',
+      }}
     >
       {description}
     </Typography>
@@ -113,11 +118,46 @@ export const Quests = () => {
   const [currentQuestId, setCurrentQuestId] = useLocalStorage<number | undefined>('current-quest-id', 1);
   const [selected, setSelected] = useState<Droid | null>(null);
 
-  const [{ data: droids }, getDroids] = useAxios<Droid[]>({
-    url: `/api/droids`,
-  });
+  const { state } = useLocation() as Location<{ questId: number | null }>;
+  const navigate = useNavigate();
+  const { notify } = useNotify();
+
+  const [{ data: droids }, fetchAllQuests] = useAxios<Droid[]>(
+    {
+      url: `/api/droids`,
+    },
+    { manual: true },
+  );
+
+  const [, activateQuest] = useAxios<Droid>(
+    {
+      url: '/api/droids/activate',
+      method: 'PUT',
+    },
+    { manual: true },
+  );
+
+  useEffect(() => {
+    if (!state?.questId) {
+      fetchAllQuests();
+
+      return;
+    }
+
+    activateQuest({ params: { droidOrder: state.questId } })
+      // TODO: update quest list locally without refetch
+      .then(() => fetchAllQuests())
+      .catch(() =>
+        notify({
+          message: `These aren't the droids you are looking for!`,
+          severity: 'info',
+        }),
+      )
+      .finally(() => navigate(location.pathname, { replace: true }));
+  }, [state?.questId, fetchAllQuests]);
 
   // TODO: finished quest vs non finished probably should be implemented on server side
+  // TODO: there is a bug due to out of range index
   const currentQuests = droids?.filter((d) => d.order === currentQuestId);
   const activeQuests = droids?.filter((d) => d.order !== currentQuestId && d.activated && !droids[d.order]?.activated);
   const finishedQuests = droids?.filter((d) => d.order !== currentQuestId && d.activated && droids[d.order]?.activated);
@@ -174,42 +214,42 @@ export const Quests = () => {
 // TODO: add later
 // probably it could be called on last scan and shown as a modal
 // backend can send some info about quest finished or not
-const TODOCongrats = () => {
-  const [showCongrats, setShowCongrats] = useState(false);
+// const TODOCongrats = () => {
+//   const [showCongrats, setShowCongrats] = useState(false);
 
-  const [{ data: user }, getUser] = useAxios<User>(`/api/users`, {
-    manual: true,
-  });
+//   const [{ data: user }, getUser] = useAxios<User>(`/api/users`, {
+//     manual: true,
+//   });
 
-  useEffect(() => {
-    getUser();
-  }, []);
+//   useEffect(() => {
+//     getUser();
+//   }, []);
 
-  useEffect(() => {
-    if (!user) {
-      return;
-    }
+//   useEffect(() => {
+//     if (!user) {
+//       return;
+//     }
 
-    setShowCongrats(user.collectedDroids === user.totalDroids);
-  }, [user]);
+//     setShowCongrats(user.collectedDroids === user.totalDroids);
+//   }, [user]);
 
-  return (
-    <Dialog imageUrl="/welcome.png" open={showCongrats} onClose={() => setShowCongrats(false)}>
-      <Stack direction="column" gap={2}>
-        <Typography align="center" color="#ff6855" variant="h6">
-          Congratulations!
-        </Typography>
-        <Typography gutterBottom variant="body1" component="div" align="justify" sx={{}}>
-          A fantastic achievement! You've finished all the quests we've prepared for you. You have proven yourself to be
-          a master jedi.
-        </Typography>
-        <Typography align="center" sx={{ fontWeight: '700' }}>
-          May the force be with you!
-        </Typography>
-        <Typography variant="caption" align="center">
-          Thanks for playing our little game, your Coders of Republic team!
-        </Typography>
-      </Stack>
-    </Dialog>
-  );
-};
+//   return (
+//     <Dialog imageUrl="/welcome.png" open={showCongrats} onClose={() => setShowCongrats(false)}>
+//       <Stack direction="column" gap={2}>
+//         <Typography align="center" color="#ff6855" variant="h6">
+//           Congratulations!
+//         </Typography>
+//         <Typography gutterBottom variant="body1" component="div" align="justify" sx={{}}>
+//           A fantastic achievement! You've finished all the quests we've prepared for you. You have proven yourself to be
+//           a master jedi.
+//         </Typography>
+//         <Typography align="center" sx={{ fontWeight: '700' }}>
+//           May the force be with you!
+//         </Typography>
+//         <Typography variant="caption" align="center">
+//           Thanks for playing our little game, your Coders of Republic team!
+//         </Typography>
+//       </Stack>
+//     </Dialog>
+//   );
+// };
