@@ -6,7 +6,11 @@ import { Launch } from '@mui/icons-material';
 import { Typography, Paper, Button, Box, IconButton, Stack, css } from '@mui/material';
 
 import { BaseScreen, Dialog } from '../components';
-import { Droid, User } from '../types';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useNotify } from '../hooks';
+
+import type { Droid, User } from '../types';
+import type { Location } from 'react-router-dom';
 
 type QuestItemProps = Readonly<{
   description: string;
@@ -113,11 +117,46 @@ export const Quests = () => {
   const [currentQuestId, setCurrentQuestId] = useLocalStorage<number | undefined>('current-quest-id', 1);
   const [selected, setSelected] = useState<Droid | null>(null);
 
-  const [{ data: droids }, getDroids] = useAxios<Droid[]>({
-    url: `/api/droids`,
-  });
+  const { state } = useLocation() as Location<{ questId: number | null }>;
+  const navigate = useNavigate();
+  const { notify } = useNotify();
+
+  const [{ data: droids }, fetchAllQuests] = useAxios<Droid[]>(
+    {
+      url: `/api/droids`,
+    },
+    { manual: true },
+  );
+
+  const [, activateQuest] = useAxios<Droid>(
+    {
+      url: '/api/droids/activate',
+      method: 'PUT',
+    },
+    { manual: true },
+  );
+
+  useEffect(() => {
+    if (!state?.questId) {
+      fetchAllQuests();
+
+      return;
+    }
+
+    activateQuest({ params: { droidOrder: state.questId } })
+      // TODO: update quest list locally without refetch
+      .then(() => fetchAllQuests())
+      .catch(() =>
+        notify({
+          message: `These aren't the droids you are looking for!`,
+          severity: 'info',
+        }),
+      )
+      .finally(() => navigate(location.pathname, { replace: true }));
+  }, [state?.questId, fetchAllQuests]);
 
   // TODO: finished quest vs non finished probably should be implemented on server side
+  // TODO: there is a bug due to out of range index
   const currentQuests = droids?.filter((d) => d.order === currentQuestId);
   const activeQuests = droids?.filter((d) => d.order !== currentQuestId && d.activated && !droids[d.order]?.activated);
   const finishedQuests = droids?.filter((d) => d.order !== currentQuestId && d.activated && droids[d.order]?.activated);
