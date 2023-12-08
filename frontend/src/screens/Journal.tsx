@@ -1,5 +1,4 @@
 import { Box, FormControl, InputLabel, MenuItem, Paper, Select, Stack, Typography, useTheme } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { BaseScreen } from '../components';
 import { FC, useEffect, useState } from 'react';
 import { QuestionMark } from '@mui/icons-material';
@@ -69,7 +68,6 @@ const compareByActivated = (d1: Droid, d2: Droid) => (d1.activated === d2.activa
 const compareByOrder = (d1: Droid, d2: Droid) => d1.order - d2.order;
 
 export const Journal = () => {
-  const navigate = useNavigate();
   const [orderBy, setOrderBy] = useState<'order' | 'collected'>('order');
   const [droids, setDroids] = useState<Array<Droid>>([]);
   const [, getMyCollection] = useAxios<Array<Droid>>(
@@ -135,7 +133,7 @@ export const Journal = () => {
             name={droid.name}
             imageUrl={`/droids/${droid.name.toLocaleLowerCase()}.jpg`}
             activated={droid.activated}
-            onClick={(id) => navigate('/quests')}
+            onClick={() => alert('droid info')}
           />
         ))}
       </Box>

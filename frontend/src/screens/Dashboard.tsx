@@ -15,7 +15,7 @@ import {
 } from '@mui/material';
 import { WorkspacePremium } from '@mui/icons-material';
 
-import { FC, PropsWithChildren, useEffect } from 'react';
+import { FC, PropsWithChildren } from 'react';
 import useAxios from 'axios-hooks';
 
 import { Navigation, ScreenContent } from '../components';
