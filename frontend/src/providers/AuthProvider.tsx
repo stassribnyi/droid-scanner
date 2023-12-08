@@ -1,5 +1,5 @@
 import { isAxiosError } from 'axios';
-import { createContext, useEffect, useContext, useCallback, useState } from 'react';
+import { createContext, useEffect, useContext, useCallback, useState, useMemo } from 'react';
 
 import type { FC, PropsWithChildren } from 'react';
 
@@ -82,8 +82,17 @@ export const AuthProvider: FC<PropsWithChildren> = ({ children }) => {
     refreshUser();
   }, []);
 
-  // TODO: pay close attention to performance
-  return <AuthContext.Provider value={{ isLoggedIn, user, refreshUser, register }}>{children}</AuthContext.Provider>;
+  const value = useMemo(
+    () => ({
+      isLoggedIn,
+      user,
+      refreshUser,
+      register,
+    }),
+    [isLoggedIn, user, refreshUser, register],
+  );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 export const useAuthContext = () => useContext(AuthContext);
